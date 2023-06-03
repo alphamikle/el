@@ -5,7 +5,7 @@ import 'package:yaml/yaml.dart';
 
 import '../gen/generator_config.dart';
 import '../loader/content_loader.dart';
-import '../loader/localization_file.dart';
+import '../loader/language_localization.dart';
 import '../type/mappers.dart';
 import '../type/types.dart';
 
@@ -32,8 +32,8 @@ class AssetsGenLoader implements ContentLoader {
   String? get dartSdk => _pubspecContent[kEnv][kSdk];
 
   @override
-  List<LocalizationFile> load() {
-    final List<LocalizationFile> result = [];
+  List<LanguageLocalization> load() {
+    final List<LanguageLocalization> result = [];
     final List<File> files = Directory.current.listSync().whereType<File>().toList();
     final File pubspec = files.firstWhere((File it) => it.path.contains(_pubspecRegExp), orElse: () => throw Exception('Not found pubspec.yaml file'));
     final YamlMap pubspecContent = _pubspecContent = loadYaml(pubspec.readAsStringSync()) as YamlMap;
@@ -58,9 +58,9 @@ assets: <-- 1
     for (final dynamic asset in assets) {
       if (asset is String) {
         final String dirPath = join(Directory.current.path, asset);
-        final List<LocalizationFile> dirFiles = _scanDir(Directory(dirPath));
+        final List<LanguageLocalization> dirFiles = _scanDir(Directory(dirPath));
         result.addAll(dirFiles);
-        for (final LocalizationFile file in dirFiles) {
+        for (final LanguageLocalization file in dirFiles) {
           if (languagesCache.contains(file.language)) {
             throw Exception('Found more than one localization source for the language "${file.language}"');
           }
@@ -71,8 +71,8 @@ assets: <-- 1
     return result;
   }
 
-  List<LocalizationFile> _scanDir(Directory directory) {
-    final List<LocalizationFile> localizationFiles = [];
+  List<LanguageLocalization> _scanDir(Directory directory) {
+    final List<LanguageLocalization> localizationFiles = [];
     final List<File> allFiles = directory.listSync(recursive: true).whereType<File>().toList();
     for (final File file in allFiles) {
       final RegExpMatch? match = config.regExp.firstMatch(file.path);
@@ -80,7 +80,7 @@ assets: <-- 1
       if (match != null) {
         final String language = match.namedGroup('lang')!;
         final Json content = yamlMapToJson(loadYaml(file.readAsStringSync()));
-        localizationFiles.add(LocalizationFile(language: language, content: content));
+        localizationFiles.add(LanguageLocalization(language: language, content: content));
       }
     }
     return localizationFiles;

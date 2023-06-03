@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:locy/src/asset/assets_gen_loader.dart';
+import 'package:locy/src/gen/generator.dart';
 import 'package:locy/src/gen/generator_config.dart';
 
 void main() {
@@ -13,5 +14,10 @@ void main() {
     final AssetsGenLoader loader = AssetsGenLoader(const GeneratorConfig(prefix: 'locale'));
     final result = loader.load();
     expect(result.length, 1);
+  });
+
+  test('Localization file template test', () {
+    final Generator generator = Generator(const GeneratorConfig());
+    generator.generate();
   });
 }

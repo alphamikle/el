@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'localization_file.dart';
+import 'language_localization.dart';
 
 abstract interface class ContentLoader {
-  FutureOr<List<LocalizationFile>> load();
+  FutureOr<List<LanguageLocalization>> load();
 }
