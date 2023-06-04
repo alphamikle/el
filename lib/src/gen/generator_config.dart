@@ -16,6 +16,7 @@ class GeneratorConfig {
     this.packageDescription = kDefaultPackageDescription,
     this.packageVersion = kDefaultPackageVersion,
     this.packagePath = kDefaultPackagePath,
+    this.runtimeLocales = const [],
     this.withRuntime = false,
     RegExp? regExp,
   }) : _regExp = regExp;
@@ -28,6 +29,7 @@ class GeneratorConfig {
   final String packageDescription;
   final String packageVersion;
   final String packagePath;
+  final List<String> runtimeLocales;
   final bool withRuntime;
 
   final RegExp? _regExp;

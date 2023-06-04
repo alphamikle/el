@@ -6,4 +6,5 @@ void fixPackage(String pathToFile) {
     ['fix', '--apply', pathToFile],
     runInShell: true,
   );
+  process.exitCode;
 }
