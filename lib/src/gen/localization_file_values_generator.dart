@@ -15,11 +15,7 @@ class LocalizationFileValuesGenerator {
   final GeneratorConfig config;
   final List<LanguageLocalization> localizations;
 
-  final List<String> externalCode = [];
-
   final List<String> constructorArgumentsCode = [];
-
-  final List<String> classBodyCode = [];
 
   String generate() {
     final List<String> languagesCode = [];
@@ -38,6 +34,7 @@ class LocalizationFileValuesGenerator {
           ');',
         ].join('\n');
         languagesCode.add(code);
+        constructorArgumentsCode.clear();
       }
     }
 
@@ -48,8 +45,6 @@ class LocalizationFileValuesGenerator {
     for (final LocalizationUnit unit in units) {
       final CodeOutput code = localizationUnitToValue(unit);
       constructorArgumentsCode.add(code.classArgumentCode);
-      externalCode.add(code.externalCode);
-      classBodyCode.add(code.classBodyCode);
     }
   }
 }

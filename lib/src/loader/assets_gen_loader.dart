@@ -4,10 +4,10 @@ import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
 import '../gen/generator_config.dart';
-import '../loader/content_loader.dart';
-import '../loader/language_localization.dart';
 import '../type/mappers.dart';
 import '../type/types.dart';
+import 'content_loader.dart';
+import 'language_localization.dart';
 
 const kFlutter = 'flutter';
 const kAssets = 'assets';
