@@ -14,7 +14,8 @@ class StringUnit extends LocalizationUnit {
   const StringUnit({
     required this.key,
     required this.value,
-  }) : parents = const [];
+    required this.parents,
+  });
 
   @override
   final String key;
@@ -30,7 +31,8 @@ class StringWithDescriptionUnit extends LocalizationUnit {
   const StringWithDescriptionUnit({
     required this.key,
     required this.value,
-  }) : parents = const [];
+    required this.parents,
+  });
 
   @override
   final String key;
@@ -46,7 +48,8 @@ class PluralizedUnit extends LocalizationUnit {
   const PluralizedUnit({
     required this.key,
     required this.value,
-  }) : parents = const [];
+    required this.parents,
+  });
 
   @override
   final String key;

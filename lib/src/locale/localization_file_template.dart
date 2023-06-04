@@ -1,17 +1,13 @@
 import '../gen/generator_config.dart';
 import '../loader/language_localization.dart';
-import '../template/class_constructor_end_template.dart';
 import '../template/class_end_template.dart';
 import '../template/imports_template.dart';
 import '../template/localizations_messages_template.dart';
+import '../tools/code_tools.dart';
 import '../tools/localization_tools.dart';
 import '../type/types.dart';
 import 'localization_unit.dart';
 import 'unit_to_code_generator/code_output.dart';
-import 'unit_to_code_generator/namespaced_unit_to_code_generator.dart';
-import 'unit_to_code_generator/pluralized_unit_to_code_generator.dart';
-import 'unit_to_code_generator/string_unit_to_code_generator.dart';
-import 'unit_to_code_generator/string_with_description_unit_to_code_generator.dart';
 
 class LocalizationFileTemplate {
   LocalizationFileTemplate({
@@ -22,7 +18,7 @@ class LocalizationFileTemplate {
   final GeneratorConfig config;
   final List<LanguageLocalization> localizations;
 
-  final List<String> namespacedLocalizationsCode = [];
+  final List<String> externalCode = [];
 
   final List<String> constructorArgumentsCode = [];
 
@@ -41,10 +37,10 @@ class LocalizationFileTemplate {
     _proceedUnits(units);
     final String code = [
       importsTemplate,
-      ...namespacedLocalizationsCode,
+      ...externalCode,
       localizationsMessagesTemplate(className: config.localizationsClassName),
       ...constructorArgumentsCode,
-      classConstructorEndTemplate,
+      '});',
       ...classBodyCode,
       classEndTemplate,
     ].join('\n');
@@ -54,18 +50,10 @@ class LocalizationFileTemplate {
 
   void _proceedUnits(List<LocalizationUnit> units) {
     for (final LocalizationUnit unit in units) {
-      final CodeOutput code = switch (unit) {
-        StringUnit() => stringUnitToCode(unit),
-        StringWithDescriptionUnit() => stringWithDescriptionUnitToCode(unit),
-        PluralizedUnit() => pluralizedUnitToCode(unit),
-        NamespacedUnit() => namespacedUnitToCode(unit),
-      };
+      final CodeOutput code = localizationUnitToCode(unit);
       constructorArgumentsCode.add(code.classArgumentCode);
-      if (unit is NamespacedUnit) {
-        namespacedLocalizationsCode.add(code.classBodyCode);
-      } else {
-        classBodyCode.add(code.classBodyCode);
-      }
+      externalCode.add(code.externalCode);
+      classBodyCode.add(code.classBodyCode);
     }
   }
 }

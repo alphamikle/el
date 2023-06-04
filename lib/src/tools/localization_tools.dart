@@ -2,13 +2,14 @@ import '../locale/localization_unit.dart';
 
 LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]) {
   final LocalizationUnit localizationUnit = switch (value) {
-    String() => StringUnit(key: key, value: value),
-    {'value': final String $value, 'desc': final String $desc} => StringWithDescriptionUnit(key: key, value: (value: $value, description: $desc)),
-    {'value': final String $value} => StringUnit(key: key, value: $value),
-    {
-      'other': final String $other,
-    } =>
-      PluralizedUnit(
+    String() => StringUnit(key: key, value: value, parents: parents ?? []),
+    {'value': final String $value, 'desc': final String $desc} => StringWithDescriptionUnit(
+        key: key,
+        value: (value: $value, description: $desc),
+        parents: parents ?? [],
+      ),
+    {'value': final String $value} => StringUnit(key: key, value: $value, parents: parents ?? []),
+    {'other': final String $other} => PluralizedUnit(
         key: key,
         value: (
           zero: value.get('zero'),
@@ -19,6 +20,7 @@ LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]
           other: $other,
           description: value.get('desc')
         ),
+        parents: parents ?? [],
       ),
     Map() => NamespacedUnit(key: key, value: _localizeMap(key, value, parents ?? []), parents: parents ?? []),
     _ => throw UnsupportedError('Value "$value" is not supported'),
@@ -30,7 +32,7 @@ LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]
 Map<String, LocalizationUnit> _localizeMap(String parent, Map<dynamic, dynamic> map, List<String> parents) {
   final Map<String, LocalizationUnit> namespacedValue = {};
   for (final MapEntry(:key, :value) in map.entries) {
-    final LocalizationUnit tempUnit = localizeValue(key, value);
+    final LocalizationUnit tempUnit = localizeValue(key, value, [parent]);
     if (tempUnit is NamespacedUnit) {
       namespacedValue[key] = localizeValue(key, value, [...parents, parent]);
     } else {

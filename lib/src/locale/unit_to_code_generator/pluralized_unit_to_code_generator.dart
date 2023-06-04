@@ -1,14 +1,20 @@
 import '../../tools/arguments_extractor.dart';
+import '../../type/mappers.dart';
 import '../localization_unit.dart';
 import 'code_output.dart';
 
 const Set<String> _reservedArguments = {'howMany', 'precision'};
 
-CodeOutput pluralizedUnitToCode(PluralizedUnit unit) {
+CodeOutput pluralizedUnitToCode(PluralizedUnit unit, {bool useThisKeyword = true}) {
   final Set<String> arguments = extractArguments(_pluralizedValueToString(unit.value)).where((String arg) => _reservedArguments.contains(arg) == false).toSet();
+  String parentClassName = unit.parents.map(capitalize).join();
+  if (parentClassName.isNotEmpty) {
+    parentClassName = '$parentClassName.';
+  }
+
   if (arguments.isEmpty) {
     return CodeOutput(
-      classArgumentCode: 'this.${unit.key} = \$${unit.key},',
+      classArgumentCode: '${useThisKeyword ? 'this.' : ''}${unit.key}${useThisKeyword ? ' =' : ':'} $parentClassName\$${unit.key},',
       classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
 final String Function(int howMany, {int? precision}) ${unit.key};
@@ -25,13 +31,14 @@ static String \$${unit.key}(int howMany, {int? precision}) => Intl.plural(
   precision: precision,
 );
 ''',
+      externalCode: '',
     );
   }
   String functionArguments = arguments.map((String arg) => 'required String $arg').join(', ');
   functionArguments = '(int howMany, {$functionArguments, int? precision})';
 
   return CodeOutput(
-    classArgumentCode: 'this.${unit.key} = \$${unit.key},',
+    classArgumentCode: '${useThisKeyword ? 'this.' : ''}${unit.key}${useThisKeyword ? ' =' : ':'} $parentClassName\$${unit.key},',
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
 final String Function$functionArguments ${unit.key};
@@ -48,6 +55,7 @@ static String \$${unit.key}$functionArguments => Intl.plural(
   precision: precision,
 );
 ''',
+    externalCode: '',
   );
 }
 

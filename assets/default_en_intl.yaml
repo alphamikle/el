@@ -1,36 +1,36 @@
-simpleContent: Hello, world!
+#simpleContent: Hello, world!
+#
+#contentWithDescription:
+#  value: This is still Hello, world!
+#  desc: And this is the description of that content.
+#
+#simpleContentWithArguments: Hello, ${username}! Do you like ${today}?
+#
+#contentWithDescriptionAndArguments:
+#  value: This is still Hello, ${username}! What do you think about ${tomorrow}'s weather?
+#  desc: This is still a description.
+#
+#simplePluralizedContent:
+#  zero: books
+#  one: book
+#  two: books
+#  few: books
+#  many: books
+#  other: books
+#  desc: Pluralized books content
+#
+#pluralizedContentWithArguments:
+#  zero: There are no any books of ${author}...
+#  one: There are ${howMany} book of ${author}.
+#  two: There are ${howMany} books of ${author}.
+#  few: There are ${howMany} books of ${author}.
+#  many: There are ${howMany} books of ${author}.
+#  other: There are ${howMany} books of ${author}.
+#  desc: Pluralized books content with arguments
 
-contentWithDescription:
-  value: This is still Hello, world!
-  desc: And this is the description of that content.
-
-simpleContentWithArguments: Hello, ${username}! Do you like ${today}?
-
-contentWithDescriptionAndArguments:
-  value: This is still Hello, ${username}! What do you think about ${tomorrow}'s weather?
-  desc: This is still a description.
-
-simplePluralizedContent:
-  zero: books
-  one: book
-  two: books
-  few: books
-  many: books
-  other: books
-  desc: Pluralized books content
-
-pluralizedContentWithArguments:
-  zero: There are no any books of ${author}...
-  one: There are ${howMany} book of ${author}.
-  two: There are ${howMany} books of ${author}.
-  few: There are ${howMany} books of ${author}.
-  many: There are ${howMany} books of ${author}.
-  other: There are ${howMany} books of ${author}.
-  desc: Pluralized books content with arguments
-
-namespacedMessage:
-  first: How are
-  second: you?
+#namespacedMessage:
+#  first: How are
+#  second: you?
 
 primary:
   first:
@@ -38,10 +38,31 @@ primary:
       third:
         fourth:
           fifth: I'm fifth of primary!
-
-secondary:
-  first:
-    second:
-      third:
-        fourth:
-          fifth: I'm fifth of secondary!
+  second:
+    third:
+      fourth:
+        fifth: I'm fifth of second!
+  third:
+    fourth:
+      fifth: I'm fifth of third!
+  fourth:
+    fifth: I'm fifth of fourth!
+  fifth: I'm fifth!!!
+  sixth:
+    value: Hello! Miss me?
+    desc: Description string inside of namespace
+  seventh:
+    zero: cows
+    one: cow
+    two: cows
+    few: cows
+    many: cows
+    other: cows
+  pluralizedContentWithArguments:
+    zero: There are no any books of ${author}...
+    one: There are ${howMany} book of ${author}.
+    two: There are ${howMany} books of ${author}.
+    few: There are ${howMany} books of ${author}.
+    many: There are ${howMany} books of ${author}.
+    other: There are ${howMany} books of ${author}.
+    desc: Pluralized books content with arguments
