@@ -9,8 +9,8 @@ import '../type/types.dart';
 import 'localization_unit.dart';
 import 'unit_to_code_generator/code_output.dart';
 
-class LocalizationFileTemplate {
-  LocalizationFileTemplate({
+class LocalizationFileInterfaceGenerator {
+  LocalizationFileInterfaceGenerator({
     required this.config,
     required this.localizations,
   });
@@ -50,7 +50,7 @@ class LocalizationFileTemplate {
 
   void _proceedUnits(List<LocalizationUnit> units) {
     for (final LocalizationUnit unit in units) {
-      final CodeOutput code = localizationUnitToCode(unit);
+      final CodeOutput code = localizationUnitToInterface(unit);
       constructorArgumentsCode.add(code.classArgumentCode);
       externalCode.add(code.externalCode);
       classBodyCode.add(code.classBodyCode);
