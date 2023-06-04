@@ -1,10 +1,10 @@
-import '../gen/generator_config.dart';
 import '../loader/language_localization.dart';
+import '../locale/localization_unit.dart';
+import '../locale/unit_to_code_generator/code_output.dart';
 import '../template/language_value_beginning_template.dart';
 import '../tools/code_tools.dart';
 import '../tools/localization_tools.dart';
-import 'localization_unit.dart';
-import 'unit_to_code_generator/code_output.dart';
+import 'generator_config.dart';
 
 class LocalizationFileValuesGenerator {
   LocalizationFileValuesGenerator({

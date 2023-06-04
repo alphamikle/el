@@ -1,8 +1,8 @@
 import '../asset/assets_gen_loader.dart';
 import '../loader/language_localization.dart';
-import '../locale/localization_file_interface_generator.dart';
-import '../locale/localization_file_values_generator.dart';
 import 'generator_config.dart';
+import 'localization_file_interface_generator.dart';
+import 'localization_file_values_generator.dart';
 
 class Generator {
   Generator(this.config);
