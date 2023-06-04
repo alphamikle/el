@@ -2,11 +2,11 @@ import '../../tools/arguments_extractor.dart';
 import '../../tools/localization_tools.dart';
 import '../../type/mappers.dart';
 import '../localization_unit.dart';
-import 'code_output.dart';
+import '../unit_to_code_generator/code_output.dart';
 
 const Set<String> _reservedArguments = {'howMany', 'precision'};
 
-CodeOutput pluralizedUnitToCode(PluralizedUnit unit, {bool useThisKeyword = true}) {
+CodeOutput pluralizedUnitToValue(PluralizedUnit unit) {
   final Set<String> arguments = extractArguments(pluralizedValueToString(unit.value)).where((String arg) => _reservedArguments.contains(arg) == false).toSet();
   String parentClassName = unit.parents.map(capitalize).join();
   if (parentClassName.isNotEmpty) {
@@ -15,12 +15,8 @@ CodeOutput pluralizedUnitToCode(PluralizedUnit unit, {bool useThisKeyword = true
 
   if (arguments.isEmpty) {
     return CodeOutput(
-      classArgumentCode: '${useThisKeyword ? 'this.' : ''}${unit.key}${useThisKeyword ? ' =' : ':'} $parentClassName\$${unit.key},',
-      classBodyCode: '''
-${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function(int howMany, {int? precision}) ${unit.key};
-
-static String \$${unit.key}(int howMany, {int? precision}) => Intl.plural(
+      classArgumentCode: '''
+${unit.key}: (int howMany, {int? precision}) => Intl.plural(
   howMany,
   name: $qt${unit.key}$qt,
   ${unit.value.zero != null ? 'zero: $qt${unit.value.zero}$qt,' : ''}
@@ -30,8 +26,9 @@ static String \$${unit.key}(int howMany, {int? precision}) => Intl.plural(
   ${unit.value.many != null ? 'many: $qt${unit.value.many}$qt,' : ''}
   other: $qt${unit.value.other}$qt,
   precision: precision,
-);
+),
 ''',
+      classBodyCode: '',
       externalCode: '',
     );
   }
@@ -39,12 +36,8 @@ static String \$${unit.key}(int howMany, {int? precision}) => Intl.plural(
   functionArguments = '(int howMany, {$functionArguments, int? precision})';
 
   return CodeOutput(
-    classArgumentCode: '${useThisKeyword ? 'this.' : ''}${unit.key}${useThisKeyword ? ' =' : ':'} $parentClassName\$${unit.key},',
-    classBodyCode: '''
-${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function$functionArguments ${unit.key};
-
-static String \$${unit.key}$functionArguments => Intl.plural(
+    classArgumentCode: '''
+${unit.key}: $functionArguments => Intl.plural(
   howMany,
   name: $qt${unit.key}$qt,
   ${unit.value.zero != null ? 'zero: $qt${unit.value.zero}$qt,' : ''}
@@ -54,8 +47,9 @@ static String \$${unit.key}$functionArguments => Intl.plural(
   ${unit.value.many != null ? 'many: $qt${unit.value.many}$qt,' : ''}
   other: $qt${unit.value.other}$qt,
   precision: precision,
-);
+),
 ''',
+    classBodyCode: '',
     externalCode: '',
   );
 }

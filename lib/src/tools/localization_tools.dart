@@ -42,6 +42,10 @@ Map<String, LocalizationUnit> _localizeMap(String parent, Map<dynamic, dynamic> 
   return namespacedValue;
 }
 
+String pluralizedValueToString(PluralizedValue value) {
+  return [value.zero, value.one, value.two, value.few, value.many, value.other].join(' ');
+}
+
 extension on Object {
   T? get<T>(String key) {
     if (this is Map) {

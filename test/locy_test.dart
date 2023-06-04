@@ -16,7 +16,7 @@ void main() {
     expect(result.length, 1);
   });
 
-  test('Localization file template test', () {
+  test('Localization generation test', () {
     final Generator generator = Generator(const GeneratorConfig());
     generator.generate();
   });
