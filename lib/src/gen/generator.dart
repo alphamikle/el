@@ -11,7 +11,7 @@ class Generator {
 
   final GeneratorConfig config;
 
-  void generate() {
+  String generate() {
     final List<LanguageLocalization> localizations = AssetsGenLoader(config).load();
     final String interfaceCode = LocalizationFileInterfaceGenerator(config: config, localizations: localizations).generate();
     final String valuesCode = LocalizationFileValuesGenerator(config: config, localizations: localizations).generate();
@@ -21,6 +21,6 @@ class Generator {
       valuesCode,
       delegateCode,
     ].join('\n');
-    PackageSaver(config).save(code);
+    return PackageSaver(config).save(code);
   }
 }

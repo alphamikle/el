@@ -13,7 +13,7 @@ class PackageSaver {
 
   final GeneratorConfig config;
 
-  void save(String code) {
+  String save(String code) {
     final String absolutePackagePath = path.join(config.packagePath, config.packageName);
 
     final Directory dir = Directory(absolutePackagePath);
@@ -39,5 +39,6 @@ class PackageSaver {
     final File pubspecFile = File(path.join(absolutePackagePath, 'pubspec.yaml'));
     pubspecFile.writeAsStringSync(assetsPubspecTemplate(config));
     fixPackage(libFile.path);
+    return File(libFile.path).readAsStringSync();
   }
 }

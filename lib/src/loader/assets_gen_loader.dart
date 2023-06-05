@@ -75,6 +75,17 @@ assets: <-- 1
     final List<LanguageLocalization> localizationFiles = [];
     final List<File> allFiles = directory.listSync(recursive: true).whereType<File>().toList();
     for (final File file in allFiles) {
+      final String filename = file.path.replaceFirst(file.parent.path, '');
+      bool isExcluded = false;
+      for (final String exclusion in config.excludedPatterns) {
+        isExcluded = RegExp(exclusion).hasMatch(filename);
+        if (isExcluded) {
+          break;
+        }
+      }
+      if (isExcluded) {
+        continue;
+      }
       final RegExpMatch? match = config.regExp.firstMatch(file.path);
 
       if (match != null) {
