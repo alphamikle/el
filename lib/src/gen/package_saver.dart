@@ -38,7 +38,9 @@ class PackageSaver {
     libFile.writeAsStringSync(formattedCode);
     final File pubspecFile = File(path.join(absolutePackagePath, 'pubspec.yaml'));
     pubspecFile.writeAsStringSync(assetsPubspecTemplate(config));
-    fixPackage(libFile.path);
+    if (config.formatOutput) {
+      fixPackage(libFile.path);
+    }
     return File(libFile.path).readAsStringSync();
   }
 }

@@ -27,7 +27,7 @@ class LocalizationFileInterfaceGenerator {
   String generate() {
     final List<LocalizationUnit> units = [];
     if (localizations.isEmpty) {
-      throw ArgumentError('localizations argument should not be empty');
+      throw ArgumentError('localizations argument should not be empty. It seems - you have no any localization files');
     }
     final Json content = localizations.first.content;
     for (final MapEntry(:String key, :Object value) in content.entries) {

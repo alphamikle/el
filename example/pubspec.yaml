@@ -1,0 +1,37 @@
+name: example
+description: Locy Example App
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: '>=3.0.2 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  localization:
+    path: ./localization
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+  easiest_localization:
+    path: ../
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+
+easiest_localization:
+  namespace: intl
+  language_prefix: "[A-Za-z]{2}"
+  excluded: []
+  class_name: LocalizationMessages
+  description: Some description for generated package
+  package_name: localization
+  package_path: ./
+  package_version: 1.0.0
+  reg_exp: "(?<lang>[A-Za-z]{2})_(?<pattern>intl).(ya?ml|json)$"
+  format_output: false

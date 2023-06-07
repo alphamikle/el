@@ -8,6 +8,7 @@ import '../type/mappers.dart';
 import '../type/types.dart';
 import 'content_loader.dart';
 import 'language_localization.dart';
+import 'pubspec_loader.dart';
 
 const kFlutter = 'flutter';
 const kAssets = 'assets';
@@ -15,7 +16,6 @@ const kDependencies = 'dependencies';
 const kIntl = 'intl';
 const kEnv = 'environment';
 const kSdk = 'sdk';
-final RegExp _pubspecRegExp = RegExp(r'pubspec.ya?ml$');
 
 /// Used to load localizations in the generation-based flow
 class AssetsGenLoader implements ContentLoader {
@@ -34,10 +34,8 @@ class AssetsGenLoader implements ContentLoader {
   @override
   List<LanguageLocalization> load() {
     final List<LanguageLocalization> result = [];
-    final List<File> files = Directory.current.listSync().whereType<File>().toList();
-    final File pubspec = files.firstWhere((File it) => it.path.contains(_pubspecRegExp), orElse: () => throw Exception('Not found pubspec.yaml file'));
-    final YamlMap pubspecContent = _pubspecContent = loadYaml(pubspec.readAsStringSync()) as YamlMap;
-    final YamlMap? flutter = pubspecContent[kFlutter];
+    _pubspecContent = PubspecLoader().load();
+    final YamlMap? flutter = _pubspecContent[kFlutter];
     if (flutter == null) {
       throw Exception('Not found "flutter" section in pubspec.yaml');
     }

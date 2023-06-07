@@ -33,8 +33,6 @@ final String ${unit.key};
     classBodyCode: '''
 /// ${unit.value.description}
 final String Function$functionArguments ${unit.key};
-
-static String \$${unit.key}$functionArguments => $qt${unit.value.value}$qt;
 ''',
     externalCode: '',
   );

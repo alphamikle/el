@@ -40,7 +40,16 @@ class Messages {
   static $className of(BuildContext context) => Localizations.of(context, $className)!;
 
   static $className getContent(String language) => _languageMap[language] as $className;
+  
+  static $className get el {
+    if (Intl.defaultLocale == null) {
+      throw Exception('Default locale is not setup');
+    }
+    return _languageMap[Intl.defaultLocale]!;
+  }
 }
+
+$className get el => Messages.el;
 
 final List<LocalizationsDelegate> localizationsDelegates = [
   LocalizationDelegate(),
@@ -50,6 +59,12 @@ final List<LocalizationsDelegate> localizationsDelegates = [
 const List<Locale> supportedLocales = [
   ${languages.map((String language) => "Locale('$language'),").join('\n')}
 ];
+
+extension EasiestLocalization on BuildContext {
+  $className get el {
+    return Messages.of(this);
+  }
+}
 ''';
   }
 }
