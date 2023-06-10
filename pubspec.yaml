@@ -1,7 +1,6 @@
 name: easiest_localization
 description: Easiest and fastest way to localize your Flutter App
 version: 0.0.1
-publish_to: https://pub.dev
 repository: https://github.com/alphamikle/el
 
 environment:
