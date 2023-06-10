@@ -19,7 +19,7 @@ const String kFormatOutput = 'format_output';
 const String kRegExp = 'reg_exp';
 const String kFallbackLocales = 'fallback_locales';
 
-// TODO(alphamikle): Under development for now
+// Under development for now
 const String kRuntimeLocales = 'runtime_locales';
 const String kWithRuntime = 'runtime_enabled';
 

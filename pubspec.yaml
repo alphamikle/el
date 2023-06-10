@@ -1,6 +1,8 @@
 name: easiest_localization
 description: Easiest and fastest way to localize your Flutter App
 version: 0.0.1
+publish_to: https://pub.dev
+repository: https://github.com/alphamikle/el
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -14,14 +16,13 @@ dependencies:
   yaml: ^3.1.2
   intl: ^0.18.0
   dart_style: ^2.3.1
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
-  dart_style: ^2.3.1
   analyzer: ^5.13.0
-  path: ^1.8.3
 
 flutter:
   assets:
