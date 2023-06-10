@@ -27,7 +27,7 @@ class PackageSaver {
     }
     final File libFile = File(path.join(libPath, 'lib.dart'));
     final DartFormatter formatter = DartFormatter(pageWidth: 120);
-    late final String formattedCode;
+    String formattedCode = code;
 
     try {
       formattedCode = formatter.format(code);

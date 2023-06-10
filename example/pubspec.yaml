@@ -25,13 +25,33 @@ flutter:
     - assets/
 
 easiest_localization:
+  # Default value
   namespace: intl
+  # Default value
   language_prefix: "[A-Za-z]{2}"
+  # By default - is empty / null
   excluded: []
+  # Default name of output class
   class_name: LocalizationMessages
+  # Default description of generated package
   description: Some description for generated package
+  # Default name of generated package
   package_name: localization
+  # Default path to generated package - the root of your project, under which will be created folder <package_name> (localization - by default)
   package_path: ./
+  # Default version of generated package
   package_version: 1.0.0
-  reg_exp: "(?<lang>[A-Za-z]{2})_(?<pattern>intl).(ya?ml|json)$"
+  # Instead of using <namespace> and <language_prefix> params, you can define your own reg_exp to help el determine your localization files
+  # Only one requirement applies to that regexp - it should contain at least one named argument <lang>
+  # Like ".*translation.*(?<lang>.{2})" - will match on any json / yaml file under any folder with substring "translation" or if file will contain that substring
+  reg_exp: "(?<lang>[A-Za-z]{2})_?(?<pattern>intl)?.(ya?ml|json)$"
+  # Will run "dart fix --apply" to generated package to make it perfect, but consumes a lot of time (100ms - without and about 5-7 seconds with it)
   format_output: false
+  # The map of fallback languages. It works on next way:
+  # fallback_locales:
+  #   <missed_language>: <existed_fallback_language>
+  # Wildcard '*" means, that existed fallback will be such for any missed locale
+  fallback_locales:
+    #fr: en # for french locale will be used english
+    #it: pt # for italian locale will be user portuguese
+    #'*': zh # for all another missed locales will be used chinese

@@ -24,6 +24,10 @@ class LocalizationFileInterfaceGenerator {
 
   final List<String> classBodyCode = [];
 
+  final List<String> dynamicContent = [
+    'Map<String, Object> get _content => {',
+  ];
+
   String generate() {
     final List<LocalizationUnit> units = [];
     if (localizations.isEmpty) {
@@ -35,6 +39,22 @@ class LocalizationFileInterfaceGenerator {
       units.add(localizationUnit);
     }
     _proceedUnits(units);
+    dynamicContent.addAll([
+      '};',
+      '''
+T getContent<T>(String key) {
+  final Object? value = _content[key];
+  if (value is T) {
+    return value;
+  }
+  throw ArgumentError('Not found content for the key \$key');
+}
+
+dynamic operator [](Object? key) {
+  return _content[key];
+}
+''',
+    ]);
     final String code = [
       importsTemplate,
       ...externalCode,
@@ -42,6 +62,7 @@ class LocalizationFileInterfaceGenerator {
       ...constructorArgumentsCode,
       '});',
       ...classBodyCode,
+      ...dynamicContent,
       classEndTemplate,
     ].join('\n');
 
@@ -54,6 +75,7 @@ class LocalizationFileInterfaceGenerator {
       constructorArgumentsCode.add(code.classArgumentCode);
       externalCode.add(code.externalCode);
       classBodyCode.add(code.classBodyCode);
+      dynamicContent.add("'${unit.key}': ${unit.key},");
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:yaml/yaml.dart';
 
 import '../../easiest_localization.dart';
+import '../type/mappers.dart';
 import 'pubspec_loader.dart';
 
 const String kEnv = 'environment';
@@ -16,6 +17,7 @@ const String kPackagePath = 'package_path';
 const String kPackageVersion = 'package_version';
 const String kFormatOutput = 'format_output';
 const String kRegExp = 'reg_exp';
+const String kFallbackLocales = 'fallback_locales';
 
 // TODO(alphamikle): Under development for now
 const String kRuntimeLocales = 'runtime_locales';
@@ -46,6 +48,7 @@ class ConfigLoader {
       packagePath: config[kPackagePath] ?? kDefaultPackagePath,
       packageVersion: config[kPackageVersion] ?? kDefaultPackageVersion,
       regExp: regExp,
+      fallbackLocales: yamlMapToFallbackLocales(config[kFallbackLocales]),
       formatOutput: bool.tryParse(config[kFormatOutput].toString()) ?? false,
     );
   }

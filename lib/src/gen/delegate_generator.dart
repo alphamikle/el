@@ -19,17 +19,19 @@ class DelegateGenerator {
 
     return '''
 final Map<String, $className> _languageMap = {
+  ${config.fallbackLocales.entries.map((MapEntry<String, String> entry) => "'${entry.key}': ${entry.value},").join('\n')}
   ${localizations.map((LanguageLocalization localization) => "'${localization.language}': ${localization.language},").join('\n')}
 };    
 
-class LocalizationDelegate extends LocalizationsDelegate<$className> {
+class EasiestLocalizationDelegate extends LocalizationsDelegate<$className> {
   @override
   bool isSupported(Locale locale) => _languageMap.keys.contains(locale.languageCode);
 
   @override
   Future<$className> load(Locale locale) async {
     Intl.defaultLocale = locale.countryCode == null ? locale.languageCode : locale.toString();
-    return _languageMap[locale.languageCode]!;
+    final $className localeContent = _languageMap[locale.languageCode] ?? _languageMap['*'] ?? _languageMap.values.first;
+    return localeContent;
   }
 
   @override
@@ -39,32 +41,72 @@ class LocalizationDelegate extends LocalizationsDelegate<$className> {
 class Messages {
   static $className of(BuildContext context) => Localizations.of(context, $className)!;
 
-  static $className getContent(String language) => _languageMap[language] as $className;
+  static $className? getContent(String language) => _languageMap[language];
   
   static $className get el {
-    if (Intl.defaultLocale == null) {
-      throw Exception('Default locale is not setup');
-    }
-    return _languageMap[Intl.defaultLocale]!;
+    final $className localeContent = _languageMap[Intl.defaultLocale] ?? _languageMap['*'] ?? _languageMap.values.first;
+    return localeContent;
   }
 }
 
 $className get el => Messages.el;
 
 final List<LocalizationsDelegate> localizationsDelegates = [
-  LocalizationDelegate(),
-  ...GlobalMaterialLocalizations.delegates
+  EasiestLocalizationDelegate(),
+  ...GlobalMaterialLocalizations.delegates,
 ];
 
 const List<Locale> supportedLocales = [
+  ${config.fallbackLocales.keys.where((String language) => language != '*').map((String language) => "Locale('$language'),").join('\n')}
   ${languages.map((String language) => "Locale('$language'),").join('\n')}
 ];
 
-extension EasiestLocalization on BuildContext {
+extension EasiestLocalizationContext on BuildContext {
   $className get el {
     return Messages.of(this);
   }
+
+  String tr(String key) => key.tr();
 }
+
+extension EasiestLocalizationString on String {
+  dynamic get el {
+    final List<String> groupOfStrings = contains('.') ? split('.') : [this];
+    dynamic targetContent;
+    for (int i = 0; i < groupOfStrings.length; i++) {
+      final String key = groupOfStrings[i];
+      if (i == 0) {
+        targetContent = Messages.el[key];
+        if (targetContent == null) {
+          return '';
+        }
+      } else {
+        try {
+          targetContent = targetContent[key];
+          if (targetContent == null) {
+            return '';
+          }
+        } catch (error) {
+          if (kDebugMode) {
+            print('[ERROR] Incorrect retrieving of value by key "\$key" from value "\$targetContent"; Original key was "\$this"');
+          }
+          return '';
+        }
+      }
+    }
+    return targetContent;
+  }
+
+  String tr() {
+    final dynamic content = el;
+    if (content is String) {
+      return content;
+    }
+    return content.toString();
+  }
+}
+
+String tr(String key) => key.tr();
 ''';
   }
 }

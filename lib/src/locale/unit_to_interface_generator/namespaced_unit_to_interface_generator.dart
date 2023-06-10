@@ -39,6 +39,10 @@ T getContent<T>(String key) {
   }
   throw ArgumentError('Not found content for the key \$key');
 }
+
+dynamic operator [](Object? key) {
+  return _content[key];
+}
 ''',
   ]);
 

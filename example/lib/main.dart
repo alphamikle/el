@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:localization/lib.dart';
+import 'package:localization/lib.dart'; // <- Import generated package
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,19 +11,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print('Selected locale: ${el.title}');
-
     return Builder(
       builder: (BuildContext context) {
         return MaterialApp(
+          /// The first variable - [supportedLocales], which contains all the generated and fallback locales
           supportedLocales: supportedLocales,
+
+          /// The second - [localizationsDelegates], which contains generated and default delegates for work of localizations in general
           localizationsDelegates: localizationsDelegates,
-          onGenerateTitle: (BuildContext context) => el.title,
+
+          /// Access to locale from the context               ⬇ ︎
+          onGenerateTitle: (BuildContext context) => context.el.title,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
           home: Builder(
+            /// Or just by using a getter [el]                    ⬇ ︎
             builder: (BuildContext context) => MyHomePage(title: el.intro),
           ),
         );
@@ -62,16 +66,29 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              el.pages.home.counter(_counter),
+              /// Equals to el.pages.home.counter(_counter)
+              el.getContent<Pages>('pages').getContent<PagesHome>('home').getContent('counter')(_counter),
             ),
-          ],
+            Text('greetings2'.tr()(username: 'Alex')),
+            Text(tr('greetings3.home')(username: 'Alex')),
+            Text(context.tr('intro')),
+          ]
+              .map(
+                (Widget child) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: child,
+                ),
+              )
+              .toList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: el.pages.home.incrementButton.title,
+
+        /// Equals to el.pages.home.incrementButton.title
+        tooltip: el['pages']['home']['incrementButton']['title'],
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
