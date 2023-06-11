@@ -1,5 +1,6 @@
 typedef StringWithDescriptionValue = ({String value, String description});
-typedef PluralizedValue = ({String? zero, String? one, String? two, String? few, String? many, String other, String? description});
+typedef PluralizedValue = ({String? zero, String one, String? two, String? few, String? many, String other, String? description});
+typedef GenderValue = ({String? male, String? female, String? other, String? description});
 typedef NamespacedValue = Map<String, LocalizationUnit>;
 
 sealed class LocalizationUnit {
@@ -39,6 +40,23 @@ class StringWithDescriptionUnit extends LocalizationUnit {
 
   @override
   final StringWithDescriptionValue value;
+
+  @override
+  final List<String> parents;
+}
+
+class GenderUnit extends LocalizationUnit {
+  const GenderUnit({
+    required this.key,
+    required this.value,
+    required this.parents,
+  });
+
+  @override
+  final String key;
+
+  @override
+  final GenderValue value;
 
   @override
   final List<String> parents;

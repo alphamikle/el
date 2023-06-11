@@ -37,6 +37,8 @@ easiest_localization:
   description: Some description for generated package
   # Default name of generated package
   package_name: localization
+  # Default name of generated package source file
+  file_name: localization
   # Default path to generated package - the root of your project, under which will be created folder <package_name> (localization - by default)
   package_path: ./
   # Default version of generated package

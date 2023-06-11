@@ -1,7 +1,7 @@
 import '../../tools/arguments_extractor.dart';
 import '../../type/mappers.dart';
+import '../code_output.dart';
 import '../localization_unit.dart';
-import '../unit_to_code_generator/code_output.dart';
 
 CodeOutput stringUnitToInterface(StringUnit unit, {bool useThisKeyword = true}) {
   final Set<String> arguments = extractArguments(unit.value);

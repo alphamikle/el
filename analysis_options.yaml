@@ -28,6 +28,7 @@ analyzer:
     sort_constructors_first: warning
     sort_unnamed_constructors_first: warning
     use_super_parameters: warning
+    package_api_docs: error
   exclude:
     - "**.g.dart"
 

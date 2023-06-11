@@ -1,0 +1,59 @@
+# simple string
+title: Easiest Localization App
+
+# string with description
+intro:
+  value: This is a intro screen title
+  desc: For some reason we decided to use exactly that title for that screen
+
+# pluralized
+product: &product
+  zero: There are ${howMany} products
+  one: There are ${howMany} product
+  two: There are ${howMany} products
+  few: There are ${howMany} products
+  many: There are ${howMany} products
+  other: There are ${howMany} products
+  desc: How many products do we have?
+
+# gender
+bookAfterwords:
+  male: Thank you for reading, mr. ${username}!
+  female: Thank you for reading, ms. ${username}!
+  other: Thank you for reading, dear ${username}!
+  desc: What the user will see, after he read the book
+
+# namespace
+pages:
+  home:
+    title: Home
+    description: Here you can see the main content
+    counter:
+      one: "You have pushed the button ${howMany} many time"
+      other: "You have pushed the button ${howMany} many times"
+    incrementButton:
+      title: Increment
+  settings:
+    title: Settings
+    description: Here you can change your settings
+  profile:
+    title: Profile
+    description: Here you can see your personal info and change it
+  product:
+    title: *product
+
+# arguments
+greetings: Hello, ${username}!
+
+greetings2:
+  value: Hello, dear ${username}!
+  desc: This is greetings with an argument [username]
+
+greetings3:
+  home: Hello, ${username} at home page!
+  settings: Hello, ${username} at settings page!
+  custom: Hello, ${username} at ${page} page!
+
+aboutCows:
+  one: Maybe there are ${howMany} cow? What do you think, ${username}?
+  other: Maybe there are ${howMany} cows? What do you think, ${username}?

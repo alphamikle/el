@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:localization/lib.dart'; // <- Import generated package
+import 'package:localization/localization.dart'; // <- Import generated package
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,6 +1,6 @@
 import '../loader/language_localization.dart';
+import '../locale/code_output.dart';
 import '../locale/localization_unit.dart';
-import '../locale/unit_to_code_generator/code_output.dart';
 import '../template/class_beginning_template.dart';
 import '../template/class_end_template.dart';
 import '../template/imports_template.dart';

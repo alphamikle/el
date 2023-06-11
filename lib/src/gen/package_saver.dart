@@ -25,7 +25,7 @@ class PackageSaver {
     if (!libDir.existsSync()) {
       libDir.createSync(recursive: true);
     }
-    final File libFile = File(path.join(libPath, 'lib.dart'));
+    final File libFile = File(path.join(libPath, '${config.fileName}.dart'));
     final DartFormatter formatter = DartFormatter(pageWidth: 120);
     String formattedCode = code;
 

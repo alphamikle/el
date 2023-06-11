@@ -1,7 +1,7 @@
 import '../../tools/code_tools.dart';
 import '../../type/mappers.dart';
+import '../code_output.dart';
 import '../localization_unit.dart';
-import '../unit_to_code_generator/code_output.dart';
 
 CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword = true}) {
   final List<String> variableParents = [];

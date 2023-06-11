@@ -9,16 +9,26 @@ LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]
         parents: parents ?? [],
       ),
     {'value': final String $value} => StringUnit(key: key, value: $value, parents: parents ?? []),
-    {'other': final String $other} => PluralizedUnit(
+    {'other': final String $other, 'one': final String $one} => PluralizedUnit(
         key: key,
         value: (
           zero: value.get('zero'),
-          one: value.get('one'),
+          one: $one,
           two: value.get('two'),
           few: value.get('few'),
           many: value.get('many'),
           other: $other,
           description: value.get('desc')
+        ),
+        parents: parents ?? [],
+      ),
+    {'other': final String $other} => GenderUnit(
+        key: key,
+        value: (
+          male: value.get('male'),
+          female: value.get('female'),
+          other: $other,
+          description: value.get('desc'),
         ),
         parents: parents ?? [],
       ),
@@ -44,6 +54,10 @@ Map<String, LocalizationUnit> _localizeMap(String parent, Map<dynamic, dynamic> 
 
 String pluralizedValueToString(PluralizedValue value) {
   return [value.zero, value.one, value.two, value.few, value.many, value.other].join(' ');
+}
+
+String genderValueToString(GenderValue value) {
+  return [value.male, value.female, value.other].join(' ');
 }
 
 extension on Object {

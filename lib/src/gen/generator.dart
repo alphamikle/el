@@ -6,11 +6,14 @@ import 'localization_file_interface_generator.dart';
 import 'localization_file_values_generator.dart';
 import 'package_saver.dart';
 
+/// Entry point for code generation purposes
 class Generator {
   Generator(this.config);
 
+  /// Generation config
   final GeneratorConfig config;
 
+  /// Generate and return localization dart code
   (String, List<LanguageLocalization>) generate() {
     final List<LanguageLocalization> localizations = AssetsGenLoader(config).load();
     final String interfaceCode = LocalizationFileInterfaceGenerator(config: config, localizations: localizations).generate();

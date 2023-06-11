@@ -4,10 +4,8 @@ import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
 
-const Set<String> _reservedArguments = {'howMany', 'precision'};
-
-CodeOutput pluralizedUnitToInterface(PluralizedUnit unit, {bool useThisKeyword = true}) {
-  final Set<String> arguments = extractArguments(pluralizedValueToString(unit.value)).where((String arg) => _reservedArguments.contains(arg) == false).toSet();
+CodeOutput genderUnitToInterface(GenderUnit unit, {bool useThisKeyword = true}) {
+  final Set<String> arguments = extractArguments(genderValueToString(unit.value)).toSet();
   String parentClassName = unit.parents.map(capitalize).join();
   if (parentClassName.isNotEmpty) {
     parentClassName = '$parentClassName.';
@@ -19,13 +17,13 @@ CodeOutput pluralizedUnitToInterface(PluralizedUnit unit, {bool useThisKeyword =
           '${useThisKeyword ? 'required this.' : ''}${unit.key}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.key}'},',
       classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function(int howMany, {int? precision}) ${unit.key};
+final String Function(Gender gender) ${unit.key};
 ''',
       externalCode: '',
     );
   }
   String functionArguments = arguments.map((String arg) => 'required String $arg').join(', ');
-  functionArguments = '(int howMany, {$functionArguments, int? precision})';
+  functionArguments = '(Gender gender, {$functionArguments})';
 
   return CodeOutput(
     classArgumentCode:

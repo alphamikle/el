@@ -1,8 +1,8 @@
 import '../../tools/arguments_extractor.dart';
 import '../../tools/localization_tools.dart';
 import '../../type/mappers.dart';
+import '../code_output.dart';
 import '../localization_unit.dart';
-import '../unit_to_code_generator/code_output.dart';
 
 const Set<String> _reservedArguments = {'howMany', 'precision'};
 
@@ -20,7 +20,7 @@ ${unit.key}: (int howMany, {int? precision}) => Intl.plural(
   howMany,
   name: $qt${unit.key}$qt,
   ${unit.value.zero != null ? 'zero: $qt${unit.value.zero}$qt,' : ''}
-  ${unit.value.one != null ? 'one: $qt${unit.value.one}$qt,' : ''}
+  one: $qt${unit.value.one}$qt,
   ${unit.value.two != null ? 'two: $qt${unit.value.two}$qt,' : ''}
   ${unit.value.few != null ? 'few: $qt${unit.value.few}$qt,' : ''}
   ${unit.value.many != null ? 'many: $qt${unit.value.many}$qt,' : ''}
@@ -41,7 +41,7 @@ ${unit.key}: $functionArguments => Intl.plural(
   howMany,
   name: $qt${unit.key}$qt,
   ${unit.value.zero != null ? 'zero: $qt${unit.value.zero}$qt,' : ''}
-  ${unit.value.one != null ? 'one: $qt${unit.value.one}$qt,' : ''}
+  one: $qt${unit.value.one}$qt,
   ${unit.value.two != null ? 'two: $qt${unit.value.two}$qt,' : ''}
   ${unit.value.few != null ? 'few: $qt${unit.value.few}$qt,' : ''}
   ${unit.value.many != null ? 'many: $qt${unit.value.many}$qt,' : ''}

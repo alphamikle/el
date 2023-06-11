@@ -66,7 +66,7 @@ extension EasiestLocalizationContext on BuildContext {
     return Messages.of(this);
   }
 
-  String tr(String key) => key.tr();
+  dynamic tr(String key) => key.tr();
 }
 
 extension EasiestLocalizationString on String {
@@ -97,16 +97,10 @@ extension EasiestLocalizationString on String {
     return targetContent;
   }
 
-  String tr() {
-    final dynamic content = el;
-    if (content is String) {
-      return content;
-    }
-    return content.toString();
-  }
+  dynamic tr() => el;
 }
 
-String tr(String key) => key.tr();
+dynamic tr(String key) => key.tr();
 ''';
   }
 }

@@ -1,6 +1,6 @@
 import '../../tools/arguments_extractor.dart';
+import '../code_output.dart';
 import '../localization_unit.dart';
-import '../unit_to_code_generator/code_output.dart';
 
 CodeOutput stringUnitToValue(StringUnit unit) {
   final Set<String> arguments = extractArguments(unit.value);

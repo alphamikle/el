@@ -4,6 +4,8 @@
 
 Easiest localization (or **el**) is the ideological successor to the [yalo](https://pub.dev/packages/yalo) package, focused on providing the easiest and fastest way to localize your Flutter application
 
+Easiest localization is like [easy_localization](https://pub.dev/packages/easy_localization), but easier 😉
+
 # Why easiest_localization?
 
 - 🚀 Easiest translation for any language
@@ -121,7 +123,7 @@ After generation and installation of generated package was complete - you able t
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:localization/lib.dart'; // <- Import generated package
+import 'package:localization/localization.dart'; // <- Import generated package
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -235,6 +237,11 @@ context.el.cow(5);
 Messages.el.cow(5);
 el.cow(5);
 
+/// Gender value
+el.usernameHello(Gender.male); // Hello, mister!
+el.usernameHello(Gender.female); // Hello, madam!
+el.usernameHello(Gender.other); // Hello!
+
 /// Namespaced value
 Messages.of(context).views.home.description; // Home - is the main screen of the app
 context.el.views.home.description;
@@ -268,6 +275,11 @@ context.tr('title');
 tr('title')(5);
 context.tr('title')(5);
 
+/// Gender value
+'usernameHello'.el(Gender.male); // Hello, mister!
+'usernameHello'.el(Gender.female); // Hello, madam!
+'usernameHello'.el(Gender.other); // Hello!
+
 /// Namespaced value
 'views.home.description'.el; // Home - is the main screen of the app
 'views.home.description'.tr();
@@ -293,6 +305,11 @@ el.getContent<String>('title');
 el['cow'](5); // There are 5 cows
 el.getContent('cow')(5);
 
+/// Gender value
+el['usernameHello'](Gender.male); // Hello, mister!
+el['usernameHello'](Gender.female); // Hello, madam!
+el['usernameHello'](Gender.other); // Hello!
+
 /// Namespaced value
 el['views']['home']['description']; // Home - is the main screen of the app
 el.getContent<Views>('views').getContent<ViewsHome>('home').getContent<String>('description');
@@ -313,7 +330,6 @@ title: Easiest Localization App
 # string with description
 intro:
   value: This is a intro screen title
-  # you can add a comment to any content string, like here - to a simple string
   desc: For some reason we decided to use exactly that title for that screen
 
 # pluralized
@@ -324,8 +340,14 @@ product: &product
   few: There are ${howMany} products
   many: There are ${howMany} products
   other: There are ${howMany} products
-  # Here is a comment, which will be added to generated code
   desc: How many products do we have?
+
+# gender
+bookAfterwords:
+  male: Thank you for reading, mr. ${username}!
+  female: Thank you for reading, ms. ${username}!
+  other: Thank you for reading, dear ${username}!
+  desc: What the user will see, after he read the book
 
 # namespace
 pages:
@@ -341,10 +363,7 @@ pages:
     title: Settings
     description: Here you can change your settings
   profile:
-    title:
-      value: Profile
-      # Here is a description too
-      desc: Profile page content
+    title: Profile
     description: Here you can see your personal info and change it
   product:
     title: *product
@@ -366,6 +385,8 @@ aboutCows:
   other: Maybe there are ${howMany} cows? What do you think, ${username}?
 ```
 
+### Nesting
+
 You able to use all power of the `yaml` approach - anchors, clear and straightforward syntax, multiline strings and so on. Also, **el** allows you to nest variables each in other to have a namespaced zones. For example, you can split your localization content in the same way as it splitted in code (by domains). Like, you have some `screens` - then you can define variables of every screen under corresponding screen name and they all will be under their main parent - `screens` namespace:
 
 ```yaml
@@ -381,23 +402,54 @@ screens:
   # etc.
 ```
 
+### Pluralization
+
 You, of course, able to pluralize the content. See an example above, near the comment "pluralized".
-And also, you able to have any arguments (any String arguments) at your localization content:
+And also, you able to have any arguments (any String arguments) at your localization content. To make content pluralized, you should specify at least two keys:
+- `one`
+- `other`
+
+All another arguments from that type of content are optional
+
+```yaml
+product:
+  zero: There are ${howMany} products
+  one: There are ${howMany} product
+  two: There are ${howMany} products
+  few: There are ${howMany} products
+  many: There are ${howMany} products
+  other: There are ${howMany} products
+  desc: How many products do we have?
+```
+
+### Arguments
+
+If you specify arguments inside localization strings (it doesn't matter where exactly this string is located - in a pluralization block, gender definition or in a simple string), the corresponding function will be generated instead of the usual variable. And you will have to pass the corresponding named argument to this function. For example:
 
 ```yaml
 someKey: Hello, ${username}! What do you want to do ${day}? Will you go with me and ${friend} to the celebration? 
 ```
 
-You can embed arguments to any type of content - described, pluralized and nested (inside namespaces)
+will generate a code, which be able to use as a function with next signature:
+
+```dart
+final String Function({required String username, required String day, required String friend}) someKey;
+```
+
+You can embed arguments to any type of content - described, pluralized and nested (inside namespaces). But there are some restrictions about argument names:
+
+1. An argument named `howMany` will always be of type `int` if it is inside a pluralization block (specified inside one of the following keys: zero, one, two, few, many, other)
+2. The argument called `precision` will always be of type `double` if it is inside a pluralization block (see above)
+3. An argument called `gender` will always be of type `Gender` if it is specified inside the sex definition block (specified inside one of the following keys: female, male, other)
 
 ## ⭐ What next?
 
-- [x] Write tests for most critical part of the logic
-- [ ] Write more additional tests
-- [ ] Release 1.0.0
-- [ ] Add support of dynamically retrieving of content from the remote source (with full-type safety)
-- [ ] Release 2.0.0
-- [ ] Something else?
+- ✅ Write tests for most critical part of the logic
+- ✅ Write more additional tests
+- ✅ Release 1.0.0
+- ❎ Add support of dynamically retrieving of content from the remote source (with full-type safety)
+- ❎ Release 2.0.0
+- ❎ Something else?
 
 If you want additional features - join to maintainers. Let's code together!
 

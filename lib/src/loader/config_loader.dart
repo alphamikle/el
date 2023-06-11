@@ -13,6 +13,7 @@ const String kLangPrefix = 'language_prefix';
 const String kClassName = 'class_name';
 const String kDescription = 'description';
 const String kPackageName = 'package_name';
+const String kFileName = 'file_name';
 const String kPackagePath = 'package_path';
 const String kPackageVersion = 'package_version';
 const String kFormatOutput = 'format_output';
@@ -47,6 +48,7 @@ class ConfigLoader {
       packageName: config[kPackageName] ?? kDefaultPackageName,
       packagePath: config[kPackagePath] ?? kDefaultPackagePath,
       packageVersion: config[kPackageVersion] ?? kDefaultPackageVersion,
+      fileName: config[kFileName] ?? kDefaultFileName,
       regExp: regExp,
       fallbackLocales: yamlMapToFallbackLocales(config[kFallbackLocales]),
       formatOutput: bool.tryParse(config[kFormatOutput].toString()) ?? false,
