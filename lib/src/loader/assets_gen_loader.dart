@@ -52,25 +52,33 @@ assets: <-- 1
 #...
 ''');
     }
+    final Map<String, LanguageLocalization> localizationsCache = {};
     final Set<String> languagesCache = {};
+
     for (final dynamic asset in assets) {
       if (asset is String) {
         final String dirPath = join(Directory.current.path, asset);
-        final List<LanguageLocalization> dirFiles = _scanDir(Directory(dirPath));
-        result.addAll(dirFiles);
-        for (final LanguageLocalization file in dirFiles) {
-          if (languagesCache.contains(file.language)) {
-            throw Exception('Found more than one localization source for the language "${file.language}"');
-          }
-          languagesCache.add(file.language);
+        final (List<File> matchedFiles, List<LanguageLocalization> localizations) = _scanDir(Directory(dirPath));
+        for (int i = 0; i < matchedFiles.length; i++) {
+          final File file = matchedFiles[i];
+          final LanguageLocalization localization = localizations[i];
+          localizationsCache[file.path] = localization;
         }
       }
+    }
+    for (final MapEntry(:key, :value) in localizationsCache.entries) {
+      if (languagesCache.contains(value.language)) {
+        throw Exception('Found more than one localization source for the language "${value.language}":\n$localizationsCache');
+      }
+      languagesCache.add(value.language);
+      result.add(value);
     }
     return result;
   }
 
-  List<LanguageLocalization> _scanDir(Directory directory) {
+  (List<File>, List<LanguageLocalization>) _scanDir(Directory directory) {
     final List<LanguageLocalization> localizationFiles = [];
+    final List<File> matchedFiles = [];
     final List<File> allFiles = directory.listSync(recursive: true).whereType<File>().toList();
     for (final File file in allFiles) {
       final String filename = file.path.replaceFirst(file.parent.path, '');
@@ -90,8 +98,9 @@ assets: <-- 1
         final String language = match.namedGroup('lang')!;
         final Json content = yamlMapToJson(loadYaml(file.readAsStringSync()));
         localizationFiles.add(LanguageLocalization(language: language, content: content));
+        matchedFiles.add(file);
       }
     }
-    return localizationFiles;
+    return (matchedFiles, localizationFiles);
   }
 }
