@@ -66,7 +66,7 @@ assets: <-- 1
         }
       }
     }
-    for (final MapEntry(:key, :value) in localizationsCache.entries) {
+    for (final MapEntry(:value) in localizationsCache.entries) {
       if (languagesCache.contains(value.language)) {
         throw Exception('Found more than one localization source for the language "${value.language}":\n$localizationsCache');
       }

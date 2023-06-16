@@ -1,6 +1,6 @@
 name: easiest_localization
 description: The easiest and fastest way to localize your application with type safety
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/alphamikle/el
 
 environment:
