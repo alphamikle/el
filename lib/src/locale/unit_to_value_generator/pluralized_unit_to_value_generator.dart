@@ -18,7 +18,7 @@ CodeOutput pluralizedUnitToValue(PluralizedUnit unit) {
       classArgumentCode: '''
 ${unit.key}: (int howMany, {int? precision}) => Intl.plural(
   howMany,
-  name: $qt${unit.key}$qt,
+  name: r$qt${unit.key}$qt,
   ${unit.value.zero != null ? 'zero: $qt${unit.value.zero}$qt,' : ''}
   one: $qt${unit.value.one}$qt,
   ${unit.value.two != null ? 'two: $qt${unit.value.two}$qt,' : ''}
@@ -39,7 +39,7 @@ ${unit.key}: (int howMany, {int? precision}) => Intl.plural(
     classArgumentCode: '''
 ${unit.key}: $functionArguments => Intl.plural(
   howMany,
-  name: $qt${unit.key}$qt,
+  name: r$qt${unit.key}$qt,
   ${unit.value.zero != null ? 'zero: $qt${unit.value.zero}$qt,' : ''}
   one: $qt${unit.value.one}$qt,
   ${unit.value.two != null ? 'two: $qt${unit.value.two}$qt,' : ''}

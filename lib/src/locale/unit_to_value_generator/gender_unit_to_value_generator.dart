@@ -16,7 +16,7 @@ CodeOutput genderUnitToValue(GenderUnit unit) {
       classArgumentCode: '''
 ${unit.key}: (Gender gender) => Intl.gender(
   gender.name,
-  name: $qt${unit.key}$qt,
+  name: r$qt${unit.key}$qt,
   ${unit.value.female != null ? 'female: $qt${unit.value.female}$qt,' : ''}
   ${unit.value.male != null ? 'male: $qt${unit.value.male}$qt,' : ''}
   other: $qt${unit.value.other}$qt,
@@ -33,7 +33,7 @@ ${unit.key}: (Gender gender) => Intl.gender(
     classArgumentCode: '''
 ${unit.key}: $functionArguments => Intl.gender(
   gender.name,
-  name: $qt${unit.key}$qt,
+  name: r$qt${unit.key}$qt,
   ${unit.value.female != null ? 'female: $qt${unit.value.female}$qt,' : ''}
   ${unit.value.male != null ? 'male: $qt${unit.value.male}$qt,' : ''}
   other: $qt${unit.value.other}$qt,
