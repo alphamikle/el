@@ -57,3 +57,8 @@ greetings3:
 aboutCows:
   one: Maybe there are ${howMany} cow? What do you think, ${username}?
   other: Maybe there are ${howMany} cows? What do you think, ${username}?
+
+numericNames:
+  $1: First
+  $2: Second
+  $3: Third

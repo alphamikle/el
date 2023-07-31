@@ -75,7 +75,7 @@ dynamic operator [](Object? key) {
       constructorArgumentsCode.add(code.classArgumentCode);
       externalCode.add(code.externalCode);
       classBodyCode.add(code.classBodyCode);
-      dynamicContent.add("'${unit.key}': ${unit.key},");
+      dynamicContent.add("r'''${unit.key}''': ${unit.key},");
     }
   }
 }

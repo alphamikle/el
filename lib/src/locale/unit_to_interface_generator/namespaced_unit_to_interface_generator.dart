@@ -26,7 +26,7 @@ CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword =
   for (final MapEntry(:value) in unit.value.entries) {
     childrenCodeWithoutThisKeyword.add(localizationUnitToInterface(value, useThisKeyword: false));
     childrenCodeWithThisKeyword.add(localizationUnitToInterface(value));
-    dynamicContent.add("'${value.key}': ${value.key},");
+    dynamicContent.add("r'''${value.key}''': ${value.key},");
   }
 
   dynamicContent.addAll([
