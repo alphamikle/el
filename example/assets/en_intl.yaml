@@ -18,6 +18,13 @@ product: &product
   # Here is a comment, which will be added to generated code
   desc: How many products do we have?
 
+# gender
+bookAfterwords:
+  male: Thank you for reading, mr. ${username}!
+  female: Thank you for reading, ms. ${username}!
+  other: Thank you for reading, dear ${username}!
+  desc: What the user will see, after he read the book
+
 # namespace
 pages:
   home:
