@@ -3,6 +3,7 @@ import '../locale/code_output.dart';
 import '../locale/localization_unit.dart';
 import '../template/class_beginning_template.dart';
 import '../template/class_end_template.dart';
+import '../template/class_factory_template.dart';
 import '../template/imports_template.dart';
 import '../tools/code_tools.dart';
 import '../tools/localization_tools.dart';
@@ -21,6 +22,8 @@ class LocalizationFileInterfaceGenerator {
   final List<String> externalCode = [];
 
   final List<String> constructorArgumentsCode = [];
+
+  final List<String> factoryArgumentsCode = [];
 
   final List<String> classBodyCode = [];
 
@@ -61,6 +64,9 @@ dynamic operator [](Object? key) {
       classBeginningTemplate(className: config.localizationsClassName),
       ...constructorArgumentsCode,
       '});',
+      classFactoryBeginningTemplate(className: config.localizationsClassName),
+      ...factoryArgumentsCode,
+      classFactoryEndTemplate(),
       ...classBodyCode,
       ...dynamicContent,
       classEndTemplate,
@@ -73,6 +79,7 @@ dynamic operator [](Object? key) {
     for (final LocalizationUnit unit in units) {
       final CodeOutput code = localizationUnitToInterface(unit);
       constructorArgumentsCode.add(code.classArgumentCode);
+      factoryArgumentsCode.add(code.factoryArgumentCode ?? '');
       externalCode.add(code.externalCode);
       classBodyCode.add(code.classBodyCode);
       dynamicContent.add("r'''${unit.key}''': ${unit.key},");

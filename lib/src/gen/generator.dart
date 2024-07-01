@@ -15,7 +15,6 @@ class Generator {
 
   /// Generate and return localization dart code
   (String, List<LanguageLocalization>) generate() {
-    // throw UnimplementedError('Автоматически добавлять сгенерированный пакет в pubspec.yaml родительского проекта');
     final List<LanguageLocalization> localizations = AssetsGenLoader(config).load();
     final String interfaceCode = LocalizationFileInterfaceGenerator(config: config, localizations: localizations).generate();
     final String valuesCode = LocalizationFileValuesGenerator(config: config, localizations: localizations).generate();

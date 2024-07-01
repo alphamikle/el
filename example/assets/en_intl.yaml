@@ -18,7 +18,14 @@ product: &product
   # Here is a comment, which will be added to generated code
   desc: How many products do we have?
 
-# gender
+# simple gender
+genderGreeting:
+  male: Thank you for reading, mister!
+  female: Thank you for reading, miss!
+  other: Thank you for reading, dear user!
+  desc: What the user will see, after he read the book
+
+# gender with arguments
 bookAfterwords:
   male: Thank you for reading, mr. ${username}!
   female: Thank you for reading, ms. ${username}!

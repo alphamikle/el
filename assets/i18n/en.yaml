@@ -4,6 +4,7 @@ title: Easiest Localization App
 # string with description
 intro:
   value: This is a intro screen title
+  # you can add a comment to any content string, like here - to a simple string
   desc: For some reason we decided to use exactly that title for that screen
 
 # pluralized
@@ -14,9 +15,17 @@ product: &product
   few: There are ${howMany} products
   many: There are ${howMany} products
   other: There are ${howMany} products
+  # Here is a comment, which will be added to generated code
   desc: How many products do we have?
 
-# gender
+# simple gender
+genderGreeting:
+  male: Thank you for reading, mister!
+  female: Thank you for reading, miss!
+  other: Thank you for reading, dear user!
+  desc: What the user will see, after he read the book
+
+# gender with arguments
 bookAfterwords:
   male: Thank you for reading, mr. ${username}!
   female: Thank you for reading, ms. ${username}!
@@ -37,7 +46,10 @@ pages:
     title: Settings
     description: Here you can change your settings
   profile:
-    title: Profile
+    title:
+      value: Profile
+      # Here is a description too
+      desc: Profile page content
     description: Here you can see your personal info and change it
   product:
     title: *product
@@ -57,8 +69,3 @@ greetings3:
 aboutCows:
   one: Maybe there are ${howMany} cow? What do you think, ${username}?
   other: Maybe there are ${howMany} cows? What do you think, ${username}?
-
-numericNames:
-  $1: First
-  $2: Second
-  $3: Third
