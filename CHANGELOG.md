@@ -1,3 +1,4 @@
+### 1.1.0 - Added localization providers for loading localizations remotely
 ### 1.0.3 - Hotfix
 ### 1.0.2 - Screening of variable names in dynamic objects
 ### 1.0.1 - Small fixes due to flutter analyze
