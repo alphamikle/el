@@ -26,6 +26,7 @@ CodeOutput genderUnitToInterface(GenderUnit unit, {bool useThisKeyword = true}) 
   return CodeOutput(
     classArgumentCode:
         '${useThisKeyword ? 'required this.' : ''}${unit.key}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.key}'},',
+    factoryArgumentCode: _generateGenderFactoryArgument(unit.key, arguments),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
 final String Function$functionArguments ${unit.key};
@@ -44,20 +45,37 @@ CodeOutput _empty({
       if (useThisKeyword) 'required this.',
       unit.key,
       if (useThisKeyword == false) ': $parentClassName\$${unit.key}',
+      ',',
     ].join(),
-    factoryArgumentCode: '''
-${unit.key}: (Gender gender) => Intl.gender(
-        gender.name,
-        name: r$qt${unit.key}$qt,
-        female: json[r$qt${unit.key}$qt]['female'].toString(), 
-        male: json[r$qt${unit.key}$qt]['male'].toString(), 
-        other: json[r$qt${unit.key}$qt]['other'].toString(),
-      ),
-''',
+    factoryArgumentCode: _generateGenderFactoryArgument(unit.key, {}),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
 final String Function(Gender gender) ${unit.key};
 ''',
     externalCode: '',
   );
+}
+
+String _generateGenderFactoryArgument(String fieldName, Set<String> arguments) {
+  final bool hasArguments = arguments.isNotEmpty;
+
+  return '''
+$fieldName: (Gender gender${hasArguments ? ', {' : ''}${arguments.map((String arg) => 'required String $arg').join(', ')}${hasArguments ? '}' : ''}) => Intl.gender(
+  gender.name,
+  name: r$qt$fieldName$qt,
+  female: ${_generateGenderString(fieldName, 'female', arguments)},
+  male: ${_generateGenderString(fieldName, 'male', arguments)},
+  other: ${_generateGenderString(fieldName, 'other', arguments)},
+),
+''';
+}
+
+String _generateGenderString(String fieldName, String jsonKey, Set<String> arguments) {
+  final bool hasArguments = arguments.isNotEmpty;
+
+  return [
+    "(json[r$qt$fieldName$qt]['$jsonKey'] ?? '').toString()",
+    for (final argument in arguments) ".replaceAll(r'\${$argument}', $argument)",
+    if (hasArguments) ".replaceAll(RegExp(r'\\\$\\{[^}]+\\} ?'), '')",
+  ].join();
 }
