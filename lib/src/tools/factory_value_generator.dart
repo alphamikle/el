@@ -8,6 +8,6 @@ String factoryValueGenerator({required String fieldName, String? jsonKey, Set<St
     if (jsonKey != null) "['$jsonKey']",
     " ?? '').toString()",
     for (final argument in arguments) ".replaceAll(r'\${$argument}', $argument)",
-    if (hasArguments) ".replaceAll(RegExp(r'\\\$\\{[^}]+\\} ?'), '')",
+    if (hasArguments) ".replaceAll(_variableRegExp, '')",
   ].join();
 }

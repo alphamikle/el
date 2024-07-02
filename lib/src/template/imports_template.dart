@@ -8,6 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
+final RegExp _variableRegExp = RegExp(r'\\\$\\{[^}]+\\} ?');
+
 enum Gender {
   male,
   female,
