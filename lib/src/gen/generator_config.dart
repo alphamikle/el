@@ -81,4 +81,39 @@ class GeneratorConfig {
   final RegExp? _regExp;
 
   RegExp get regExp => _regExp ?? RegExp('(\\W)(?<lang>($languagePattern))_?(?<pattern>$namespace)?.(ya?ml|json)\$');
+
+  GeneratorConfig copyWith({
+    String? namespace,
+    Pattern? languagePattern,
+    String? localizationsClassName,
+    String? packageName,
+    String? fileName,
+    String? dartSdk,
+    String? packageDescription,
+    String? packageVersion,
+    String? packagePath,
+    Map<String, String>? fallbackLocales,
+    List<String>? runtimeLocales,
+    List<String>? excludedPatterns,
+    bool? formatOutput,
+    bool? withRuntime,
+    RegExp? regExp,
+  }) {
+    return GeneratorConfig(
+      namespace: namespace ?? this.namespace,
+      languagePattern: languagePattern ?? this.languagePattern,
+      localizationsClassName: localizationsClassName ?? this.localizationsClassName,
+      packageName: packageName ?? this.packageName,
+      fileName: fileName ?? this.fileName,
+      dartSdk: dartSdk ?? this.dartSdk,
+      packageDescription: packageDescription ?? this.packageDescription,
+      packageVersion: packageVersion ?? this.packageVersion,
+      packagePath: packagePath ?? this.packagePath,
+      fallbackLocales: fallbackLocales ?? this.fallbackLocales,
+      runtimeLocales: runtimeLocales ?? this.runtimeLocales,
+      excludedPatterns: excludedPatterns ?? this.excludedPatterns,
+      formatOutput: formatOutput ?? this.formatOutput,
+      withRuntime: withRuntime ?? this.withRuntime,
+    );
+  }
 }

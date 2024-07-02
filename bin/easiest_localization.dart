@@ -2,9 +2,12 @@ import 'package:easiest_localization/easiest_localization.dart';
 import 'package:easiest_localization/src/loader/config_loader.dart';
 import 'package:easiest_localization/src/loader/language_localization.dart';
 
-void main() {
+void main(List<String> args) {
   final int start = DateTime.now().millisecondsSinceEpoch;
-  final GeneratorConfig config = ConfigLoader().load();
+  GeneratorConfig config = ConfigLoader().load();
+  if (args.contains('--format')) {
+    config = config.copyWith(formatOutput: true);
+  }
   final Generator generator = Generator(config);
   final (String, List<LanguageLocalization>) result = generator.generate();
   final double end = (DateTime.now().millisecondsSinceEpoch - start) / 1000;
