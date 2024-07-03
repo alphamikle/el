@@ -23,9 +23,9 @@ final Map<String, $className> _languageMap = {
   ${localizations.map((LanguageLocalization localization) => "'${localization.language}': ${localization.language},").join('\n')}
 };
 
-final Map<String, LocalizationMessages> _providersLanguagesMap = {};
+final Map<String, $className> _providersLanguagesMap = {};
 
-class EasiestLocalizationDelegate extends LocalizationsDelegate<LocalizationMessages> {
+class EasiestLocalizationDelegate extends LocalizationsDelegate<$className> {
   EasiestLocalizationDelegate({
     List<LocalizationProvider> providers = const [],
   }) {
@@ -79,8 +79,8 @@ class Messages {
 
   static $className? getContent(String language) => _languageMap[language];
 
-  static LocalizationMessages get el {
-    LocalizationMessages? localeContent = _providersLanguagesMap[Intl.defaultLocale] ?? _providersLanguagesMap['*'];
+  static $className get el {
+    $className? localeContent = _providersLanguagesMap[Intl.defaultLocale] ?? _providersLanguagesMap['*'];
     localeContent ??= _languageMap[Intl.defaultLocale] ?? _languageMap['*'] ?? _languageMap.values.first;
     return localeContent;
   }
@@ -156,7 +156,7 @@ abstract interface class LocalizationProvider {
 
   List<Locale> get supportedLocales;
 
-  Future<LocalizationMessages> fetchLocalization(Locale locale);
+  Future<$className> fetchLocalization(Locale locale);
 
   bool canLoad(Locale locale);
 }

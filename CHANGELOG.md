@@ -3,6 +3,7 @@ Before release:
 - unmark example as excluded
 - generate the lib for example
 - handle country code: en_US / en_UK / en_CA
+- camelCase-ization of all string keys when creating variables
 - merge different translations
   - can use one as a primary, and change fields in another, only those, what presents (including for a remote source)
 - ???
