@@ -2,10 +2,18 @@
 
 // ignore_for_file: type=lint
 
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+
+import '../tools/extensions.dart';
+
+class LocalizationConfig {
+  static bool logLoading = false;
+}
 
 enum Gender {
   male,
@@ -226,12 +234,18 @@ class PagesProduct {
       title: (int howMany, {int? precision}) => Intl.plural(
         howMany,
         name: '''title''',
-        zero: json['title']['zero'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
-        one: json['title']['one'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} product'''
-        two: json['title']['two'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
-        few: json['title']['few'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
-        many: json['title']['many'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
-        other: json['title']['other'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
+        zero: json['title']['zero'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
+        one: json['title']['one'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} product'''
+        two: json['title']['two'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
+        few: json['title']['few'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
+        many: json['title']['many'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
+        other: json['title']['other'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
         precision: precision,
       ),
     );
@@ -320,12 +334,18 @@ class LocalizationMessages {
       product: (int howMany, {int? precision}) => Intl.plural(
         howMany,
         name: '''product''',
-        zero: json['product']['zero'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
-        one: json['product']['one'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} product'''
-        two: json['product']['two'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
-        few: json['product']['few'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
-        many: json['product']['many'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
-        other: json['product']['other'].toString().replaceAll(r'${howMany}', howMany.toString()), // '''There are ${howMany} products'''
+        zero: json['product']['zero'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
+        one: json['product']['one'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} product'''
+        two: json['product']['two'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
+        few: json['product']['few'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
+        many: json['product']['many'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
+        other: json['product']['other'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        // '''There are ${howMany} products'''
         precision: precision,
       ),
       bookAfterwords: (Gender gender, {required String username}) => Intl.gender(
@@ -336,8 +356,10 @@ class LocalizationMessages {
         other: json['bookAfterwords']['other'].toString().replaceAll(r'${username}', username), // '''Thank you for reading, dear ${username}!'''
       ),
       pages: Pages.fromJson(json['pages']),
-      greetings: ({required String username}) => json['greetings'].toString().replaceAll(r'${username}', username), // '''Hello, ${username}!'''
-      greetings2: ({required String username}) => json['greetings2'].toString().replaceAll(r'${username}', username), // '''Hello, dear ${username}!'''
+      greetings: ({required String username}) => json['greetings'].toString().replaceAll(r'${username}', username),
+      // '''Hello, ${username}!'''
+      greetings2: ({required String username}) => json['greetings2'].toString().replaceAll(r'${username}', username),
+      // '''Hello, dear ${username}!'''
       greetings3: Greetings3.fromJson(json['greetings3']),
       aboutCows: (int howMany, {required String username, int? precision}) => Intl.plural(
         howMany,
@@ -384,6 +406,7 @@ class LocalizationMessages {
         'greetings3': greetings3,
         'aboutCows': aboutCows,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -475,14 +498,51 @@ final Map<String, LocalizationMessages> _languageMap = {
   'en': en,
 };
 
+final Map<String, LocalizationMessages> _providersLanguagesMap = {};
+
 class EasiestLocalizationDelegate extends LocalizationsDelegate<LocalizationMessages> {
+  EasiestLocalizationDelegate({
+    List<LocalizationProvider> providers = const [],
+  }) {
+    providers.map(registerProvider);
+  }
+
+  final List<LocalizationProvider> _providers = [];
+
+  void registerProvider(LocalizationProvider provider) {
+    _providers.add(provider);
+  }
+
   @override
-  bool isSupported(Locale locale) => _languageMap.keys.contains(locale.languageCode);
+  bool isSupported(Locale locale) {
+    return _languageMap.keys.contains(locale.languageCode) || _providers.firstWhereOrNull((LocalizationProvider value) => value.canLoad(locale)) != null;
+  }
 
   @override
   Future<LocalizationMessages> load(Locale locale) async {
     Intl.defaultLocale = locale.countryCode == null ? locale.languageCode : locale.toString();
-    final LocalizationMessages localeContent = _languageMap[locale.languageCode] ?? _languageMap['*'] ?? _languageMap.values.first;
+
+    LocalizationProvider? localizationProvider;
+
+    for (final provider in _providers) {
+      if (provider.canLoad(locale)) {
+        localizationProvider = provider;
+        break;
+      }
+    }
+
+    LocalizationMessages? localeContent;
+
+    if (localizationProvider != null) {
+      try {
+        localeContent = await localizationProvider.fetchLocalization(locale);
+        _providersLanguagesMap[locale.toString()] = localeContent;
+      } catch (error, stackTrace) {
+        log('Error on loading localization with provider "${localizationProvider.name}"', error: error, stackTrace: stackTrace);
+      }
+    }
+
+    localeContent ??= _languageMap[locale.languageCode] ?? _languageMap['*'] ?? _languageMap.values.first;
     return localeContent;
   }
 
@@ -496,7 +556,8 @@ class Messages {
   static LocalizationMessages? getContent(String language) => _languageMap[language];
 
   static LocalizationMessages get el {
-    final LocalizationMessages localeContent = _languageMap[Intl.defaultLocale] ?? _languageMap['*'] ?? _languageMap.values.first;
+    LocalizationMessages? localeContent = _providersLanguagesMap[Intl.defaultLocale] ?? _providersLanguagesMap['*'];
+    localeContent ??= _languageMap[Intl.defaultLocale] ?? _languageMap['*'] ?? _languageMap.values.first;
     return localeContent;
   }
 }
@@ -508,9 +569,21 @@ final List<LocalizationsDelegate> localizationsDelegates = [
   ...GlobalMaterialLocalizations.delegates,
 ];
 
+List<LocalizationsDelegate> localizationsDelegatesWithProviders(List<LocalizationProvider> providers) {
+  return [
+    EasiestLocalizationDelegate(providers: providers),
+    ...GlobalMaterialLocalizations.delegates,
+  ];
+}
+
 const List<Locale> supportedLocales = [
   Locale('en'),
 ];
+
+List<Locale> supportedLocalesWithProviders(List<LocalizationProvider> providers) => [
+      for (final LocalizationProvider provider in providers) ...provider.supportedLocales,
+      ...supportedLocales,
+    ];
 
 extension EasiestLocalizationContext on BuildContext {
   LocalizationMessages get el {
@@ -552,3 +625,13 @@ extension EasiestLocalizationString on String {
 }
 
 dynamic tr(String key) => key.tr();
+
+abstract interface class LocalizationProvider {
+  String get name;
+
+  List<Locale> get supportedLocales;
+
+  Future<LocalizationMessages> fetchLocalization(Locale locale);
+
+  bool canLoad(Locale locale);
+}

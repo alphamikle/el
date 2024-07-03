@@ -23,14 +23,50 @@ final Map<String, $className> _languageMap = {
   ${localizations.map((LanguageLocalization localization) => "'${localization.language}': ${localization.language},").join('\n')}
 };
 
-class EasiestLocalizationDelegate extends LocalizationsDelegate<$className> {
-  @override
-  bool isSupported(Locale locale) => _languageMap.keys.contains(locale.languageCode);
+final Map<String, LocalizationMessages> _providersLanguagesMap = {};
+
+class EasiestLocalizationDelegate extends LocalizationsDelegate<LocalizationMessages> {
+  EasiestLocalizationDelegate({
+    List<LocalizationProvider> providers = const [],
+  }) {
+    providers.map(registerProvider);
+  }
+
+  final List<LocalizationProvider> _providers = [];
+
+  void registerProvider(LocalizationProvider provider) {
+    _providers.add(provider);
+  }
 
   @override
+  bool isSupported(Locale locale) {
+    return _languageMap.keys.contains(locale.languageCode) || _providers.firstWhereOrNull((LocalizationProvider value) => value.canLoad(locale)) != null;
+  }
+  
   Future<$className> load(Locale locale) async {
     Intl.defaultLocale = locale.countryCode == null ? locale.languageCode : locale.toString();
-    final $className localeContent = _languageMap[locale.languageCode] ?? _languageMap['*'] ?? _languageMap.values.first;
+
+    LocalizationProvider? localizationProvider;
+
+    for (final provider in _providers) {
+      if (provider.canLoad(locale)) {
+        localizationProvider = provider;
+        break;
+      }
+    }
+
+    $className? localeContent;
+
+    if (localizationProvider != null) {
+      try {
+        localeContent = await localizationProvider.fetchLocalization(locale);
+        _providersLanguagesMap[locale.toString()] = localeContent;
+      } catch (error, stackTrace) {
+        log('Error on loading localization with provider "\${localizationProvider.name}"', error: error, stackTrace: stackTrace);
+      }
+    }
+
+    localeContent ??= _languageMap[locale.languageCode] ?? _languageMap['*'] ?? _languageMap.values.first;
     return localeContent;
   }
 
@@ -42,9 +78,10 @@ class Messages {
   static $className of(BuildContext context) => Localizations.of(context, $className)!;
 
   static $className? getContent(String language) => _languageMap[language];
-  
-  static $className get el {
-    final $className localeContent = _languageMap[Intl.defaultLocale] ?? _languageMap['*'] ?? _languageMap.values.first;
+
+  static LocalizationMessages get el {
+    LocalizationMessages? localeContent = _providersLanguagesMap[Intl.defaultLocale] ?? _providersLanguagesMap['*'];
+    localeContent ??= _languageMap[Intl.defaultLocale] ?? _languageMap['*'] ?? _languageMap.values.first;
     return localeContent;
   }
 }
@@ -56,10 +93,22 @@ final List<LocalizationsDelegate> localizationsDelegates = [
   ...GlobalMaterialLocalizations.delegates,
 ];
 
+List<LocalizationsDelegate> localizationsDelegatesWithProviders(List<LocalizationProvider> providers) {
+  return [
+    EasiestLocalizationDelegate(providers: providers),
+    ...GlobalMaterialLocalizations.delegates,
+  ];
+}
+
 const List<Locale> supportedLocales = [
   ${config.fallbackLocales.keys.where((String language) => language != '*').map((String language) => "Locale('$language'),").join('\n')}
   ${languages.map((String language) => "Locale('$language'),").join('\n')}
 ];
+
+List<Locale> supportedLocalesWithProviders(List<LocalizationProvider> providers) => [
+      for (final LocalizationProvider provider in providers) ...provider.supportedLocales,
+      ...supportedLocales,
+    ];
 
 extension EasiestLocalizationContext on BuildContext {
   $className get el {
@@ -101,6 +150,16 @@ extension EasiestLocalizationString on String {
 }
 
 dynamic tr(String key) => key.tr();
+
+abstract interface class LocalizationProvider {
+  String get name;
+
+  List<Locale> get supportedLocales;
+
+  Future<LocalizationMessages> fetchLocalization(Locale locale);
+
+  bool canLoad(Locale locale);
+}
 ''';
   }
 }
