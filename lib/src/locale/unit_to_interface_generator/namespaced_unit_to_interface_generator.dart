@@ -1,3 +1,4 @@
+import '../../template/class_factory_template.dart';
 import '../../tools/code_tools.dart';
 import '../../type/mappers.dart';
 import '../code_output.dart';
@@ -19,6 +20,7 @@ CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword =
 
   final List<CodeOutput> childrenCodeWithoutThisKeyword = [];
   final List<CodeOutput> childrenCodeWithThisKeyword = [];
+
   final List<String> dynamicContent = [
     'Map<String, Object> get _content => {',
   ];
@@ -61,6 +63,9 @@ final $constructorName $variableName;
     'const $constructorName ({',
     ...childrenCodeWithThisKeyword.map((CodeOutput code) => code.classArgumentCode),
     '});',
+    classFactoryBeginningTemplate(className: constructorName),
+    ...childrenCodeWithThisKeyword.map((CodeOutput code) => code.factoryArgumentCode ?? ''),
+    classFactoryEndTemplate(),
     ...childrenCodeWithThisKeyword.map((CodeOutput code) => code.classBodyCode),
     ...dynamicContent,
     '}',
@@ -71,5 +76,6 @@ final $constructorName $variableName;
     classArgumentCode: classArgumentCode.join('\n'),
     classBodyCode: classBodyCode,
     externalCode: externalCode.join('\n'),
+    factoryArgumentCode: '${unit.key}: $constructorName.fromJson((json[r$qt${unit.key}$qt] as Map).cast<String, dynamic>()),',
   );
 }

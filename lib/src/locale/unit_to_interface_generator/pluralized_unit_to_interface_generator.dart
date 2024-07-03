@@ -58,12 +58,12 @@ String _factoryCode(String fieldName, Set<String> arguments) {
 $fieldName: (int howMany, {${_declarationArguments(arguments)}int? precision}) => Intl.plural(
   howMany,
   name: r$qt$fieldName$qt,
-  zero: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'zero', arguments: arguments)}, 
-  one: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'one', arguments: arguments)},
-  two: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'two', arguments: arguments)},
-  few: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'few', arguments: arguments)},
-  many: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'many', arguments: arguments)},
-  other: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'other', arguments: arguments)},
+  zero: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'zero', arguments: arguments, withHowMany: true, nullable: true)},
+  one: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'one', arguments: arguments, withHowMany: true)},
+  two: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'two', arguments: arguments, withHowMany: true, nullable: true)},
+  few: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'few', arguments: arguments, withHowMany: true, nullable: true)},
+  many: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'many', arguments: arguments, withHowMany: true, nullable: true)},
+  other: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'other', arguments: arguments, withHowMany: true)},
   precision: precision,
 ),
 ''';

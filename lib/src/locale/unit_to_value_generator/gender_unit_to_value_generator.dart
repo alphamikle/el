@@ -1,4 +1,5 @@
 import '../../tools/arguments_extractor.dart';
+import '../../tools/factory_value_generator.dart';
 import '../../tools/localization_tools.dart';
 import '../../type/mappers.dart';
 import '../code_output.dart';
@@ -12,20 +13,12 @@ CodeOutput genderUnitToValue(GenderUnit unit) {
   }
 
   if (arguments.isEmpty) {
-    return CodeOutput(
-      classArgumentCode: '''
-${unit.key}: (Gender gender) => Intl.gender(
-  gender.name,
-  name: r$qt${unit.key}$qt,
-  ${unit.value.female != null ? 'female: $qt${unit.value.female}$qt,' : ''}
-  ${unit.value.male != null ? 'male: $qt${unit.value.male}$qt,' : ''}
-  other: $qt${unit.value.other}$qt,
-),
-''',
-      classBodyCode: '',
-      externalCode: '',
+    return _empty(
+      unit: unit,
+      parentClassName: parentClassName,
     );
   }
+
   String functionArguments = arguments.map((String arg) => 'required String $arg').join(', ');
   functionArguments = '(Gender gender, {$functionArguments})';
 
@@ -39,7 +32,42 @@ ${unit.key}: $functionArguments => Intl.gender(
   other: $qt${unit.value.other}$qt,
 ),
 ''',
+    factoryArgumentCode: _factoryCode(unit.key, arguments),
     classBodyCode: '',
     externalCode: '',
   );
+}
+
+CodeOutput _empty({
+  required GenderUnit unit,
+  required String parentClassName,
+}) {
+  return CodeOutput(
+    classArgumentCode: '''
+${unit.key}: (Gender gender) => Intl.gender(
+  gender.name,
+  name: r$qt${unit.key}$qt,
+  ${unit.value.female != null ? 'female: $qt${unit.value.female}$qt,' : ''}
+  ${unit.value.male != null ? 'male: $qt${unit.value.male}$qt,' : ''}
+  other: $qt${unit.value.other}$qt,
+),
+''',
+    factoryArgumentCode: _factoryCode(unit.key, {}),
+    classBodyCode: '',
+    externalCode: '',
+  );
+}
+
+String _factoryCode(String fieldName, Set<String> arguments) {
+  final bool hasArguments = arguments.isNotEmpty;
+
+  return '''
+$fieldName: (Gender gender${hasArguments ? ', {' : ''}${arguments.map((String arg) => 'required String $arg').join(', ')}${hasArguments ? '}' : ''}) => Intl.gender(
+  gender.name,
+  name: r$qt$fieldName$qt,
+  female: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'female', arguments: arguments, nullable: true)},
+  male: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'male', arguments: arguments, nullable: true)},
+  other: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'other', arguments: arguments)},
+),
+''';
 }

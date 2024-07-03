@@ -5,7 +5,7 @@ class CodeOutput {
     required this.classArgumentCode,
     required this.classBodyCode,
     required this.externalCode,
-    /*required */ this.factoryArgumentCode,
+    /*required*/ this.factoryArgumentCode,
   });
 
   final String classArgumentCode;

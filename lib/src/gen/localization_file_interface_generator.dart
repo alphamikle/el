@@ -17,6 +17,7 @@ class LocalizationFileInterfaceGenerator {
   });
 
   final GeneratorConfig config;
+
   final List<LanguageLocalization> localizations;
 
   final List<String> externalCode = [];
