@@ -9,8 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  localization:
-    path: ./localization
+#  localization:
+#    path: ./localization
 
 dev_dependencies:
   flutter_test:

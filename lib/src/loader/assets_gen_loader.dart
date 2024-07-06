@@ -42,8 +42,8 @@ class AssetsGenLoader implements ContentLoader {
     final YamlList? assets = flutter[kAssets];
     if (assets == null || assets.isEmpty) {
       throw Exception('''
-Not found "assets" block in pubspec.yaml file or this block is empty. Please, add at least a one folder to assets block like that:
-pubspec.yaml
+Not found "assets" section in the pubspec.yaml file or this section is empty. Please, add at least one folder to assets section like that:
+# pubspec.yaml
 #...
 flutter:
   #...
@@ -66,13 +66,15 @@ assets: <-- 1
         }
       }
     }
-    for (final MapEntry(:value) in localizationsCache.entries) {
-      if (languagesCache.contains(value.language)) {
-        throw Exception('Found more than one localization source for the language "${value.language}":\n$localizationsCache');
+
+    for (final MapEntry(value: value) in localizationsCache.entries) {
+      if (languagesCache.contains(value.name)) {
+        throw Exception('Found more than one localization source for the language "${value.name}"');
       }
-      languagesCache.add(value.language);
+      languagesCache.add(value.name);
       result.add(value);
     }
+
     return result;
   }
 
@@ -96,8 +98,9 @@ assets: <-- 1
 
       if (match != null) {
         final String language = match.namedGroup('lang')!;
+        final String? country = match.namedGroup('country');
         final Json content = yamlMapToJson(loadYaml(file.readAsStringSync()));
-        localizationFiles.add(LanguageLocalization(language: language, content: content));
+        localizationFiles.add(LanguageLocalization(language: language, country: country?.toUpperCase(), content: content));
         matchedFiles.add(file);
       }
     }

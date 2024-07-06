@@ -13,6 +13,6 @@ void main(List<String> args) {
   final double end = (DateTime.now().millisecondsSinceEpoch - start) / 1000;
   // ignore: avoid_print
   print(
-    '[EASIEST_LOCALIZATION] Localizations generation completed in $end seconds with [${result.$2.map((LanguageLocalization it) => it.language).join(', ')}] locales',
+    '[EASIEST_LOCALIZATION] Localizations generation completed in $end seconds with [${result.$2.map((LanguageLocalization it) => it.name).join(', ')}] locales',
   );
 }

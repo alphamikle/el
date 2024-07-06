@@ -69,3 +69,7 @@ greetings3:
 aboutCows:
   one: Maybe there are ${howMany} cow? What do you think, ${username}?
   other: Maybe there are ${howMany} cows? What do you think, ${username}?
+
+date_format:
+  value: MM/dd/yyyy
+  desc: Date in the US date format

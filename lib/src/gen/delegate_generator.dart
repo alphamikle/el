@@ -13,14 +13,14 @@ class DelegateGenerator {
   String generate() {
     final String className = config.localizationsClassName;
     final Set<String> languages = {
-      ...localizations.map((LanguageLocalization localization) => localization.language),
+      ...localizations.map((LanguageLocalization localization) => localization.name),
       ...config.runtimeLocales,
     };
 
     return '''
 final Map<String, $className> _languageMap = {
   ${config.fallbackLocales.entries.map((MapEntry<String, String> entry) => "'${entry.key}': ${entry.value},").join('\n')}
-  ${localizations.map((LanguageLocalization localization) => "'${localization.language}': ${localization.language},").join('\n')}
+  ${localizations.map((LanguageLocalization localization) => "'${localization.name}': ${localization.name},").join('\n')}
 };
 
 final Map<String, $className> _providersLanguagesMap = {};

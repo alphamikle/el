@@ -23,7 +23,7 @@ class LocalizationFileValuesGenerator {
     }
     for (final LanguageLocalization languageLocalization in localizations) {
       final List<String> code = [
-        languageValueBeginningTemplate(lang: languageLocalization.language, className: config.localizationsClassName),
+        languageValueBeginningTemplate(lang: languageLocalization.name, className: config.localizationsClassName),
       ];
 
       for (final MapEntry(:String key, :Object value) in languageLocalization.content.entries) {

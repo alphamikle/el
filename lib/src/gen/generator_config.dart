@@ -3,7 +3,8 @@ typedef FallbackLocale = String;
 typedef FallbackLocales = Map<MissedLocale, FallbackLocale>;
 
 const String kDefaultNamespace = 'intl';
-const String kDefaultLangPrefix = r'[A-Za-z]{2}|schema';
+const String kDefaultLangPrefix = r'[A-Za-z]{2}';
+const String kDefaultCountryPrefix = r'[A-Za-z]{2}';
 const String kDefaultLocalizationClassName = 'LocalizationMessages';
 const String kDefaultPackageName = 'localization';
 const String kDefaultFileName = 'localization';
@@ -18,6 +19,7 @@ class GeneratorConfig {
     this.dartSdk = '',
     this.namespace = kDefaultNamespace,
     this.languagePattern = kDefaultLangPrefix,
+    this.countryPattern = kDefaultCountryPrefix,
     this.localizationsClassName = kDefaultLocalizationClassName,
     this.packageName = kDefaultPackageName,
     this.fileName = kDefaultFileName,
@@ -35,8 +37,11 @@ class GeneratorConfig {
   /// Special postfix of all localization files, which can be omitted
   final String namespace;
 
-  /// Pattern of languages, like "en", "zh", "pt" and others. Or can be custom, like "[a-z]{2}_[A-Z]{2}" which will catch only "en_US", "en_UK", etc.
+  /// Pattern of languages, like "en", "zh", "pt" and others
   final Pattern languagePattern;
+
+  /// Optional pattern of countries, like "US", "CA", "UK" and others
+  final Pattern countryPattern;
 
   /// Default name of localization output class. In most cases you will not change it at any time
   final String localizationsClassName;
@@ -80,7 +85,7 @@ class GeneratorConfig {
 
   final RegExp? _regExp;
 
-  RegExp get regExp => _regExp ?? RegExp('(\\W)(?<lang>($languagePattern))_?(?<pattern>$namespace)?.(ya?ml|json)\$');
+  RegExp get regExp => _regExp ?? RegExp('(\\W)(?<lang>$languagePattern)_?(?<country>$countryPattern)?_?(?<pattern>$namespace)?.(ya?ml|json)\$');
 
   GeneratorConfig copyWith({
     String? namespace,
