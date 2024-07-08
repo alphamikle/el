@@ -1,0 +1,109 @@
+# simple string
+title: Easiest Localization App
+
+some_strange_[key]: With Some Value
+
+'// $ another_bad_key': 'And value'
+
+' // 123 $ namespaced key':
+  '123 // $%^ field 1:': Hello!
+
+collision_test: This is a collision test
+
+'// collision test': This is a collision test as well
+'/// collision test': This is a collision test as well 2
+'//// collision test': This is a collision test as well 3
+'///// collision test': This is a collision test as well 4
+
+'////// collision test': This is a collision test as well + 1
+'/////// collision test': This is a collision test as well 2 + 1
+'//////// collision test': This is a collision test as well 3 + 1
+'///////// collision test': This is a collision test as well 4 + 1
+
+'////////// collision test': This is a collision test as well + 2
+'/////////// collision test': This is a collision test as well 2 + 2
+'//////////// collision test': This is a collision test as well 3 + 2
+'///////////// collision test': This is a collision test as well 4 + 2
+
+'////////////// collision test': This is a collision test as well + 3
+'/////////////// collision test': This is a collision test as well 2 + 3
+'//////////////// collision test': This is a collision test as well 3 + 3
+'///////////////// collision test': This is a collision test as well 4 + 3
+
+'////////////////// collision test': This is a collision test as well + 4
+'/////////////////// collision test': This is a collision test as well 2 + 4
+'//////////////////// collision test': This is a collision test as well 3 + 4
+'///////////////////// collision test': This is a collision test as well 4 + 4
+
+# string with description
+intro:
+  value: This is a intro screen title
+  # you can add a comment to any content string, like here - to a simple string
+  desc: For some reason we decided to use exactly that title for that screen
+
+# pluralized
+product: &product
+  zero: There are ${howMany} products
+  one: There are ${howMany} product
+  two: There are ${howMany} products
+  few: There are ${howMany} products
+  many: There are ${howMany} products
+  other: There are ${howMany} products
+  # Here is a comment, which will be added to generated code
+  desc: How many products do we have?
+
+# simple gender
+genderGreeting:
+  male: Thank you for reading, mister!
+  female: Thank you for reading, miss!
+  other: Thank you for reading, dear user!
+  desc: What the user will see, after he read the book
+
+# gender with arguments
+bookAfterwords:
+  male: Thank you for reading, mr. ${username}!
+  female: Thank you for reading, ms. ${username}!
+  other: Thank you for reading, dear ${username}!
+  desc: What the user will see, after he read the book
+
+# namespace
+pages:
+  home:
+    title: Home
+    description: Here you can see the main content
+    counter:
+      one: "You have pushed the button ${howMany} many time"
+      other: "You have pushed the button ${howMany} many times"
+    incrementButton:
+      title: Increment
+  settings:
+    title: Settings
+    description: Here you can change your settings
+  profile:
+    title:
+      value: Profile
+      # Here is a description too
+      desc: Profile page content
+    description: Here you can see your personal info and change it
+  product:
+    title: *product
+
+# arguments
+greetings: Hello, ${username}!
+
+greetings2:
+  value: Hello, dear ${username}!
+  desc: This is greetings with an argument [username]
+
+greetings3:
+  home: Hello, ${username} at home page!
+  settings: Hello, ${username} at settings page!
+  custom: Hello, ${username} at ${page} page!
+
+aboutCows:
+  one: Maybe there are ${howMany} cow? What do you think, ${username}?
+  other: Maybe there are ${howMany} cows? What do you think, ${username}?
+
+date_format:
+  value: MM/dd/yyyy
+  desc: Date in the US date format

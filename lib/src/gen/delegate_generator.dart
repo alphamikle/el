@@ -64,7 +64,7 @@ class EasiestLocalizationDelegate extends LocalizationsDelegate<$className> {
       }
     }
 
-    localeContent ??= _languageMap[locale.languageCode] ?? _languageMap['*'] ?? _languageMap.values.first;
+    localeContent ??= _languageMap[locale.languageCode] ?? _languageMap.values.first;
     return localeContent;
   }
 
@@ -78,8 +78,8 @@ class Messages {
   static $className? getContent(String language) => _languageMap[language];
 
   static $className get el {
-    $className? localeContent = _providersLanguagesMap[Intl.defaultLocale] ?? _providersLanguagesMap['*'];
-    localeContent ??= _languageMap[Intl.defaultLocale] ?? _languageMap['*'] ?? _languageMap.values.first;
+    $className? localeContent = _providersLanguagesMap[Intl.defaultLocale];
+    localeContent ??= _languageMap[Intl.defaultLocale] ?? _languageMap.values.first;
     return localeContent;
   }
 }

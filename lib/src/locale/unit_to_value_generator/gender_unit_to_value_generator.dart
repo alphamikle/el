@@ -24,15 +24,15 @@ CodeOutput genderUnitToValue(GenderUnit unit) {
 
   return CodeOutput(
     classArgumentCode: '''
-${unit.key}: $functionArguments => Intl.gender(
+${unit.fieldName}: $functionArguments => Intl.gender(
   gender.name,
-  name: r$qt${unit.key}$qt,
+  name: r$qt${unit.fieldName}$qt,
   ${unit.value.female != null ? 'female: $qt${unit.value.female}$qt,' : ''}
   ${unit.value.male != null ? 'male: $qt${unit.value.male}$qt,' : ''}
   other: $qt${unit.value.other}$qt,
 ),
 ''',
-    factoryArgumentCode: _factoryCode(unit.key, arguments),
+    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
     classBodyCode: '',
     externalCode: '',
   );
@@ -44,15 +44,15 @@ CodeOutput _empty({
 }) {
   return CodeOutput(
     classArgumentCode: '''
-${unit.key}: (Gender gender) => Intl.gender(
+${unit.fieldName}: (Gender gender) => Intl.gender(
   gender.name,
-  name: r$qt${unit.key}$qt,
+  name: r$qt${unit.fieldName}$qt,
   ${unit.value.female != null ? 'female: $qt${unit.value.female}$qt,' : ''}
   ${unit.value.male != null ? 'male: $qt${unit.value.male}$qt,' : ''}
   other: $qt${unit.value.other}$qt,
 ),
 ''',
-    factoryArgumentCode: _factoryCode(unit.key, {}),
+    factoryArgumentCode: _factoryCode(unit.fieldName, {}),
     classBodyCode: '',
     externalCode: '',
   );

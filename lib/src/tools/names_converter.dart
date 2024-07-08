@@ -277,6 +277,8 @@ List<String> _split(String input) {
   return output;
 }
 
+final Map<String, List<String>> _collisionsCache = {};
+
 extension ExtendedConvertableCodeName on String {
   String get asCamelCase => toCamelCase(this);
 
@@ -291,6 +293,39 @@ extension ExtendedConvertableCodeName on String {
   String get asTrainCase => toTrainCase(this);
 
   String get asDotCase => toDotCase(this);
+
+  String get clear {
+    final RegExp clearingRegExp = RegExp(r'[^A-Za-z0-9_]');
+    final RegExp severalSnakesRegExp = RegExp(r'_+');
+    final RegExp privateRegExp = RegExp(r'^_');
+
+    final String clearString = replaceAll(clearingRegExp, '_').replaceAll(severalSnakesRegExp, '_').replaceFirst(privateRegExp, '');
+
+    return clearString;
+  }
+
+  String get asClearCamelCase {
+    String clearString = clear.asCamelCase;
+    if (RegExp(r'^\d+').hasMatch(clearString)) {
+      clearString = 'n$clearString';
+    }
+
+    if (_collisionsCache.containsKey(clearString) == false) {
+      _collisionsCache[clearString] = [this];
+    } else {
+      if (_collisionsCache[clearString]!.contains(this) == false) {
+        _collisionsCache[clearString]!.add(this);
+      }
+    }
+
+    final int collisionIndex = _collisionsCache[clearString]!.indexOf(this);
+
+    if (collisionIndex > 0) {
+      return '$clearString$collisionIndex';
+    }
+
+    return clearString;
+  }
 
   bool get _isPrivate => startsWith('_');
 }

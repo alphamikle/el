@@ -14,8 +14,8 @@ CodeOutput namespacedUnitToValue(NamespacedUnit unit) {
     }
     constructorParents.add(capitalize(unit.parents[i]));
   }
-  final String variableName = unit.key;
-  final String constructorName = [...constructorParents, capitalize(unit.key)].join();
+  final String variableName = unit.fieldName;
+  final String constructorName = [...constructorParents, capitalize(unit.fieldName)].join();
 
   final List<CodeOutput> childrenCode = [];
 

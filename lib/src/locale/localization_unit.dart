@@ -1,3 +1,5 @@
+import '../tools/names_converter.dart';
+
 typedef StringWithDescriptionValue = ({String value, String description});
 typedef PluralizedValue = ({String? zero, String one, String? two, String? few, String? many, String other, String? description});
 typedef GenderValue = ({String? male, String? female, String? other, String? description});
@@ -6,20 +8,27 @@ typedef NamespacedValue = Map<String, LocalizationUnit>;
 sealed class LocalizationUnit {
   const LocalizationUnit();
 
-  String get key;
+  String get fieldName;
+
+  String get fieldKey;
+
   Object get value;
+
   List<String> get parents;
 }
 
 class StringUnit extends LocalizationUnit {
   const StringUnit({
-    required this.key,
+    required this.fieldKey,
     required this.value,
     required this.parents,
   });
 
   @override
-  final String key;
+  String get fieldName => fieldKey.asClearCamelCase;
+
+  @override
+  final String fieldKey;
 
   @override
   final String value;
@@ -30,13 +39,16 @@ class StringUnit extends LocalizationUnit {
 
 class StringWithDescriptionUnit extends LocalizationUnit {
   const StringWithDescriptionUnit({
-    required this.key,
+    required this.fieldKey,
     required this.value,
     required this.parents,
   });
 
   @override
-  final String key;
+  String get fieldName => fieldKey.asClearCamelCase;
+
+  @override
+  final String fieldKey;
 
   @override
   final StringWithDescriptionValue value;
@@ -47,14 +59,16 @@ class StringWithDescriptionUnit extends LocalizationUnit {
 
 class GenderUnit extends LocalizationUnit {
   const GenderUnit({
-    required this.key,
+    required this.fieldKey,
     required this.value,
     required this.parents,
   });
 
-  /// ? name of the field
   @override
-  final String key;
+  String get fieldName => fieldKey.asClearCamelCase;
+
+  @override
+  final String fieldKey;
 
   @override
   final GenderValue value;
@@ -65,13 +79,16 @@ class GenderUnit extends LocalizationUnit {
 
 class PluralizedUnit extends LocalizationUnit {
   const PluralizedUnit({
-    required this.key,
+    required this.fieldKey,
     required this.value,
     required this.parents,
   });
 
   @override
-  final String key;
+  String get fieldName => fieldKey.asClearCamelCase;
+
+  @override
+  final String fieldKey;
 
   @override
   final PluralizedValue value;
@@ -82,13 +99,16 @@ class PluralizedUnit extends LocalizationUnit {
 
 class NamespacedUnit extends LocalizationUnit {
   const NamespacedUnit({
-    required this.key,
+    required this.fieldKey,
     required this.value,
     required this.parents,
   });
 
   @override
-  final String key;
+  String get fieldName => fieldKey.asClearCamelCase;
+
+  @override
+  final String fieldKey;
 
   @override
   final NamespacedValue value;

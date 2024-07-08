@@ -22,24 +22,25 @@ CodeOutput stringUnitToInterface(StringUnit unit, {bool useThisKeyword = true}) 
 
   return CodeOutput(
     classArgumentCode:
-        "${useThisKeyword ? 'required this.' : ''}${unit.key}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.key}'},",
-    factoryArgumentCode: _factoryCode(unit.key, arguments),
+        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},",
+    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
     classBodyCode: '''
-final String Function$functionArguments ${unit.key};
+final String Function$functionArguments ${unit.fieldName};
 ''',
     externalCode: '',
   );
 }
 
+// TODO(alphamikle): Continue with handling wrong key names and collisions
 CodeOutput _empty({
   required StringUnit unit,
   required String parentClassName,
   required bool useThisKeyword,
 }) {
   return CodeOutput(
-    classArgumentCode: "${useThisKeyword ? 'required this.' : ''}${unit.key}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $qt${unit.value}$qt'},",
-    factoryArgumentCode: _factoryCode(unit.key, {}),
-    classBodyCode: 'final String ${unit.key};',
+    classArgumentCode: "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $qt${unit.value}$qt'},",
+    factoryArgumentCode: _factoryCode(unit.fieldName, {}),
+    classBodyCode: 'final String ${unit.fieldName};',
     externalCode: '',
   );
 }

@@ -8,18 +8,18 @@ CodeOutput stringUnitToValue(StringUnit unit) {
 
   if (arguments.isEmpty) {
     return CodeOutput(
-      classArgumentCode: "${unit.key}: $qt${unit.value}$qt,",
+      classArgumentCode: "${unit.fieldName}: $qt${unit.value}$qt,",
       classBodyCode: '',
-      factoryArgumentCode: _factoryCode(unit.key, {}),
+      factoryArgumentCode: _factoryCode(unit.fieldName, {}),
       externalCode: '',
     );
   }
   final String functionArguments = '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
 
   return CodeOutput(
-    classArgumentCode: "${unit.key}: $functionArguments => $qt${unit.value}$qt,",
+    classArgumentCode: "${unit.fieldName}: $functionArguments => $qt${unit.value}$qt,",
     classBodyCode: '',
-    factoryArgumentCode: _factoryCode(unit.key, arguments),
+    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
     externalCode: '',
   );
 }

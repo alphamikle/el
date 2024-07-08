@@ -26,11 +26,11 @@ CodeOutput pluralizedUnitToInterface(PluralizedUnit unit, {bool useThisKeyword =
 
   return CodeOutput(
     classArgumentCode:
-        '${useThisKeyword ? 'required this.' : ''}${unit.key}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.key}'},',
-    factoryArgumentCode: _factoryCode(unit.key, arguments),
+        '${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
+    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function$functionArguments ${unit.key};
+final String Function$functionArguments ${unit.fieldName};
 ''',
     externalCode: '',
   );
@@ -43,11 +43,11 @@ CodeOutput _empty({
 }) {
   return CodeOutput(
     classArgumentCode:
-        '${useThisKeyword ? 'required this.' : ''}${unit.key}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.key}'},',
-    factoryArgumentCode: _factoryCode(unit.key, {}),
+        '${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
+    factoryArgumentCode: _factoryCode(unit.fieldName, {}),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function(int howMany, {int? precision}) ${unit.key};
+final String Function(int howMany, {int? precision}) ${unit.fieldName};
 ''',
     externalCode: '',
   );

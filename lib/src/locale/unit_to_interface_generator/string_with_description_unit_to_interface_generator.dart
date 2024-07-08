@@ -13,7 +13,7 @@ CodeOutput stringWithDescriptionUnitToInterface(StringWithDescriptionUnit unit, 
   }
 
   if (unit.value.description.trim().isEmpty) {
-    return stringUnitToInterface(StringUnit(key: unit.key, value: unit.value.value, parents: unit.parents));
+    return stringUnitToInterface(StringUnit(fieldKey: unit.fieldKey, value: unit.value.value, parents: unit.parents));
   }
   if (arguments.isEmpty) {
     return _empty(
@@ -26,11 +26,11 @@ CodeOutput stringWithDescriptionUnitToInterface(StringWithDescriptionUnit unit, 
 
   return CodeOutput(
     classArgumentCode:
-        "${useThisKeyword ? 'required this.' : ''}${unit.key}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.key}'},",
-    factoryArgumentCode: _factoryCode(unit.key, arguments),
+        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},",
+    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
     classBodyCode: '''
 /// ${unit.value.description}
-final String Function$functionArguments ${unit.key};
+final String Function$functionArguments ${unit.fieldName};
 ''',
     externalCode: '',
   );
@@ -42,11 +42,12 @@ CodeOutput _empty({
   required bool useThisKeyword,
 }) {
   return CodeOutput(
-    classArgumentCode: "${useThisKeyword ? 'required this.' : ''}${unit.key}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $qt${unit.value.value}$qt'},",
-    factoryArgumentCode: _factoryCode(unit.key, {}),
+    classArgumentCode:
+        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $qt${unit.value.value}$qt'},",
+    factoryArgumentCode: _factoryCode(unit.fieldName, {}),
     classBodyCode: '''
 /// ${unit.value.description}
-final String ${unit.key};
+final String ${unit.fieldName};
 ''',
     externalCode: '',
   );

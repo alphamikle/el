@@ -2,15 +2,15 @@ import '../locale/localization_unit.dart';
 
 LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]) {
   final LocalizationUnit localizationUnit = switch (value) {
-    String() => StringUnit(key: key, value: value, parents: parents ?? []),
+    String() => StringUnit(fieldKey: key, value: value, parents: parents ?? []),
     {'value': final String $value, 'desc': final String $desc} => StringWithDescriptionUnit(
-        key: key,
+        fieldKey: key,
         value: (value: $value, description: $desc),
         parents: parents ?? [],
       ),
-    {'value': final String $value} => StringUnit(key: key, value: $value, parents: parents ?? []),
+    {'value': final String $value} => StringUnit(fieldKey: key, value: $value, parents: parents ?? []),
     {'other': final String $other, 'one': final String $one} => PluralizedUnit(
-        key: key,
+        fieldKey: key,
         value: (
           zero: value.get('zero'),
           one: $one,
@@ -23,7 +23,7 @@ LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]
         parents: parents ?? [],
       ),
     {'other': final String $other} => GenderUnit(
-        key: key,
+        fieldKey: key,
         value: (
           male: value.get('male'),
           female: value.get('female'),
@@ -32,7 +32,7 @@ LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]
         ),
         parents: parents ?? [],
       ),
-    Map() => NamespacedUnit(key: key, value: _localizeMap(key, value, parents ?? []), parents: parents ?? []),
+    Map() => NamespacedUnit(fieldKey: key, value: _localizeMap(key, value, parents ?? []), parents: parents ?? []),
     _ => throw UnsupportedError('Value "$value" is not supported'),
   };
 

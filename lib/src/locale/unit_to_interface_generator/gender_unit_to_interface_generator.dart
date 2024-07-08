@@ -26,11 +26,11 @@ CodeOutput genderUnitToInterface(GenderUnit unit, {bool useThisKeyword = true}) 
 
   return CodeOutput(
     classArgumentCode:
-        '${useThisKeyword ? 'required this.' : ''}${unit.key}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.key}'},',
-    factoryArgumentCode: _factoryCode(unit.key, arguments),
+        '${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
+    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function$functionArguments ${unit.key};
+final String Function$functionArguments ${unit.fieldName};
 ''',
     externalCode: '',
   );
@@ -44,14 +44,14 @@ CodeOutput _empty({
   return CodeOutput(
     classArgumentCode: [
       if (useThisKeyword) 'required this.',
-      unit.key,
-      if (useThisKeyword == false) ': $parentClassName\$${unit.key}',
+      unit.fieldName,
+      if (useThisKeyword == false) ': $parentClassName\$${unit.fieldName}',
       ',',
     ].join(),
-    factoryArgumentCode: _factoryCode(unit.key, {}),
+    factoryArgumentCode: _factoryCode(unit.fieldName, {}),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function(Gender gender) ${unit.key};
+final String Function(Gender gender) ${unit.fieldName};
 ''',
     externalCode: '',
   );
