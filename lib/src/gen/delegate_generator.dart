@@ -14,12 +14,10 @@ class DelegateGenerator {
     final String className = config.localizationsClassName;
     final Set<String> languages = {
       ...localizations.map((LanguageLocalization localization) => localization.name),
-      ...config.runtimeLocales,
     };
 
     return '''
 final Map<String, $className> _languageMap = {
-  ${config.fallbackLocales.entries.map((MapEntry<String, String> entry) => "'${entry.key}': ${entry.value},").join('\n')}
   ${localizations.map((LanguageLocalization localization) => "'${localization.name}': ${localization.name},").join('\n')}
 };
 
@@ -27,14 +25,14 @@ final Map<String, $className> _providersLanguagesMap = {};
 
 class EasiestLocalizationDelegate extends LocalizationsDelegate<$className> {
   EasiestLocalizationDelegate({
-    List<LocalizationProvider> providers = const [],
+    List<LocalizationProvider<Locale, $className>> providers = const [],
   }) {
     providers.map(registerProvider);
   }
 
-  final List<LocalizationProvider> _providers = [];
+  final List<LocalizationProvider<Locale, $className>> _providers = [];
 
-  void registerProvider(LocalizationProvider provider) {
+  void registerProvider(LocalizationProvider<Locale, $className> provider) {
     _providers.add(provider);
   }
 
@@ -46,9 +44,9 @@ class EasiestLocalizationDelegate extends LocalizationsDelegate<$className> {
   Future<$className> load(Locale locale) async {
     Intl.defaultLocale = locale.countryCode == null ? locale.languageCode : locale.toString();
 
-    LocalizationProvider? localizationProvider;
+    LocalizationProvider<Locale, $className>? localizationProvider;
 
-    for (final provider in _providers) {
+    for (final LocalizationProvider<Locale, $className> provider in _providers) {
       if (provider.canLoad(locale)) {
         localizationProvider = provider;
         break;
@@ -93,7 +91,7 @@ final List<LocalizationsDelegate> localizationsDelegates = [
   ...GlobalMaterialLocalizations.delegates,
 ];
 
-List<LocalizationsDelegate> localizationsDelegatesWithProviders(List<LocalizationProvider> providers) {
+List<LocalizationsDelegate> localizationsDelegatesWithProviders(List<LocalizationProvider<Locale, $className>> providers) {
   return [
     EasiestLocalizationDelegate(providers: providers),
     ...GlobalMaterialLocalizations.delegates,
@@ -101,7 +99,6 @@ List<LocalizationsDelegate> localizationsDelegatesWithProviders(List<Localizatio
 }
 
 const List<Locale> supportedLocales = [
-  ${config.fallbackLocales.keys.where((String language) => language != '*').map((String language) => "Locale('$language'),").join('\n')}
   ${languages.map((String language) => "Locale('$language'),").join('\n')}
 ];
 
@@ -151,15 +148,16 @@ extension EasiestLocalizationString on String {
 
 dynamic tr(String key) => key.tr();
 
-abstract interface class LocalizationProvider {
-  String get name;
-
-  List<Locale> get supportedLocales;
-
-  Future<$className> fetchLocalization(Locale locale);
-
-  bool canLoad(Locale locale);
-}
+// Reference example
+// abstract interface class LocalizationProvider<L, M> {
+//   String get name;
+// 
+//   List<L> get supportedLocales;
+// 
+//   Future<M> fetchLocalization(L locale);
+// 
+//   bool canLoad(L locale);
+// }
 ''';
   }
 }

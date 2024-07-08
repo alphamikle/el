@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:yaml/yaml.dart';
 
-import '../../easiest_localization.dart';
 import 'types.dart';
 
 String capitalize(String? string) {
@@ -30,17 +29,6 @@ Json yamlMapToJson(YamlMap yamlMap) {
     } else {
       result[key] = value;
     }
-  }
-  return result;
-}
-
-FallbackLocales yamlMapToFallbackLocales(YamlMap? yamlMap) {
-  if (yamlMap == null) {
-    return {};
-  }
-  final Map<String, String> result = {};
-  for (final MapEntry(:key, :value) in yamlMap.entries) {
-    result[key] = value.toString();
   }
   return result;
 }

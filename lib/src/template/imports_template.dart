@@ -5,6 +5,7 @@ String get importsTemplate => '''
 
 import 'dart:developer';
 
+import 'package:easiest_localization/easiest_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

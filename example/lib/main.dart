@@ -15,10 +15,10 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext context) {
         return MaterialApp(
           /// The first variable - [supportedLocales], which contains all the generated and fallback locales
-          supportedLocales: supportedLocales,
+          supportedLocales: supportedLocalesWithProviders([]),
 
           /// The second - [localizationsDelegates], which contains generated and default delegates for work of localizations in general
-          localizationsDelegates: localizationsDelegates,
+          localizationsDelegates: localizationsDelegatesWithProviders([]),
 
           /// Access to locale from the context               ⬇ ︎
           onGenerateTitle: (BuildContext context) => context.el.title,

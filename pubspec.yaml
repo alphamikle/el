@@ -27,3 +27,8 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+
+easiest_localization:
+  excluded:
+    - localizely_example
+  easiest_localization_version: "\n    path: ../"

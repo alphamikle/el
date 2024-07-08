@@ -17,7 +17,7 @@ void main() {
   });
 
   test('Test assets gen loader (prefix = locale)', () {
-    final AssetsGenLoader loader = AssetsGenLoader(const GeneratorConfig(dartSdk: sdk, namespace: 'locale'));
+    final AssetsGenLoader loader = AssetsGenLoader(const GeneratorConfig(dartSdk: sdk));
     final List<LanguageLocalization> result = loader.load();
     expect(result.length, 4);
   });

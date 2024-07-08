@@ -1,6 +1,6 @@
 import 'package:merger/merger.dart';
 
-import '../../easiest_localization.dart';
+import '../gen/generator_config.dart';
 import '../loader/language_localization.dart';
 import '../type/types.dart';
 
@@ -77,6 +77,6 @@ class LanguagesMerger {
       );
     }
 
-    return [scheme, ...response];
+    return response;
   }
 }

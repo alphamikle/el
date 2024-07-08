@@ -1,28 +1,21 @@
 import 'package:yaml/yaml.dart';
 
-import '../../easiest_localization.dart';
-import '../type/mappers.dart';
+import '../gen/generator_config.dart';
+import 'assets_gen_loader.dart';
 import 'pubspec_loader.dart';
 
 const String kEnv = 'environment';
 const String kSdk = 'sdk';
 const String kConfig = 'easiest_localization';
 const String kExcludedPatterns = 'excluded';
-const String kNamespace = 'namespace';
-const String kLangPrefix = 'language_prefix';
 const String kClassName = 'class_name';
 const String kDescription = 'description';
+const String kEasiestLocalization = 'easiest_localization_version';
 const String kPackageName = 'package_name';
-const String kFileName = 'file_name';
 const String kPackagePath = 'package_path';
 const String kPackageVersion = 'package_version';
 const String kFormatOutput = 'format_output';
 const String kRegExp = 'reg_exp';
-const String kFallbackLocales = 'fallback_locales';
-
-// Under development for now
-const String kRuntimeLocales = 'runtime_locales';
-const String kWithRuntime = 'runtime_enabled';
 
 class ConfigLoader {
   GeneratorConfig load() {
@@ -39,18 +32,15 @@ class ConfigLoader {
     final YamlList? excludedPatterns = config[kExcludedPatterns];
 
     return GeneratorConfig(
-      namespace: config[kNamespace] ?? kDefaultNamespace,
       excludedPatterns: excludedPatterns == null ? [] : excludedPatterns.map((dynamic it) => it.toString()).toList(),
       dartSdk: dartSdk,
-      languagePattern: config[kLangPrefix] ?? kDefaultLangPrefix,
       localizationsClassName: config[kClassName] ?? kDefaultLocalizationClassName,
       packageDescription: config[kDescription] ?? kDefaultPackageDescription,
+      easiestLocalizationVersion: config[kEasiestLocalization] ?? pubspecContent[kDependencies]?[kConfig]?.toString() ?? 'any',
       packageName: config[kPackageName] ?? kDefaultPackageName,
       packagePath: config[kPackagePath] ?? kDefaultPackagePath,
       packageVersion: config[kPackageVersion] ?? kDefaultPackageVersion,
-      fileName: config[kFileName] ?? kDefaultFileName,
       regExp: regExp,
-      fallbackLocales: yamlMapToFallbackLocales(config[kFallbackLocales]),
       formatOutput: bool.tryParse(config[kFormatOutput].toString()) ?? false,
     );
   }

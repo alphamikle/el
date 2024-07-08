@@ -83,15 +83,22 @@ assets: <-- 1
     final List<File> matchedFiles = [];
     final List<File> allFiles = directory.listSync(recursive: true).whereType<File>().toList();
     for (final File file in allFiles) {
-      final String filename = file.path.replaceFirst(file.parent.path, '');
       bool isExcluded = false;
-      for (final String exclusion in config.excludedPatterns) {
-        isExcluded = RegExp(exclusion).hasMatch(filename);
+      String? exclusionPattern;
+      for (final String excludedPattern in config.excludedPatterns) {
+        final RegExp excludedRegExp = RegExp(excludedPattern);
+
+        isExcluded = excludedRegExp.hasMatch(file.path);
         if (isExcluded) {
+          exclusionPattern = excludedPattern;
           break;
         }
       }
       if (isExcluded) {
+        // ignore: avoid_print
+        print(
+          '[EASIEST_LOCALIZATION] File "${file.path}" was excluded from generation by pattern "$exclusionPattern"',
+        );
         continue;
       }
       final RegExpMatch? match = config.regExp.firstMatch(file.path);
