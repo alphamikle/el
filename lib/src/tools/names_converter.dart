@@ -304,21 +304,23 @@ extension ExtendedConvertableCodeName on String {
     return clearString;
   }
 
-  String get asClearCamelCase {
+  String asClearCamelCase(String className) {
     String clearString = clear.asCamelCase;
     if (RegExp(r'^\d+').hasMatch(clearString)) {
       clearString = 'n$clearString';
     }
 
-    if (_collisionsCache.containsKey(clearString) == false) {
-      _collisionsCache[clearString] = [this];
+    final String key = '$className:$clearString';
+
+    if (_collisionsCache.containsKey(key) == false) {
+      _collisionsCache[key] = [this];
     } else {
-      if (_collisionsCache[clearString]!.contains(this) == false) {
-        _collisionsCache[clearString]!.add(this);
+      if (_collisionsCache[key]!.contains(this) == false) {
+        _collisionsCache[key]!.add(this);
       }
     }
 
-    final int collisionIndex = _collisionsCache[clearString]!.indexOf(this);
+    final int collisionIndex = _collisionsCache[key]!.indexOf(this);
 
     if (collisionIndex > 0) {
       return '$clearString$collisionIndex';

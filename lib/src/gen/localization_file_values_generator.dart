@@ -9,10 +9,14 @@ class LocalizationFileValuesGenerator {
   LocalizationFileValuesGenerator({
     required this.config,
     required this.localizations,
+    required this.scheme,
   });
 
   final GeneratorConfig config;
+
   final List<LanguageLocalization> localizations;
+
+  final LanguageLocalization scheme;
 
   final List<String> constructorArgumentsCode = [];
 
@@ -27,12 +31,15 @@ class LocalizationFileValuesGenerator {
       ];
 
       for (final MapEntry(:String key, :Object value) in languageLocalization.content.entries) {
-        final LocalizationUnit localizationUnit = localizeValue(key, value);
+        final Object schemaValue = scheme.content[key];
+        final LocalizationUnit localizationUnit = localizeValue(key, value, schemaValue);
         code.add(localizationUnitToValue(localizationUnit).classArgumentCode);
       }
+
       code.addAll([
         ');',
       ]);
+
       languagesCode.add(code.join('\n'));
     }
 

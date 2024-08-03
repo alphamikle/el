@@ -53,7 +53,6 @@ assets: <-- 1
 ''');
     }
     final Map<String, LanguageLocalization> localizationsCache = {};
-    final Set<String> languagesCache = {};
 
     for (final dynamic asset in assets) {
       if (asset is String) {
@@ -67,11 +66,7 @@ assets: <-- 1
       }
     }
 
-    for (final MapEntry(value: value) in localizationsCache.entries) {
-      if (languagesCache.contains(value.name)) {
-        throw Exception('Found more than one localization source for the language "${value.name}"');
-      }
-      languagesCache.add(value.name);
+    for (final MapEntry(:value) in localizationsCache.entries) {
       result.add(value);
     }
 

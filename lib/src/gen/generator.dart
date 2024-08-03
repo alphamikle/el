@@ -18,9 +18,10 @@ class Generator {
   (String, List<LanguageLocalization>) generate() {
     List<LanguageLocalization> localizations = AssetsGenLoader(config).load();
     localizations = LanguagesMerger(config).merge(localizations);
-    final String interfaceCode = LocalizationFileInterfaceGenerator(config: config, localizations: localizations).generate();
-    final String valuesCode = LocalizationFileValuesGenerator(config: config, localizations: localizations).generate();
-    final String delegateCode = DelegateGenerator(config: config, localizations: localizations).generate();
+    final LanguageLocalization scheme = localizations.removeLast();
+    final String interfaceCode = LocalizationFileInterfaceGenerator(config: config, localizations: localizations, scheme: scheme).generate();
+    final String valuesCode = LocalizationFileValuesGenerator(config: config, localizations: localizations, scheme: scheme).generate();
+    final String delegateCode = DelegateGenerator(config: config, localizations: localizations, scheme: scheme).generate();
     final String code = [
       interfaceCode,
       valuesCode,

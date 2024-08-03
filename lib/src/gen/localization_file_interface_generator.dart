@@ -14,11 +14,14 @@ class LocalizationFileInterfaceGenerator {
   LocalizationFileInterfaceGenerator({
     required this.config,
     required this.localizations,
+    required this.scheme,
   });
 
   final GeneratorConfig config;
 
   final List<LanguageLocalization> localizations;
+
+  final LanguageLocalization scheme;
 
   final List<String> externalCode = [];
 
@@ -37,9 +40,9 @@ class LocalizationFileInterfaceGenerator {
     if (localizations.isEmpty) {
       throw ArgumentError('localizations argument should not be empty. It seems - you have no any localization files');
     }
-    final Json content = localizations.first.content;
+    final Json content = scheme.content;
     for (final MapEntry(:String key, :Object value) in content.entries) {
-      final LocalizationUnit localizationUnit = localizeValue(key, value);
+      final LocalizationUnit localizationUnit = localizeValue(key, value, value);
       units.add(localizationUnit);
     }
     _proceedUnits(units);

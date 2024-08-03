@@ -4,7 +4,7 @@ import '../code_output.dart';
 import '../localization_unit.dart';
 
 CodeOutput stringUnitToValue(StringUnit unit) {
-  final Set<String> arguments = extractArguments(unit.value);
+  final Set<String> arguments = extractArguments(unit.schemaValue);
 
   if (arguments.isEmpty) {
     return CodeOutput(

@@ -6,14 +6,22 @@ import '../localization_unit.dart';
 import 'string_unit_to_interface_generator.dart';
 
 CodeOutput stringWithDescriptionUnitToInterface(StringWithDescriptionUnit unit, {bool useThisKeyword = true}) {
-  final Set<String> arguments = extractArguments(unit.value.value);
+  final Set<String> arguments = extractArguments(unit.schemaValue.value);
   String parentClassName = unit.parents.map(capitalize).join();
+
   if (parentClassName.isNotEmpty) {
     parentClassName = '$parentClassName.';
   }
 
   if (unit.value.description.trim().isEmpty) {
-    return stringUnitToInterface(StringUnit(fieldKey: unit.fieldKey, value: unit.value.value, parents: unit.parents));
+    return stringUnitToInterface(
+      StringUnit(
+        fieldKey: unit.fieldKey,
+        value: unit.value.value,
+        schemaValue: unit.schemaValue.value,
+        parents: unit.parents,
+      ),
+    );
   }
   if (arguments.isEmpty) {
     return _empty(

@@ -8,7 +8,12 @@ import '../localization_unit.dart';
 const Set<String> _reservedArguments = {'howMany', 'precision'};
 
 CodeOutput pluralizedUnitToInterface(PluralizedUnit unit, {bool useThisKeyword = true}) {
-  final Set<String> arguments = extractArguments(pluralizedValueToString(unit.value)).where((String arg) => _reservedArguments.contains(arg) == false).toSet();
+  final Set<String> arguments = extractArguments(pluralizedValueToString(unit.schemaValue))
+      .where(
+        (String arg) => _reservedArguments.contains(arg) == false,
+      )
+      .toSet();
+
   String parentClassName = unit.parents.map(capitalize).join();
   if (parentClassName.isNotEmpty) {
     parentClassName = '$parentClassName.';

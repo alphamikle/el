@@ -35,6 +35,12 @@ collision_test: This is a collision test
 '//////////////////// collision test': This is a collision test as well 3 + 4
 '///////////////////// collision test': This is a collision test as well 4 + 4
 
+namespace1:
+  name: LaLaLa
+
+namespace2:
+  '// name': FoFoFo
+
 # string with description
 intro:
   value: This is a intro screen title
@@ -107,3 +113,21 @@ aboutCows:
 date_format:
   value: MM/dd/yyyy
   desc: Date in the US date format
+
+different_arguments: You ordered ${howMany} things with delivery to ${address}
+
+different_arguments_with_desc:
+  value: You ordered ${howMany} things with delivery to ${address}
+  desc: Some description
+
+different_arguments_plural:
+  one: You ordered ${howMany} things with delivery to ${address}
+  other: You ordered ${howMany} things with delivery to ${address}
+
+different:
+  arguments:
+    namespaced:
+      gendered:
+        male: Mister, you ordered ${howMany} things with delivery to ${address}
+        female: Miss, you ordered ${howMany} things with delivery to ${address}
+        other: You ordered ${howMany} things with delivery to ${address}

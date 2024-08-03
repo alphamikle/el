@@ -5,7 +5,7 @@ import '../code_output.dart';
 import '../localization_unit.dart';
 
 CodeOutput stringUnitToInterface(StringUnit unit, {bool useThisKeyword = true}) {
-  final Set<String> arguments = extractArguments(unit.value);
+  final Set<String> arguments = extractArguments(unit.schemaValue);
   String parentClassName = unit.parents.map(capitalize).join();
   if (parentClassName.isNotEmpty) {
     parentClassName = '$parentClassName.';
@@ -18,6 +18,7 @@ CodeOutput stringUnitToInterface(StringUnit unit, {bool useThisKeyword = true}) 
       parentClassName: parentClassName,
     );
   }
+
   final String functionArguments = '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
 
   return CodeOutput(
@@ -31,7 +32,6 @@ final String Function$functionArguments ${unit.fieldName};
   );
 }
 
-// TODO(alphamikle): Continue with handling wrong key names and collisions
 CodeOutput _empty({
   required StringUnit unit,
   required String parentClassName,

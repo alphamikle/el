@@ -73,3 +73,21 @@ aboutCows:
 date_format:
   value: MM/dd/yyyy
   desc: Date in the US date format
+
+different_arguments: You ordered ${howMany} things for the ${purpose}
+
+different_arguments_with_desc:
+  value: You ordered ${howMany} things for the ${purpose}
+  desc: Some description
+
+different_arguments_plural:
+  one: You ordered ${howMany} things for the ${purpose}
+  other: You ordered ${howMany} things for the ${purpose}
+
+different:
+  arguments:
+    namespaced:
+      gendered:
+        male: Mister, you ordered ${howMany} things for the ${purpose}
+        female: Miss, you ordered ${howMany} things for the ${purpose}
+        other: You ordered ${howMany} things for the ${purpose}

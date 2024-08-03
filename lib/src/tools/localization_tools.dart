@@ -1,14 +1,20 @@
 import '../locale/localization_unit.dart';
 
-LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]) {
+LocalizationUnit localizeValue(
+  String key,
+  Object value,
+  Object schemaValue, [
+  List<String>? parents,
+]) {
   final LocalizationUnit localizationUnit = switch (value) {
-    String() => StringUnit(fieldKey: key, value: value, parents: parents ?? []),
+    String() => StringUnit(fieldKey: key, value: value, schemaValue: schemaValue.toString(), parents: parents ?? []),
     {'value': final String $value, 'desc': final String $desc} => StringWithDescriptionUnit(
         fieldKey: key,
         value: (value: $value, description: $desc),
+        schemaValue: (value: schemaValue.get('value'), description: schemaValue.get('desc')),
         parents: parents ?? [],
       ),
-    {'value': final String $value} => StringUnit(fieldKey: key, value: $value, parents: parents ?? []),
+    {'value': final String $value} => StringUnit(fieldKey: key, value: $value, schemaValue: schemaValue.get('value'), parents: parents ?? []),
     {'other': final String $other, 'one': final String $one} => PluralizedUnit(
         fieldKey: key,
         value: (
@@ -20,6 +26,15 @@ LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]
           other: $other,
           description: value.get('desc')
         ),
+        schemaValue: (
+          zero: schemaValue.get('zero'),
+          one: schemaValue.get('one'),
+          two: schemaValue.get('two'),
+          few: schemaValue.get('few'),
+          many: schemaValue.get('many'),
+          other: schemaValue.get('other'),
+          description: schemaValue.get('desc')
+        ),
         parents: parents ?? [],
       ),
     {'other': final String $other} => GenderUnit(
@@ -30,25 +45,39 @@ LocalizationUnit localizeValue(String key, Object value, [List<String>? parents]
           other: $other,
           description: value.get('desc'),
         ),
+        schemaValue: (
+          male: schemaValue.get('male'),
+          female: schemaValue.get('female'),
+          other: schemaValue.get('other'),
+          description: schemaValue.get('desc'),
+        ),
         parents: parents ?? [],
       ),
-    Map() => NamespacedUnit(fieldKey: key, value: _localizeMap(key, value, parents ?? []), parents: parents ?? []),
+    Map() => NamespacedUnit(
+        fieldKey: key,
+        value: _localizeMap(key, value, schemaValue as Map, parents ?? []),
+        schemaValue: {},
+        parents: parents ?? [],
+      ),
     _ => throw UnsupportedError('Value "$value" is not supported'),
   };
 
   return localizationUnit;
 }
 
-Map<String, LocalizationUnit> _localizeMap(String parent, Map<dynamic, dynamic> map, List<String> parents) {
+Map<String, LocalizationUnit> _localizeMap(String parent, Map<dynamic, dynamic> map, Map<dynamic, dynamic> schemaMap, List<String> parents) {
   final Map<String, LocalizationUnit> namespacedValue = {};
+
   for (final MapEntry(:key, :value) in map.entries) {
-    final LocalizationUnit tempUnit = localizeValue(key, value, [parent]);
-    if (tempUnit is NamespacedUnit) {
-      namespacedValue[key] = localizeValue(key, value, [...parents, parent]);
+    final LocalizationUnit unit = localizeValue(key, value, schemaMap.get(key), [parent]);
+
+    if (unit is NamespacedUnit) {
+      namespacedValue[key] = localizeValue(key, value, schemaMap.get(key), [...parents, parent]);
     } else {
-      namespacedValue[key] = tempUnit;
+      namespacedValue[key] = unit;
     }
   }
+
   return namespacedValue;
 }
 

@@ -5,10 +5,12 @@ class DelegateGenerator {
   DelegateGenerator({
     required this.config,
     required this.localizations,
+    required this.scheme,
   });
 
   final GeneratorConfig config;
   final List<LanguageLocalization> localizations;
+  final LanguageLocalization scheme;
 
   String generate() {
     final String className = config.localizationsClassName;
@@ -102,7 +104,7 @@ const List<Locale> supportedLocales = [
   ${languages.map((String language) => "Locale('$language'),").join('\n')}
 ];
 
-List<Locale> supportedLocalesWithProviders(List<LocalizationProvider> providers) => [
+List<Locale> supportedLocalesWithProviders(List<LocalizationProvider<Locale, $className>> providers) => [
       for (final LocalizationProvider provider in providers) ...provider.supportedLocales,
       ...supportedLocales,
     ];

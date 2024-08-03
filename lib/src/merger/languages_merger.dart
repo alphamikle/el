@@ -41,7 +41,7 @@ class LanguagesMerger {
       } else {
         for (final LanguageLocalization localization in value) {
           final LanguageLocalization mergedLocalization = localization.copyWith(
-            content: primaryLocalization.content.mergeWith(localization.content),
+            content: mergeMaps(primaryLocalization.content, localization.content),
           );
           response.add(mergedLocalization);
         }
@@ -66,7 +66,7 @@ class LanguagesMerger {
 
     for (final LanguageLocalization localization in response) {
       scheme = scheme.copyWith(
-        content: scheme.content.mergeWith(localization.content),
+        content: mergeMaps(scheme.content, localization.content, joinStrings: true),
       );
     }
 
@@ -76,6 +76,8 @@ class LanguagesMerger {
         content: scheme.content.mergeWith(localization.content),
       );
     }
+
+    response.add(scheme);
 
     return response;
   }

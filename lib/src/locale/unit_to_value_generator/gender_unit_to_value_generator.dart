@@ -6,7 +6,7 @@ import '../code_output.dart';
 import '../localization_unit.dart';
 
 CodeOutput genderUnitToValue(GenderUnit unit) {
-  final Set<String> arguments = extractArguments(genderValueToString(unit.value)).toSet();
+  final Set<String> arguments = extractArguments(genderValueToString(unit.schemaValue)).toSet();
   String parentClassName = unit.parents.map(capitalize).join();
   if (parentClassName.isNotEmpty) {
     parentClassName = '$parentClassName.';

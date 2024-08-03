@@ -7,6 +7,7 @@ import '../localization_unit.dart';
 CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword = true}) {
   final List<String> variableParents = [];
   final List<String> constructorParents = [];
+
   for (int i = 0; i < unit.parents.length; i++) {
     if (i == 0) {
       variableParents.add(unit.parents[i]);
@@ -15,6 +16,7 @@ CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword =
     }
     constructorParents.add(capitalize(unit.parents[i]));
   }
+
   final String variableName = unit.fieldName;
   final String constructorName = [...constructorParents, capitalize(unit.fieldName)].join();
 
