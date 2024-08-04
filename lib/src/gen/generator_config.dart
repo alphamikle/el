@@ -1,7 +1,3 @@
-typedef MissedLocale = String;
-typedef FallbackLocale = String;
-typedef FallbackLocales = Map<MissedLocale, FallbackLocale>;
-
 const String kDefaultLocalizationClassName = 'LocalizationMessages';
 const String kDefaultPackageName = 'localization';
 const String kDefaultPackageDescription = 'Generated localization package';
@@ -20,6 +16,7 @@ class GeneratorConfig {
     this.packagePath = kDefaultPackagePath,
     this.excludedPatterns = const [],
     this.formatOutput = false,
+    this.primaryLocalization,
     RegExp? regExp,
   }) : _regExp = regExp;
 
@@ -53,6 +50,8 @@ class GeneratorConfig {
 
   final RegExp? _regExp;
 
+  final String? primaryLocalization;
+
   /// RegExp for localization files
   RegExp get regExp => _regExp ?? RegExp('(\\W)(?<pattern>intl)?_?(?<lang>[A-Za-z]{2})_?(?<country>[A-Za-z]{2})?.(ya?ml|json)\$');
 
@@ -66,6 +65,7 @@ class GeneratorConfig {
     String? packagePath,
     List<String>? excludedPatterns,
     bool? formatOutput,
+    String? primaryLocalization,
     RegExp? regExp,
   }) {
     return GeneratorConfig(
@@ -78,6 +78,7 @@ class GeneratorConfig {
       packagePath: packagePath ?? this.packagePath,
       excludedPatterns: excludedPatterns ?? this.excludedPatterns,
       formatOutput: formatOutput ?? this.formatOutput,
+      primaryLocalization: primaryLocalization ?? this.primaryLocalization,
       regExp: regExp ?? _regExp,
     );
   }

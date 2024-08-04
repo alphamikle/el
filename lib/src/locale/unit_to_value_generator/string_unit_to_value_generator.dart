@@ -1,5 +1,6 @@
 import '../../tools/arguments_extractor.dart';
 import '../../tools/factory_value_generator.dart';
+import '../../tools/value_prettier.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
 
@@ -8,7 +9,7 @@ CodeOutput stringUnitToValue(StringUnit unit) {
 
   if (arguments.isEmpty) {
     return CodeOutput(
-      classArgumentCode: "${unit.fieldName}: $qt${unit.value}$qt,",
+      classArgumentCode: "${unit.fieldName}: ${prettyValue(unit.value)},",
       classBodyCode: '',
       factoryArgumentCode: _factoryCode(unit.fieldName, {}),
       externalCode: '',
@@ -17,7 +18,7 @@ CodeOutput stringUnitToValue(StringUnit unit) {
   final String functionArguments = '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
 
   return CodeOutput(
-    classArgumentCode: "${unit.fieldName}: $functionArguments => $qt${unit.value}$qt,",
+    classArgumentCode: "${unit.fieldName}: $functionArguments => ${prettyValue(unit.value)},",
     classBodyCode: '',
     factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
     externalCode: '',

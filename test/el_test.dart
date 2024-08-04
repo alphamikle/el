@@ -30,6 +30,7 @@ void main() {
         excludedPatterns: [
           'localizely_example',
         ],
+        // primaryLocalization: 'en',
       ),
     );
     final (String, List<LanguageLocalization>) result = generator.generate();

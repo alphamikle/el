@@ -33,7 +33,6 @@ class AssetsGenLoader implements ContentLoader {
 
   @override
   List<LanguageLocalization> load() {
-    final List<LanguageLocalization> result = [];
     _pubspecContent = PubspecLoader().load();
     final YamlMap? flutter = _pubspecContent[kFlutter];
     if (flutter == null) {
@@ -53,6 +52,7 @@ assets: <-- 1
 ''');
     }
     final Map<String, LanguageLocalization> localizationsCache = {};
+    final List<LanguageLocalization> result = [];
 
     for (final dynamic asset in assets) {
       if (asset is String) {

@@ -1,5 +1,6 @@
 import '../../tools/arguments_extractor.dart';
 import '../../tools/factory_value_generator.dart';
+import '../../tools/value_prettier.dart';
 import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
@@ -51,7 +52,7 @@ CodeOutput _empty({
 }) {
   return CodeOutput(
     classArgumentCode:
-        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $qt${unit.value.value}$qt'},",
+        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' ${prettyValue(unit.value.value)}'},",
     factoryArgumentCode: _factoryCode(unit.fieldName, {}),
     classBodyCode: '''
 /// ${unit.value.description}

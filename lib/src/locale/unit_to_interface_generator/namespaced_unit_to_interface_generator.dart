@@ -41,7 +41,7 @@ T getContent<T>(String key) {
   if (value is T) {
     return value;
   }
-  throw ArgumentError('Not found content for the key \$key');
+  throw ArgumentError('Not found content for the key \$key with type \$T');
 }
 
 dynamic operator [](Object? key) {

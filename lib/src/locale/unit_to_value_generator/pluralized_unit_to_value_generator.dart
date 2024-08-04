@@ -1,6 +1,7 @@
 import '../../tools/arguments_extractor.dart';
 import '../../tools/factory_value_generator.dart';
 import '../../tools/localization_tools.dart';
+import '../../tools/value_prettier.dart';
 import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
@@ -33,12 +34,12 @@ CodeOutput pluralizedUnitToValue(PluralizedUnit unit) {
 ${unit.fieldName}: $functionArguments => Intl.plural(
   howMany,
   name: r$qt${unit.fieldName}$qt,
-  ${unit.value.zero != null ? 'zero: $qt${unit.value.zero}$qt,' : ''}
-  one: $qt${unit.value.one}$qt,
-  ${unit.value.two != null ? 'two: $qt${unit.value.two}$qt,' : ''}
-  ${unit.value.few != null ? 'few: $qt${unit.value.few}$qt,' : ''}
-  ${unit.value.many != null ? 'many: $qt${unit.value.many}$qt,' : ''}
-  other: $qt${unit.value.other}$qt,
+  ${unit.value.zero != null ? 'zero: ${prettyValue(unit.value.zero)},' : ''}
+  one: ${prettyValue(unit.value.one)},
+  ${unit.value.two != null ? 'two: ${prettyValue(unit.value.two)},' : ''}
+  ${unit.value.few != null ? 'few: ${prettyValue(unit.value.few)},' : ''}
+  ${unit.value.many != null ? 'many: ${prettyValue(unit.value.many)},' : ''}
+  other: ${prettyValue(unit.value.other)},
   precision: precision,
 ),
 ''',
@@ -57,12 +58,12 @@ CodeOutput _empty({
 ${unit.fieldName}: (int howMany, {int? precision}) => Intl.plural(
   howMany,
   name: r$qt${unit.fieldName}$qt,
-  ${unit.value.zero != null ? 'zero: $qt${unit.value.zero}$qt,' : ''}
-  one: $qt${unit.value.one}$qt,
-  ${unit.value.two != null ? 'two: $qt${unit.value.two}$qt,' : ''}
-  ${unit.value.few != null ? 'few: $qt${unit.value.few}$qt,' : ''}
-  ${unit.value.many != null ? 'many: $qt${unit.value.many}$qt,' : ''}
-  other: $qt${unit.value.other}$qt,
+  ${unit.value.zero != null ? 'zero: ${prettyValue(unit.value.zero)},' : ''}
+  one: ${prettyValue(unit.value.one)},
+  ${unit.value.two != null ? 'two: ${prettyValue(unit.value.two)},' : ''}
+  ${unit.value.few != null ? 'few: ${prettyValue(unit.value.few)},' : ''}
+  ${unit.value.many != null ? 'many: ${prettyValue(unit.value.many)},' : ''}
+  other: ${prettyValue(unit.value.other)},
   precision: precision,
 ),
 ''',

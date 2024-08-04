@@ -1,6 +1,7 @@
 import '../../tools/arguments_extractor.dart';
 import '../../tools/factory_value_generator.dart';
 import '../../tools/localization_tools.dart';
+import '../../tools/value_prettier.dart';
 import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
@@ -27,9 +28,9 @@ CodeOutput genderUnitToValue(GenderUnit unit) {
 ${unit.fieldName}: $functionArguments => Intl.gender(
   gender.name,
   name: r$qt${unit.fieldName}$qt,
-  ${unit.value.female != null ? 'female: $qt${unit.value.female}$qt,' : ''}
-  ${unit.value.male != null ? 'male: $qt${unit.value.male}$qt,' : ''}
-  other: $qt${unit.value.other}$qt,
+  ${unit.value.female != null ? 'female: ${prettyValue(unit.value.female)},' : ''}
+  ${unit.value.male != null ? 'male: ${prettyValue(unit.value.male)},' : ''}
+  other: ${prettyValue(unit.value.other)},
 ),
 ''',
     factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
@@ -47,9 +48,9 @@ CodeOutput _empty({
 ${unit.fieldName}: (Gender gender) => Intl.gender(
   gender.name,
   name: r$qt${unit.fieldName}$qt,
-  ${unit.value.female != null ? 'female: $qt${unit.value.female}$qt,' : ''}
-  ${unit.value.male != null ? 'male: $qt${unit.value.male}$qt,' : ''}
-  other: $qt${unit.value.other}$qt,
+  ${unit.value.female != null ? 'female: ${prettyValue(unit.value.female)},' : ''}
+  ${unit.value.male != null ? 'male: ${prettyValue(unit.value.male)},' : ''}
+  other: ${prettyValue(unit.value.other)},
 ),
 ''',
     factoryArgumentCode: _factoryCode(unit.fieldName, {}),

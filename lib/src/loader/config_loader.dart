@@ -16,6 +16,7 @@ const String kPackagePath = 'package_path';
 const String kPackageVersion = 'package_version';
 const String kFormatOutput = 'format_output';
 const String kRegExp = 'reg_exp';
+const String kPrimaryLocalization = 'primary_localization';
 
 class ConfigLoader {
   GeneratorConfig load() {
@@ -41,6 +42,7 @@ class ConfigLoader {
       packagePath: config[kPackagePath] ?? kDefaultPackagePath,
       packageVersion: config[kPackageVersion] ?? kDefaultPackageVersion,
       regExp: regExp,
+      primaryLocalization: config[kPrimaryLocalization],
       formatOutput: bool.tryParse(config[kFormatOutput].toString()) ?? false,
     );
   }

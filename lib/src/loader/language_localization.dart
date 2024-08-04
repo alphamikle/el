@@ -1,3 +1,4 @@
+import '../tools/emptier.dart';
 import '../tools/extensions.dart';
 
 /// Represents the contents of a single localization file, with content presented in the single language
@@ -44,6 +45,14 @@ class LanguageLocalization {
       language: language ?? this.language,
       country: country ?? this.country,
       content: content ?? this.content,
+    );
+  }
+
+  LanguageLocalization empty() {
+    return LanguageLocalization(
+      language: language,
+      country: country,
+      content: content.empty(),
     );
   }
 }
