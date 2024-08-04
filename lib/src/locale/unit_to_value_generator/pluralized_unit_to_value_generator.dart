@@ -33,7 +33,7 @@ CodeOutput pluralizedUnitToValue(PluralizedUnit unit) {
     classArgumentCode: '''
 ${unit.fieldName}: $functionArguments => Intl.plural(
   howMany,
-  name: r$qt${unit.fieldName}$qt,
+  name: r$qt${unit.rawName}$qt,
   ${unit.value.zero != null ? 'zero: ${prettyValue(unit.value.zero)},' : ''}
   one: ${prettyValue(unit.value.one)},
   ${unit.value.two != null ? 'two: ${prettyValue(unit.value.two)},' : ''}
@@ -44,7 +44,7 @@ ${unit.fieldName}: $functionArguments => Intl.plural(
 ),
 ''',
     classBodyCode: '',
-    factoryArgumentCode: _factoryCode(unit.fieldName, {'howMany', ...arguments}),
+    factoryArgumentCode: _factoryCode(unit, {'howMany', ...arguments}),
     externalCode: '',
   );
 }
@@ -57,7 +57,7 @@ CodeOutput _empty({
     classArgumentCode: '''
 ${unit.fieldName}: (int howMany, {int? precision}) => Intl.plural(
   howMany,
-  name: r$qt${unit.fieldName}$qt,
+  name: r$qt${unit.rawName}$qt,
   ${unit.value.zero != null ? 'zero: ${prettyValue(unit.value.zero)},' : ''}
   one: ${prettyValue(unit.value.one)},
   ${unit.value.two != null ? 'two: ${prettyValue(unit.value.two)},' : ''}
@@ -67,23 +67,26 @@ ${unit.fieldName}: (int howMany, {int? precision}) => Intl.plural(
   precision: precision,
 ),
 ''',
-    factoryArgumentCode: _factoryCode(unit.fieldName, {'howMany'}),
+    factoryArgumentCode: _factoryCode(unit, {'howMany'}),
     classBodyCode: '',
     externalCode: '',
   );
 }
 
-String _factoryCode(String fieldName, Set<String> arguments) {
+String _factoryCode(PluralizedUnit unit, Set<String> arguments) {
+  final String fieldName = unit.fieldName;
+  final String rawName = unit.rawName;
+
   return '''
 $fieldName: (int howMany, {${_declarationArguments(arguments)}int? precision}) => Intl.plural(
   howMany,
-  name: r$qt$fieldName$qt,
-  zero: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'zero', arguments: arguments, withHowMany: true, nullable: true)}, 
-  one: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'one', arguments: arguments, withHowMany: true)},
-  two: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'two', arguments: arguments, withHowMany: true, nullable: true)},
-  few: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'few', arguments: arguments, withHowMany: true, nullable: true)},
-  many: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'many', arguments: arguments, withHowMany: true, nullable: true)},
-  other: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'other', arguments: arguments, withHowMany: true)},
+  name: r$qt$rawName$qt,
+  zero: ${factoryValueGenerator(rawName: rawName, jsonKey: 'zero', arguments: arguments, withHowMany: true, nullable: true)}, 
+  one: ${factoryValueGenerator(rawName: rawName, jsonKey: 'one', arguments: arguments, withHowMany: true)},
+  two: ${factoryValueGenerator(rawName: rawName, jsonKey: 'two', arguments: arguments, withHowMany: true, nullable: true)},
+  few: ${factoryValueGenerator(rawName: rawName, jsonKey: 'few', arguments: arguments, withHowMany: true, nullable: true)},
+  many: ${factoryValueGenerator(rawName: rawName, jsonKey: 'many', arguments: arguments, withHowMany: true, nullable: true)},
+  other: ${factoryValueGenerator(rawName: rawName, jsonKey: 'other', arguments: arguments, withHowMany: true)},
   precision: precision,
 ),
 ''';

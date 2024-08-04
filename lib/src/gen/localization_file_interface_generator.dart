@@ -86,7 +86,7 @@ dynamic operator [](Object? key) {
       factoryArgumentsCode.add(code.factoryArgumentCode ?? '');
       externalCode.add(code.externalCode);
       classBodyCode.add(code.classBodyCode);
-      dynamicContent.add("r'''${unit.fieldName}''': ${unit.fieldName},");
+      dynamicContent.add("r'''${unit.rawName}''': ${unit.fieldName},");
     }
   }
 }

@@ -27,7 +27,7 @@ CodeOutput genderUnitToInterface(GenderUnit unit, {bool useThisKeyword = true}) 
   return CodeOutput(
     classArgumentCode:
         '${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
-    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
+    factoryArgumentCode: _factoryCode(unit, arguments),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
 final String Function$functionArguments ${unit.fieldName};
@@ -48,7 +48,7 @@ CodeOutput _empty({
       if (useThisKeyword == false) ': $parentClassName\$${unit.fieldName}',
       ',',
     ].join(),
-    factoryArgumentCode: _factoryCode(unit.fieldName, {}),
+    factoryArgumentCode: _factoryCode(unit, {}),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
 final String Function(Gender gender) ${unit.fieldName};
@@ -57,16 +57,18 @@ final String Function(Gender gender) ${unit.fieldName};
   );
 }
 
-String _factoryCode(String fieldName, Set<String> arguments) {
+String _factoryCode(GenderUnit unit, Set<String> arguments) {
+  final String fieldName = unit.fieldKey;
+  final String rawName = unit.rawName;
   final bool hasArguments = arguments.isNotEmpty;
 
   return '''
 $fieldName: (Gender gender${hasArguments ? ', {' : ''}${arguments.map((String arg) => 'required String $arg').join(', ')}${hasArguments ? '}' : ''}) => Intl.gender(
   gender.name,
-  name: r$qt$fieldName$qt,
-  female: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'female', arguments: arguments, nullable: true)},
-  male: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'male', arguments: arguments, nullable: true)},
-  other: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'other', arguments: arguments)},
+  name: r$qt$rawName$qt,
+  female: ${factoryValueGenerator(rawName: rawName, jsonKey: 'female', arguments: arguments, nullable: true)},
+  male: ${factoryValueGenerator(rawName: rawName, jsonKey: 'male', arguments: arguments, nullable: true)},
+  other: ${factoryValueGenerator(rawName: rawName, jsonKey: 'other', arguments: arguments)},
 ),
 ''';
 }

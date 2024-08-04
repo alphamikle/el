@@ -1,14 +1,14 @@
 import '../locale/code_output.dart';
 
 String factoryValueGenerator({
-  required String fieldName,
+  required String rawName,
   String? jsonKey,
   Set<String> arguments = const {},
   bool withHowMany = false,
   bool nullable = false,
 }) {
   final bool hasArguments = arguments.isNotEmpty;
-  final String extraction = "json[r$qt$fieldName$qt]";
+  final String extraction = "json[r$qt$rawName$qt]";
 
   if (nullable) {
     return [

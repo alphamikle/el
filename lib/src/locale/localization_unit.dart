@@ -10,6 +10,8 @@ sealed class LocalizationUnit {
 
   String get fieldName;
 
+  String get rawName;
+
   String get fieldKey;
 
   Object get value;
@@ -29,6 +31,9 @@ class StringUnit extends LocalizationUnit {
 
   @override
   String get fieldName => fieldKey.asClearCamelCase(parents.join());
+
+  @override
+  String get rawName => fieldKey;
 
   @override
   final String fieldKey;
@@ -55,6 +60,9 @@ class StringWithDescriptionUnit extends LocalizationUnit {
   String get fieldName => fieldKey.asClearCamelCase(parents.join());
 
   @override
+  String get rawName => fieldKey;
+
+  @override
   final String fieldKey;
 
   @override
@@ -77,6 +85,9 @@ class GenderUnit extends LocalizationUnit {
 
   @override
   String get fieldName => fieldKey.asClearCamelCase(parents.join());
+
+  @override
+  String get rawName => fieldKey;
 
   @override
   final String fieldKey;
@@ -103,6 +114,9 @@ class PluralizedUnit extends LocalizationUnit {
   String get fieldName => fieldKey.asClearCamelCase(parents.join());
 
   @override
+  String get rawName => fieldKey;
+
+  @override
   final String fieldKey;
 
   @override
@@ -125,6 +139,9 @@ class NamespacedUnit extends LocalizationUnit {
 
   @override
   String get fieldName => fieldKey.asClearCamelCase(parents.join());
+
+  @override
+  String get rawName => fieldKey;
 
   @override
   final String fieldKey;

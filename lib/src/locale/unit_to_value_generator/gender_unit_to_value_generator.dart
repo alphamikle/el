@@ -27,13 +27,13 @@ CodeOutput genderUnitToValue(GenderUnit unit) {
     classArgumentCode: '''
 ${unit.fieldName}: $functionArguments => Intl.gender(
   gender.name,
-  name: r$qt${unit.fieldName}$qt,
+  name: r$qt${unit.rawName}$qt,
   ${unit.value.female != null ? 'female: ${prettyValue(unit.value.female)},' : ''}
   ${unit.value.male != null ? 'male: ${prettyValue(unit.value.male)},' : ''}
   other: ${prettyValue(unit.value.other)},
 ),
 ''',
-    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
+    factoryArgumentCode: _factoryCode(unit, arguments),
     classBodyCode: '',
     externalCode: '',
   );
@@ -47,28 +47,30 @@ CodeOutput _empty({
     classArgumentCode: '''
 ${unit.fieldName}: (Gender gender) => Intl.gender(
   gender.name,
-  name: r$qt${unit.fieldName}$qt,
+  name: r$qt${unit.rawName}$qt,
   ${unit.value.female != null ? 'female: ${prettyValue(unit.value.female)},' : ''}
   ${unit.value.male != null ? 'male: ${prettyValue(unit.value.male)},' : ''}
   other: ${prettyValue(unit.value.other)},
 ),
 ''',
-    factoryArgumentCode: _factoryCode(unit.fieldName, {}),
+    factoryArgumentCode: _factoryCode(unit, {}),
     classBodyCode: '',
     externalCode: '',
   );
 }
 
-String _factoryCode(String fieldName, Set<String> arguments) {
+String _factoryCode(GenderUnit unit, Set<String> arguments) {
+  final String fieldName = unit.fieldName;
+  final String rawName = unit.rawName;
   final bool hasArguments = arguments.isNotEmpty;
 
   return '''
 $fieldName: (Gender gender${hasArguments ? ', {' : ''}${arguments.map((String arg) => 'required String $arg').join(', ')}${hasArguments ? '}' : ''}) => Intl.gender(
   gender.name,
-  name: r$qt$fieldName$qt,
-  female: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'female', arguments: arguments, nullable: true)},
-  male: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'male', arguments: arguments, nullable: true)},
-  other: ${factoryValueGenerator(fieldName: fieldName, jsonKey: 'other', arguments: arguments)},
+  name: r$qt$rawName$qt,
+  female: ${factoryValueGenerator(rawName: rawName, jsonKey: 'female', arguments: arguments, nullable: true)},
+  male: ${factoryValueGenerator(rawName: rawName, jsonKey: 'male', arguments: arguments, nullable: true)},
+  other: ${factoryValueGenerator(rawName: rawName, jsonKey: 'other', arguments: arguments)},
 ),
 ''';
 }

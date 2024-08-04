@@ -30,7 +30,7 @@ CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword =
   for (final MapEntry(:value) in unit.value.entries) {
     childrenCodeWithoutThisKeyword.add(localizationUnitToInterface(value, useThisKeyword: false));
     childrenCodeWithThisKeyword.add(localizationUnitToInterface(value));
-    dynamicContent.add("r'''${value.fieldName}''': ${value.fieldName},");
+    dynamicContent.add("r'''${value.rawName}''': ${value.fieldName},");
   }
 
   dynamicContent.addAll([
@@ -78,6 +78,6 @@ final $constructorName $variableName;
     classArgumentCode: classArgumentCode.join('\n'),
     classBodyCode: classBodyCode,
     externalCode: externalCode.join('\n'),
-    factoryArgumentCode: '${unit.fieldName}: $constructorName.fromJson((json[r$qt${unit.fieldName}$qt] as Map).cast<String, dynamic>()),',
+    factoryArgumentCode: '${unit.fieldName}: $constructorName.fromJson((json[r$qt${unit.rawName}$qt] as Map).cast<String, dynamic>()),',
   );
 }

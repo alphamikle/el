@@ -36,7 +36,7 @@ CodeOutput stringWithDescriptionUnitToInterface(StringWithDescriptionUnit unit, 
   return CodeOutput(
     classArgumentCode:
         "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},",
-    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
+    factoryArgumentCode: _factoryCode(unit, arguments),
     classBodyCode: '''
 /// ${unit.value.description}
 final String Function$functionArguments ${unit.fieldName};
@@ -53,7 +53,7 @@ CodeOutput _empty({
   return CodeOutput(
     classArgumentCode:
         "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' ${prettyValue(unit.value.value)}'},",
-    factoryArgumentCode: _factoryCode(unit.fieldName, {}),
+    factoryArgumentCode: _factoryCode(unit, {}),
     classBodyCode: '''
 /// ${unit.value.description}
 final String ${unit.fieldName};
@@ -62,10 +62,12 @@ final String ${unit.fieldName};
   );
 }
 
-String _factoryCode(String fieldName, Set<String> arguments) {
+String _factoryCode(StringWithDescriptionUnit unit, Set<String> arguments) {
+  final String fieldName = unit.fieldName;
+  final String rawName = unit.rawName;
   final bool hasArguments = arguments.isNotEmpty;
 
   return '''
-$fieldName: ${hasArguments ? '({${arguments.map((String arg) => 'required String $arg').join(', ')}}) => ' : ''}${factoryValueGenerator(fieldName: fieldName, arguments: arguments)},
+$fieldName: ${hasArguments ? '({${arguments.map((String arg) => 'required String $arg').join(', ')}}) => ' : ''}${factoryValueGenerator(rawName: rawName, arguments: arguments)},
 ''';
 }

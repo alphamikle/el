@@ -11,7 +11,7 @@ CodeOutput stringUnitToValue(StringUnit unit) {
     return CodeOutput(
       classArgumentCode: "${unit.fieldName}: ${prettyValue(unit.value)},",
       classBodyCode: '',
-      factoryArgumentCode: _factoryCode(unit.fieldName, {}),
+      factoryArgumentCode: _factoryCode(unit, {}),
       externalCode: '',
     );
   }
@@ -20,15 +20,17 @@ CodeOutput stringUnitToValue(StringUnit unit) {
   return CodeOutput(
     classArgumentCode: "${unit.fieldName}: $functionArguments => ${prettyValue(unit.value)},",
     classBodyCode: '',
-    factoryArgumentCode: _factoryCode(unit.fieldName, arguments),
+    factoryArgumentCode: _factoryCode(unit, arguments),
     externalCode: '',
   );
 }
 
-String _factoryCode(String fieldName, Set<String> arguments) {
+String _factoryCode(StringUnit unit, Set<String> arguments) {
+  final String fieldName = unit.fieldName;
+  final String rawName = unit.rawName;
   final bool hasArguments = arguments.isNotEmpty;
 
   return '''
-$fieldName: ${hasArguments ? '({${arguments.map((String arg) => 'required String $arg').join(', ')}}) => ' : ''}${factoryValueGenerator(fieldName: fieldName, arguments: arguments)},
+$fieldName: ${hasArguments ? '({${arguments.map((String arg) => 'required String $arg').join(', ')}}) => ' : ''}${factoryValueGenerator(rawName: rawName, arguments: arguments)},
 ''';
 }
