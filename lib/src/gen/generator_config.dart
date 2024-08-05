@@ -17,6 +17,7 @@ class GeneratorConfig {
     this.excludedPatterns = const [],
     this.formatOutput = false,
     this.primaryLocalization,
+    this.saveMergedFiles,
     RegExp? regExp,
   }) : _regExp = regExp;
 
@@ -52,8 +53,10 @@ class GeneratorConfig {
 
   final String? primaryLocalization;
 
+  final bool? saveMergedFiles;
+
   /// RegExp for localization files
-  RegExp get regExp => _regExp ?? RegExp('(\\W)(?<pattern>intl)?_?(?<lang>[A-Za-z]{2})_?(?<country>[A-Za-z]{2})?.(ya?ml|json)\$');
+  RegExp get regExp => _regExp ?? RegExp(r'(\W)(?<pattern>intl)?_?(?<lang>[a-z]{2})[_-]?(?<country>[A-Z]{2})?.(ya?ml|json)$');
 
   GeneratorConfig copyWith({
     String? localizationsClassName,
@@ -67,6 +70,7 @@ class GeneratorConfig {
     bool? formatOutput,
     String? primaryLocalization,
     RegExp? regExp,
+    bool? saveMergedFiles,
   }) {
     return GeneratorConfig(
       localizationsClassName: localizationsClassName ?? this.localizationsClassName,
@@ -80,6 +84,7 @@ class GeneratorConfig {
       formatOutput: formatOutput ?? this.formatOutput,
       primaryLocalization: primaryLocalization ?? this.primaryLocalization,
       regExp: regExp ?? _regExp,
+      saveMergedFiles: saveMergedFiles,
     );
   }
 }

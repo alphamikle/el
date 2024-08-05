@@ -1,6 +1,6 @@
 name: easiest_localization
 description: The easiest and fastest way to localize your application with type safety
-version: 1.1.0
+version: 2.0.0
 repository: https://github.com/alphamikle/el
 
 environment:
@@ -20,12 +20,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  nanc_lints: ^1.0.0
+  flutter_lints: ^4.0.0
   analyzer: ^6.7.0
-
-flutter:
-  assets:
-    - assets/
 
 easiest_localization:
   excluded:

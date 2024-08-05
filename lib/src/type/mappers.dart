@@ -2,13 +2,19 @@ import 'dart:developer';
 
 import 'package:yaml/yaml.dart';
 
+import '../locale/localization_unit.dart';
+import '../tools/names_converter.dart';
 import 'types.dart';
 
 String capitalize(String? string) {
   if (string == null || string.isEmpty) {
     return '';
   }
-  return string.substring(0, 1).toUpperCase() + string.substring(1, string.length);
+  final String pascalCaseString = string.asPascalCase;
+  if (pascalCaseString == 'Locale') {
+    return r'$Locale';
+  }
+  return pascalCaseString;
 }
 
 Json yamlMapToJson(YamlMap yamlMap) {

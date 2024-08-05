@@ -36,6 +36,8 @@ class LanguageLocalization {
         if (country != null) country,
       ].join();
 
+  String get localeAsString => "Locale('${language.toLowerCase()}'${country == null ? '' : ", '${country!.toUpperCase()}'"})";
+
   LanguageLocalization copyWith({
     String? language,
     String? country,

@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:merger/merger.dart';
+import 'package:path/path.dart';
 
 import '../gen/generator_config.dart';
 import '../loader/language_localization.dart';
@@ -158,6 +162,10 @@ class LanguagesMerger {
       );
     }
 
+    if (config.saveMergedFiles != null) {
+      _saveMergedFiles(config, response);
+    }
+
     response.add(scheme);
 
     return response;
@@ -165,3 +173,15 @@ class LanguagesMerger {
 }
 
 int sizeSorter(LanguageLocalization a, LanguageLocalization b) => b.size.compareTo(a.size);
+
+void _saveMergedFiles(GeneratorConfig config, List<LanguageLocalization> localizations) {
+  final String outputPath = join(Directory.current.path, config.packagePath, config.packageName, 'merged');
+
+  Directory(outputPath).createSync(recursive: true);
+
+  for (final LanguageLocalization localization in localizations) {
+    final String fileName = '${[localization.language, if (localization.country != null) localization.country].join('_')}.json';
+
+    File(join(outputPath, fileName)).writeAsStringSync(jsonEncode(localization.content));
+  }
+}

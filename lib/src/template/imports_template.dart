@@ -1,5 +1,5 @@
 String get importsTemplate => '''
-/// This is generated content. There is no point in changing it by hand.
+/// This is generated content. There is no point to change it by hands.
 
 // ignore_for_file: type=lint
 
@@ -14,17 +14,6 @@ import 'package:intl/intl.dart';
 final RegExp _variableRegExp = RegExp(r'\\\$\\{[^}]+\\} ?');
 
 typedef Checker<T> = bool Function(T value);
-
-extension _ExtendedList<T> on List<T> {
-  T? firstWhereOrNull(Checker<T> checker) {
-    for (final T value in this) {
-      if (checker(value)) {
-        return value;
-      }
-    }
-    return null;
-  }
-}
 
 enum Gender {
   male,

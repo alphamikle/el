@@ -1,9 +1,11 @@
-abstract interface class LocalizationProvider<L, M> {
+import 'dart:ui' show Locale;
+
+abstract interface class LocalizationProvider<M> {
   String get name;
 
-  List<L> get supportedLocales;
+  List<Locale> get supportedLocales;
 
-  Future<M> fetchLocalization(L locale);
+  Future<M> fetchLocalization(Locale locale);
 
-  bool canLoad(L locale);
+  bool canLoad(Locale locale);
 }

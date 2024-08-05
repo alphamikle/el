@@ -17,6 +17,8 @@ const kIntl = 'intl';
 const kEnv = 'environment';
 const kSdk = 'sdk';
 
+final Set<String> _notified = {};
+
 /// Used to load localizations in the generation-based flow
 class AssetsGenLoader implements ContentLoader {
   AssetsGenLoader(this.config);
@@ -46,8 +48,8 @@ Not found "assets" section in the pubspec.yaml file or this section is empty. Pl
 #...
 flutter:
   #...
-assets: <-- 1
-  - assets/ <-- 2
+  assets: <-- 1
+    - assets/ <-- 2 # or name of your assets folder
 #...
 ''');
     }
@@ -90,22 +92,37 @@ assets: <-- 1
         }
       }
       if (isExcluded) {
-        // ignore: avoid_print
-        print(
-          '[EASIEST_LOCALIZATION] File "${file.path}" was excluded from generation by pattern "$exclusionPattern"',
-        );
+        printOnce('[EASIEST_LOCALIZATION] File "${file.path}" was excluded from generation by pattern "$exclusionPattern"');
         continue;
       }
       final RegExpMatch? match = config.regExp.firstMatch(file.path);
 
       if (match != null) {
-        final String language = match.namedGroup('lang')!;
+        final String? language = match.namedGroup('lang');
+
+        if (language == null || language.length != 2) {
+          throw Exception('Language code "$language" is not valid');
+        }
+
         final String? country = match.namedGroup('country');
-        final Json content = yamlMapToJson(loadYaml(file.readAsStringSync()));
+        final String rawContent = file.readAsStringSync();
+        if (rawContent.isEmpty) {
+          printOnce('[EASIEST_LOCALIZATION] File "${file.path}" have no localization content');
+          continue;
+        }
+        final Json content = yamlMapToJson(loadYaml(rawContent));
         localizationFiles.add(LanguageLocalization(language: language, country: country?.toUpperCase(), content: content));
         matchedFiles.add(file);
       }
     }
     return (matchedFiles, localizationFiles);
+  }
+}
+
+void printOnce(String message) {
+  if (_notified.contains(message) == false) {
+    _notified.add(message);
+    // ignore: avoid_print
+    print(message);
   }
 }

@@ -58,7 +58,7 @@ final String Function(Gender gender) ${unit.fieldName};
 }
 
 String _factoryCode(GenderUnit unit, Set<String> arguments) {
-  final String fieldName = unit.fieldKey;
+  final String fieldName = unit.fieldName;
   final String rawName = unit.rawName;
   final bool hasArguments = arguments.isNotEmpty;
 

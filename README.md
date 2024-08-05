@@ -68,37 +68,62 @@ You can place it as a root key in your `pubspec.yaml` file to configure **el** v
 
 ```yaml
 easiest_localization:
-  # Default value
-  namespace: intl
-  # Default value
-  language_prefix: "[A-Za-z]{2}"
-  # By default - is empty / null
+  # List of strings-patterns that will not be processed despite matching reg_exp
+  # By default - empty
   excluded: []
-  # Default name of output class
+  
+  # The name of the class containing the localization content
   class_name: LocalizationMessages
-  # Default description of generated package
-  description: Some description for generated package
-  # Default name of generated package
+  
+  # Description of the generated localization package
+  description: Generated localization package
+  
+  # The version of the easiest_localization_version package used as a dependency
+  # in the generated localization package.
+  #
+  # May be useful if you are using easiest_localization not from pub.dev
+  # By default it is the same version as in your application's pubspec.yaml
+  easiest_localization_version: <installed version>
+  
+  # Name of the generated localization package and the folder with it
   package_name: localization
-  # Default path to generated package - the root of your project, under which will be created folder <package_name> (localization - by default)
-  package_path: ./
-  # Default version of generated package
+  
+  # Relative path to the generated localization package
+  package_path: './'
+  
+  # Version of the generated localization package
   package_version: 1.0.0
-  # Instead of using <namespace> and <language_prefix> params, you can define your own reg_exp to help el determine your localization files
-  # Only one requirement applies to that regexp - it should contain at least one named argument <lang>
-  # Like ".*translation.*(?<lang>.{2})" - will match on any json / yaml file under any folder with substring "translation" or if file will contain that substring
-  reg_exp: "(?<lang>[A-Za-z]{2})_(?<pattern>intl).(ya?ml|json)$"
-  # Will run "dart fix --apply" to generated package to make it perfect, but consumes a lot of time (100ms - without and about 5-7 seconds with it)
+  
+  # An example of supported file names with a default RegExp: https://regex101.com/r/CALDhV/2
+  #
+  # !!! A mandatory requirement for RegExp: it must have named parameter (?<lang>[a-z]{2}) !!!
+  reg_exp: '(\W)(?<pattern>intl)?_?(?<lang>[a-z]{2})[_-]?(?<country>[A-Z]{2})?.(ya?ml|json)$'
+  
+  # The language code or full localization to be used as the content source,
+  # defaulting to other languages if no fields are described.
+  #
+  # By default - null. This means that if one language has content for certain keys,
+  # and another language does not have those keys at all - all values for those keys in
+  # the other language will be empty.
+  #
+  # Examples: "en", "en_US", "en_CA", etc.
+  primary_localization: <language code or full locale>
+
+  # Whether to apply code formatting to the generated localization package.
+  #
+  # If true - generation takes 1-2 seconds longer. false by default
   format_output: false
-  # The map of fallback languages. It works on next way:
-  # fallback_locales:
-  #   <missed_language>: <existed_fallback_language>
-  # Wildcard '*" means, that existed fallback will be such for any missed locale
-  # If you will not specify that parameter, then - the first founded locale will be used instead of missed
-  fallback_locales:
-    fr: en # for french locale will be used english
-    it: pt # for italian locale will be user portuguese
-    '*': zh # for all another missed locales will be used chinese
+
+  # Whether the merged localization files need to be saved.
+  #
+  # This can be useful when you have multiple files for the same language.
+  # For example - en, en_CA and en_UK. In this case, the main localization file - en,
+  # will contain all the content. And each of the specific files - en_CA / en_UK can contain
+  # only the content that should be different from the main file.
+  #
+  # However, for cloud storages, each of the language files must be fulfilled -
+  # this is where merged files will be useful.
+  save_merged_files: false
 ```
 
 ## 🖨️ Code generation
@@ -114,7 +139,7 @@ After that you will see the generated package with the default or your own name 
 ```yaml
 dependencies:
   localization:
-    path: ./ # here should be the default or your <package_path>
+    path: ./ # here should be a default path - "./" or [package_path] from the configuration
 ```
 
 ## ✍️ How to use (example)

@@ -67,7 +67,9 @@ String _factoryCode(StringWithDescriptionUnit unit, Set<String> arguments) {
   final String rawName = unit.rawName;
   final bool hasArguments = arguments.isNotEmpty;
 
+  final String factoryCode = factoryValueGenerator(rawName: rawName, jsonKey: 'value', arguments: arguments);
+
   return '''
-$fieldName: ${hasArguments ? '({${arguments.map((String arg) => 'required String $arg').join(', ')}}) => ' : ''}${factoryValueGenerator(rawName: rawName, arguments: arguments)},
+$fieldName: ${hasArguments ? '({${arguments.map((String arg) => 'required String $arg').join(', ')}}) => ' : ''}$factoryCode,
 ''';
 }
