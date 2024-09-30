@@ -27,9 +27,9 @@ CodeOutput genderUnitToValue(GenderUnit unit) {
     classArgumentCode: '''
 ${unit.fieldName}: $functionArguments => Intl.gender(
   gender.name,
-  name: r$qt${unit.rawName}$qt,
-  ${unit.value.female != null ? 'female: ${prettyValue(unit.value.female)},' : ''}
-  ${unit.value.male != null ? 'male: ${prettyValue(unit.value.male)},' : ''}
+  name: ${qu(unit.rawName)},
+  ${unit.value.female != null ? 'female: ${prettyValue(unit.value.female, nullable: true)},' : ''}
+  ${unit.value.male != null ? 'male: ${prettyValue(unit.value.male, nullable: true)},' : ''}
   other: ${prettyValue(unit.value.other)},
 ),
 ''',
@@ -47,9 +47,9 @@ CodeOutput _empty({
     classArgumentCode: '''
 ${unit.fieldName}: (Gender gender) => Intl.gender(
   gender.name,
-  name: r$qt${unit.rawName}$qt,
-  ${unit.value.female != null ? 'female: ${prettyValue(unit.value.female)},' : ''}
-  ${unit.value.male != null ? 'male: ${prettyValue(unit.value.male)},' : ''}
+  name: ${qu(unit.rawName)},
+  ${unit.value.female != null ? 'female: ${prettyValue(unit.value.female, nullable: true)},' : ''}
+  ${unit.value.male != null ? 'male: ${prettyValue(unit.value.male, nullable: true)},' : ''}
   other: ${prettyValue(unit.value.other)},
 ),
 ''',
@@ -67,7 +67,7 @@ String _factoryCode(GenderUnit unit, Set<String> arguments) {
   return '''
 $fieldName: (Gender gender${hasArguments ? ', {' : ''}${arguments.map((String arg) => 'required String $arg').join(', ')}${hasArguments ? '}' : ''}) => Intl.gender(
   gender.name,
-  name: r$qt$rawName$qt,
+  name: ${qu(rawName)},
   female: ${factoryValueGenerator(rawName: rawName, jsonKey: 'female', arguments: arguments, nullable: true)},
   male: ${factoryValueGenerator(rawName: rawName, jsonKey: 'male', arguments: arguments, nullable: true)},
   other: ${factoryValueGenerator(rawName: rawName, jsonKey: 'other', arguments: arguments)},

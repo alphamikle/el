@@ -33,12 +33,12 @@ CodeOutput pluralizedUnitToValue(PluralizedUnit unit) {
     classArgumentCode: '''
 ${unit.fieldName}: $functionArguments => Intl.plural(
   howMany,
-  name: r$qt${unit.rawName}$qt,
-  ${unit.value.zero != null ? 'zero: ${prettyValue(unit.value.zero)},' : ''}
+  name: ${qu(unit.rawName)},
+  ${unit.value.zero != null ? 'zero: ${prettyValue(unit.value.zero, nullable: true)},' : ''}
   one: ${prettyValue(unit.value.one)},
-  ${unit.value.two != null ? 'two: ${prettyValue(unit.value.two)},' : ''}
-  ${unit.value.few != null ? 'few: ${prettyValue(unit.value.few)},' : ''}
-  ${unit.value.many != null ? 'many: ${prettyValue(unit.value.many)},' : ''}
+  ${unit.value.two != null ? 'two: ${prettyValue(unit.value.two, nullable: true)},' : ''}
+  ${unit.value.few != null ? 'few: ${prettyValue(unit.value.few, nullable: true)},' : ''}
+  ${unit.value.many != null ? 'many: ${prettyValue(unit.value.many, nullable: true)},' : ''}
   other: ${prettyValue(unit.value.other)},
   precision: precision,
 ),
@@ -57,12 +57,12 @@ CodeOutput _empty({
     classArgumentCode: '''
 ${unit.fieldName}: (int howMany, {int? precision}) => Intl.plural(
   howMany,
-  name: r$qt${unit.rawName}$qt,
-  ${unit.value.zero != null ? 'zero: ${prettyValue(unit.value.zero)},' : ''}
+  name: ${qu(unit.rawName)},
+  ${unit.value.zero != null ? 'zero: ${prettyValue(unit.value.zero, nullable: true)},' : ''}
   one: ${prettyValue(unit.value.one)},
-  ${unit.value.two != null ? 'two: ${prettyValue(unit.value.two)},' : ''}
-  ${unit.value.few != null ? 'few: ${prettyValue(unit.value.few)},' : ''}
-  ${unit.value.many != null ? 'many: ${prettyValue(unit.value.many)},' : ''}
+  ${unit.value.two != null ? 'two: ${prettyValue(unit.value.two, nullable: true)},' : ''}
+  ${unit.value.few != null ? 'few: ${prettyValue(unit.value.few, nullable: true)},' : ''}
+  ${unit.value.many != null ? 'many: ${prettyValue(unit.value.many, nullable: true)},' : ''}
   other: ${prettyValue(unit.value.other)},
   precision: precision,
 ),
@@ -80,7 +80,7 @@ String _factoryCode(PluralizedUnit unit, Set<String> arguments) {
   return '''
 $fieldName: (int howMany, {${_declarationArguments(arguments)}int? precision}) => Intl.plural(
   howMany,
-  name: r$qt$rawName$qt,
+  name: ${qu(rawName)},
   zero: ${factoryValueGenerator(rawName: rawName, jsonKey: 'zero', arguments: arguments, withHowMany: true, nullable: true)}, 
   one: ${factoryValueGenerator(rawName: rawName, jsonKey: 'one', arguments: arguments, withHowMany: true)},
   two: ${factoryValueGenerator(rawName: rawName, jsonKey: 'two', arguments: arguments, withHowMany: true, nullable: true)},

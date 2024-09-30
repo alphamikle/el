@@ -8,15 +8,17 @@ String factoryValueGenerator({
   bool nullable = false,
 }) {
   final bool hasArguments = arguments.isNotEmpty;
-  final String extraction = "json[r$qt$rawName$qt]";
+  String extraction = "json[${qu(rawName)}]";
+  extraction = [
+    extraction,
+    if (jsonKey != null) "['$jsonKey']",
+  ].join();
 
   if (nullable) {
     return [
       extraction,
-      if (jsonKey != null) "['$jsonKey']",
-      ' == null ? null : ',
+      ' == null || $extraction.toString().trim() == \'\' ? null : ',
       extraction,
-      if (jsonKey != null) "['$jsonKey']",
       '.toString()',
       if (withHowMany) ".replaceAll(r'\${howMany}', howMany.toString())",
       for (final argument in arguments) ".replaceAll(r'\${$argument}', $argument)",
@@ -26,7 +28,6 @@ String factoryValueGenerator({
 
   return [
     "($extraction",
-    if (jsonKey != null) "['$jsonKey']",
     " ?? '').toString()",
     if (withHowMany) ".replaceAll(r'\${howMany}', howMany.toString())",
     for (final argument in arguments) ".replaceAll(r'\${$argument}', $argument)",

@@ -57,4 +57,9 @@ class LanguageLocalization {
       content: content.empty(),
     );
   }
+
+  @override
+  String toString() {
+    return 'LanguageLocalization{name: $name, size: $size, content: $content}';
+  }
 }

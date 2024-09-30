@@ -51,8 +51,11 @@ class GeneratorConfig {
 
   final RegExp? _regExp;
 
+  /// The master locale, which will be used as fallback if some value is missing in some third-party locale.
+  /// In case if there is null here - there will be empty strings instead of values.
   final String? primaryLocalization;
 
+  /// Whether or not to generate json files containing full content for each language variation for later use from remote servers
   final bool? saveMergedFiles;
 
   /// RegExp for localization files

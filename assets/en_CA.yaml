@@ -1,0 +1,6 @@
+language: "Lang: ${language}; Country: ${country}"
+
+main_screen:
+  today_date_format: dd/MM/yyyy
+
+privacy_policy_url: https://library.app/privacy_ca.pdf

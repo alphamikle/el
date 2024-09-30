@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:yaml/yaml.dart';
 
-import '../locale/localization_unit.dart';
 import '../tools/names_converter.dart';
 import 'types.dart';
 

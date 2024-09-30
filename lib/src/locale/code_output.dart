@@ -13,3 +13,23 @@ class CodeOutput {
   final String externalCode;
   final String? factoryArgumentCode;
 }
+
+String qu(String key, {bool raw = true}) {
+  const Set<String> nowAllowedSymbols = {
+    r'$',
+    "'",
+    '"',
+    '\\',
+    '\n',
+    '\r',
+    '\f',
+    '\r\n',
+  };
+
+  for (final String symbol in nowAllowedSymbols) {
+    if (key.contains(symbol)) {
+      return '${raw ? 'r' : ''}$qt$key$qt';
+    }
+  }
+  return "'$key'";
+}

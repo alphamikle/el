@@ -65,7 +65,7 @@ String _factoryCode(GenderUnit unit, Set<String> arguments) {
   return '''
 $fieldName: (Gender gender${hasArguments ? ', {' : ''}${arguments.map((String arg) => 'required String $arg').join(', ')}${hasArguments ? '}' : ''}) => Intl.gender(
   gender.name,
-  name: r$qt$rawName$qt,
+  name: ${qu(rawName)},
   female: ${factoryValueGenerator(rawName: rawName, jsonKey: 'female', arguments: arguments, nullable: true)},
   male: ${factoryValueGenerator(rawName: rawName, jsonKey: 'male', arguments: arguments, nullable: true)},
   other: ${factoryValueGenerator(rawName: rawName, jsonKey: 'other', arguments: arguments)},

@@ -20,7 +20,6 @@ analyzer:
     todo: warning
     missing_return: error
     prefer_relative_imports: error
-    division_optimization: error
     must_call_super: error
     always_put_required_named_parameters_first: warning
     unnecessary_await_in_return: error

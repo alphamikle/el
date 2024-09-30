@@ -44,8 +44,23 @@ T getContent<T>(String key) {
   throw ArgumentError('Not found content for the key \$key with type \$T');
 }
 
-dynamic operator [](Object? key) {
-  return _content[key];
+Map<String, Object> get content => _content;
+
+List<Object> get contentList => _content.values.toList();
+
+int get length => _content.length;
+
+Object? operator [](Object? key) {
+  final Object? value = _content[key];
+  if (value == null && key is String) {
+    final int? index = int.tryParse(key);
+    if (index == null || index >= contentList.length || index < 0) {
+      return null;
+    }
+
+    return contentList[index];
+  }
+  return value;
 }
 ''',
   ]);
@@ -78,6 +93,6 @@ final $constructorName $variableName;
     classArgumentCode: classArgumentCode.join('\n'),
     classBodyCode: classBodyCode,
     externalCode: externalCode.join('\n'),
-    factoryArgumentCode: '${unit.fieldName}: $constructorName.fromJson((json[r$qt${unit.rawName}$qt] as Map).cast<String, dynamic>()),',
+    factoryArgumentCode: '${unit.fieldName}: $constructorName.fromJson((json[${qu(unit.rawName)}] as Map).cast<String, dynamic>()),',
   );
 }

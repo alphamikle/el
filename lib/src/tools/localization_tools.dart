@@ -1,20 +1,21 @@
 import '../locale/localization_unit.dart';
+import '../type/types.dart';
 
 LocalizationUnit localizeValue(
   String key,
   Object value,
-  Object schemaValue, [
+  Object scheme, [
   List<String>? parents,
 ]) {
   final LocalizationUnit localizationUnit = switch (value) {
-    String() => StringUnit(fieldKey: key, value: value, schemaValue: schemaValue.toString(), parents: parents ?? []),
+    String() => StringUnit(fieldKey: key, value: value, schemaValue: scheme.toString(), parents: parents ?? []),
     {'value': final String $value, 'desc': final String $desc} => StringWithDescriptionUnit(
         fieldKey: key,
         value: (value: $value, description: $desc),
-        schemaValue: (value: schemaValue.get('value'), description: schemaValue.get('desc')),
+        schemaValue: (value: scheme.get('value'), description: scheme.get('desc')),
         parents: parents ?? [],
       ),
-    {'value': final String $value} => StringUnit(fieldKey: key, value: $value, schemaValue: schemaValue.get('value'), parents: parents ?? []),
+    {'value': final String $value} => StringUnit(fieldKey: key, value: $value, schemaValue: scheme.get('value'), parents: parents ?? []),
     {'other': final String $other, 'one': final String $one} => PluralizedUnit(
         fieldKey: key,
         value: (
@@ -27,13 +28,13 @@ LocalizationUnit localizeValue(
           description: value.get('desc')
         ),
         schemaValue: (
-          zero: schemaValue.get('zero'),
-          one: schemaValue.get('one'),
-          two: schemaValue.get('two'),
-          few: schemaValue.get('few'),
-          many: schemaValue.get('many'),
-          other: schemaValue.get('other'),
-          description: schemaValue.get('desc')
+          zero: scheme.get('zero'),
+          one: scheme.get('one'),
+          two: scheme.get('two'),
+          few: scheme.get('few'),
+          many: scheme.get('many'),
+          other: scheme.get('other'),
+          description: scheme.get('desc')
         ),
         parents: parents ?? [],
       ),
@@ -46,16 +47,16 @@ LocalizationUnit localizeValue(
           description: value.get('desc'),
         ),
         schemaValue: (
-          male: schemaValue.get('male'),
-          female: schemaValue.get('female'),
-          other: schemaValue.get('other'),
-          description: schemaValue.get('desc'),
+          male: scheme.get('male'),
+          female: scheme.get('female'),
+          other: scheme.get('other'),
+          description: scheme.get('desc'),
         ),
         parents: parents ?? [],
       ),
     Map() => NamespacedUnit(
         fieldKey: key,
-        value: _localizeMap(key, value, schemaValue as Map, parents ?? []),
+        value: _localizeMap(key, value, scheme as Map, parents ?? []),
         schemaValue: {},
         parents: parents ?? [],
       ),
@@ -87,17 +88,4 @@ String pluralizedValueToString(PluralizedValue value) {
 
 String genderValueToString(GenderValue value) {
   return [value.male, value.female, value.other].join(' ');
-}
-
-extension on Object {
-  T? get<T>(String key) {
-    if (this is Map) {
-      final Object? value = (this as Map)[key];
-      if (value is T) {
-        return value;
-      }
-      return null;
-    }
-    return null;
-  }
 }

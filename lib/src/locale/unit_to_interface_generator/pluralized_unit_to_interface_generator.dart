@@ -65,7 +65,7 @@ String _factoryCode(PluralizedUnit unit, Set<String> arguments) {
   return '''
 $fieldName: (int howMany, {${_declarationArguments(arguments)}int? precision}) => Intl.plural(
   howMany,
-  name: r$qt$rawName$qt,
+  name: ${qu(rawName)},
   zero: ${factoryValueGenerator(rawName: rawName, jsonKey: 'zero', arguments: arguments, withHowMany: true, nullable: true)},
   one: ${factoryValueGenerator(rawName: rawName, jsonKey: 'one', arguments: arguments, withHowMany: true)},
   two: ${factoryValueGenerator(rawName: rawName, jsonKey: 'two', arguments: arguments, withHowMany: true, nullable: true)},
