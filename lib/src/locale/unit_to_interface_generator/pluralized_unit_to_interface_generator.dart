@@ -27,7 +27,7 @@ CodeOutput pluralizedUnitToInterface(PluralizedUnit unit, {bool useThisKeyword =
     );
   }
   String functionArguments = arguments.map((String arg) => 'required String $arg').join(', ');
-  functionArguments = '(int howMany, {$functionArguments, int? precision})';
+  functionArguments = '(num howMany, {$functionArguments, int? precision})';
 
   return CodeOutput(
     classArgumentCode:
@@ -52,7 +52,7 @@ CodeOutput _empty({
     factoryArgumentCode: _factoryCode(unit, {}),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function(int howMany, {int? precision}) ${unit.fieldName};
+final String Function(num howMany, {int? precision}) ${unit.fieldName};
 ''',
     externalCode: '',
   );
@@ -63,7 +63,7 @@ String _factoryCode(PluralizedUnit unit, Set<String> arguments) {
   final String rawName = unit.rawName;
 
   return '''
-$fieldName: (int howMany, {${_declarationArguments(arguments)}int? precision}) => Intl.plural(
+$fieldName: (num howMany, {${_declarationArguments(arguments)}int? precision}) => Intl.plural(
   howMany,
   name: ${qu(rawName)},
   zero: ${factoryValueGenerator(rawName: rawName, jsonKey: 'zero', arguments: arguments, withHowMany: true, nullable: true)},

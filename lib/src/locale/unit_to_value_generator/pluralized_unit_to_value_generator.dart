@@ -27,7 +27,7 @@ CodeOutput pluralizedUnitToValue(PluralizedUnit unit) {
   }
 
   String functionArguments = arguments.map((String arg) => 'required String $arg').join(', ');
-  functionArguments = '(int howMany, {$functionArguments, int? precision})';
+  functionArguments = '(num howMany, {$functionArguments, int? precision})';
 
   return CodeOutput(
     classArgumentCode: '''
@@ -55,7 +55,7 @@ CodeOutput _empty({
 }) {
   return CodeOutput(
     classArgumentCode: '''
-${unit.fieldName}: (int howMany, {int? precision}) => Intl.plural(
+${unit.fieldName}: (num howMany, {int? precision}) => Intl.plural(
   howMany,
   name: ${qu(unit.rawName)},
   ${unit.value.zero != null ? 'zero: ${prettyValue(unit.value.zero, nullable: true)},' : ''}
@@ -78,7 +78,7 @@ String _factoryCode(PluralizedUnit unit, Set<String> arguments) {
   final String rawName = unit.rawName;
 
   return '''
-$fieldName: (int howMany, {${_declarationArguments(arguments)}int? precision}) => Intl.plural(
+$fieldName: (num howMany, {${_declarationArguments(arguments)}int? precision}) => Intl.plural(
   howMany,
   name: ${qu(rawName)},
   zero: ${factoryValueGenerator(rawName: rawName, jsonKey: 'zero', arguments: arguments, withHowMany: true, nullable: true)}, 

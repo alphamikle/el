@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
 import '../gen/generator_config.dart';
+import '../tools/log.dart';
 import '../type/mappers.dart';
 import '../type/types.dart';
 import 'content_loader.dart';
@@ -16,8 +17,6 @@ const kDependencies = 'dependencies';
 const kIntl = 'intl';
 const kEnv = 'environment';
 const kSdk = 'sdk';
-
-final Set<String> _notified = {};
 
 /// Used to load localizations in the generation-based flow
 class AssetsGenLoader implements ContentLoader {
@@ -92,7 +91,7 @@ flutter:
         }
       }
       if (isExcluded) {
-        printOnce('[EASIEST_LOCALIZATION] File "${file.path}" was excluded from generation by pattern "$exclusionPattern"');
+        logOnce('[EASIEST_LOCALIZATION] File "${file.path}" was excluded from generation by pattern "$exclusionPattern"');
         continue;
       }
       final RegExpMatch? match = config.regExp.firstMatch(file.path);
@@ -107,7 +106,7 @@ flutter:
         final String? country = match.namedGroup('country');
         final String rawContent = file.readAsStringSync();
         if (rawContent.isEmpty) {
-          printOnce('[EASIEST_LOCALIZATION] File "${file.path}" have no localization content');
+          logOnce('[EASIEST_LOCALIZATION] File "${file.path}" have no localization content');
           continue;
         }
         final Json content = yamlMapToJson(loadYaml(rawContent));
@@ -116,13 +115,5 @@ flutter:
       }
     }
     return (matchedFiles, localizationFiles);
-  }
-}
-
-void printOnce(String message) {
-  if (_notified.contains(message) == false) {
-    _notified.add(message);
-    // ignore: avoid_print
-    print(message);
   }
 }
