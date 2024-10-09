@@ -1,11 +1,18 @@
-/// This is generated content. There is no point in changing it by hand.
+/// This is generated content. There is no point to change it by hands.
 
 // ignore_for_file: type=lint
 
+import 'dart:developer';
+
+import 'package:easiest_localization/easiest_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+
+final RegExp _variableRegExp = RegExp(r'\$\{[^}]+\} ?');
+
+typedef Checker<T> = bool Function(T value);
 
 enum Gender {
   male,
@@ -13,506 +20,535 @@ enum Gender {
   other,
 }
 
-class Pages {
-  const Pages({
-    required this.home,
-    required this.settings,
-    required this.profile,
-    required this.product,
+class MainScreen {
+  const MainScreen({
+    required this.greetings,
+    required this.books,
+    required this.todayDateFormat,
+    required this.welcome,
   });
-  final PagesHome home;
+  factory MainScreen.fromJson(Map<String, dynamic> json) {
+    return MainScreen(
+      greetings: ({required String username}) =>
+          (json['greetings'] ?? '').toString().replaceAll(r'${username}', username).replaceAll(_variableRegExp, ''),
+      books: MainScreenBooks.fromJson((json['books'] as Map).cast<String, dynamic>()),
+      todayDateFormat: (json['today_date_format'] ?? '').toString(),
+      welcome: (json['welcome'] ?? '').toString(),
+    );
+  }
+  final String Function({required String username}) greetings;
 
-  final PagesSettings settings;
+  final MainScreenBooks books;
 
-  final PagesProfile profile;
-
-  final PagesProduct product;
-
+  final String todayDateFormat;
+  final String welcome;
   Map<String, Object> get _content => {
-        'home': home,
-        'settings': settings,
-        'profile': profile,
-        'product': product,
+        r'''greetings''': greetings,
+        r'''books''': books,
+        r'''today_date_format''': todayDateFormat,
+        r'''welcome''': welcome,
       };
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
       return value;
     }
-    throw ArgumentError('Not found content for the key $key');
+    throw ArgumentError('Not found content for the key $key with type $T');
   }
 
-  dynamic operator [](Object? key) {
-    return _content[key];
+  Map<String, Object> get content => _content;
+
+  List<Object> get contentList => _content.values.toList();
+
+  int get length => _content.length;
+
+  Object? operator [](Object? key) {
+    final Object? value = _content[key];
+    if (value == null && key is String) {
+      final int? index = int.tryParse(key);
+      if (index == null || index >= contentList.length || index < 0) {
+        return null;
+      }
+
+      return contentList[index];
+    }
+    return value;
   }
 }
 
-class PagesHome {
-  const PagesHome({
-    required this.title,
-    required this.description,
-    required this.counter,
-    required this.incrementButton,
+class MainScreenBooks {
+  const MainScreenBooks({
+    required this.add,
+    required this.amountOfNew,
   });
-  final String title;
-  final String description;
+  factory MainScreenBooks.fromJson(Map<String, dynamic> json) {
+    return MainScreenBooks(
+      add: (json['add'] ?? '').toString(),
+      amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'amount_of_new',
+        zero: json['amount_of_new']['zero'] == null || json['amount_of_new']['zero'].toString().trim() == ''
+            ? null
+            : json['amount_of_new']['zero'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        one: (json['amount_of_new']['one'] ?? '').toString().replaceAll(r'${howMany}', howMany.toString()),
+        two: json['amount_of_new']['two'] == null || json['amount_of_new']['two'].toString().trim() == ''
+            ? null
+            : json['amount_of_new']['two'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        few: json['amount_of_new']['few'] == null || json['amount_of_new']['few'].toString().trim() == ''
+            ? null
+            : json['amount_of_new']['few'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        many: json['amount_of_new']['many'] == null || json['amount_of_new']['many'].toString().trim() == ''
+            ? null
+            : json['amount_of_new']['many'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        other: (json['amount_of_new']['other'] ?? '').toString().replaceAll(r'${howMany}', howMany.toString()),
+        precision: precision,
+      ),
+    );
+  }
+  final String add;
 
-  final String Function(int howMany, {int? precision}) counter;
-
-  final PagesHomeIncrementButton incrementButton;
+  final String Function(num howMany, {int? precision}) amountOfNew;
 
   Map<String, Object> get _content => {
-        'title': title,
-        'description': description,
-        'counter': counter,
-        'incrementButton': incrementButton,
+        r'''add''': add,
+        r'''amount_of_new''': amountOfNew,
       };
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
       return value;
     }
-    throw ArgumentError('Not found content for the key $key');
+    throw ArgumentError('Not found content for the key $key with type $T');
   }
 
-  dynamic operator [](Object? key) {
-    return _content[key];
+  Map<String, Object> get content => _content;
+
+  List<Object> get contentList => _content.values.toList();
+
+  int get length => _content.length;
+
+  Object? operator [](Object? key) {
+    final Object? value = _content[key];
+    if (value == null && key is String) {
+      final int? index = int.tryParse(key);
+      if (index == null || index >= contentList.length || index < 0) {
+        return null;
+      }
+
+      return contentList[index];
+    }
+    return value;
   }
 }
 
-class PagesHomeIncrementButton {
-  const PagesHomeIncrementButton({
-    required this.title,
+class Employees {
+  const Employees({
+    required this.n0,
+    required this.n1,
+    required this.n2,
+    required this.n3,
+    required this.n4,
   });
-  final String title;
+  factory Employees.fromJson(Map<String, dynamic> json) {
+    return Employees(
+      n0: (json['0'] ?? '').toString(),
+      n1: (json['1'] ?? '').toString(),
+      n2: (json['2'] ?? '').toString(),
+      n3: (json['3'] ?? '').toString(),
+      n4: (json['4'] ?? '').toString(),
+    );
+  }
+  final String n0;
+  final String n1;
+  final String n2;
+  final String n3;
+  final String n4;
   Map<String, Object> get _content => {
-        'title': title,
+        r'''0''': n0,
+        r'''1''': n1,
+        r'''2''': n2,
+        r'''3''': n3,
+        r'''4''': n4,
       };
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
       return value;
     }
-    throw ArgumentError('Not found content for the key $key');
+    throw ArgumentError('Not found content for the key $key with type $T');
   }
 
-  dynamic operator [](Object? key) {
-    return _content[key];
-  }
-}
+  Map<String, Object> get content => _content;
 
-class PagesSettings {
-  const PagesSettings({
-    required this.title,
-    required this.description,
-  });
-  final String title;
-  final String description;
-  Map<String, Object> get _content => {
-        'title': title,
-        'description': description,
-      };
-  T getContent<T>(String key) {
+  List<Object> get contentList => _content.values.toList();
+
+  int get length => _content.length;
+
+  Object? operator [](Object? key) {
     final Object? value = _content[key];
-    if (value is T) {
-      return value;
+    if (value == null && key is String) {
+      final int? index = int.tryParse(key);
+      if (index == null || index >= contentList.length || index < 0) {
+        return null;
+      }
+
+      return contentList[index];
     }
-    throw ArgumentError('Not found content for the key $key');
-  }
-
-  dynamic operator [](Object? key) {
-    return _content[key];
-  }
-}
-
-class PagesProfile {
-  const PagesProfile({
-    required this.title,
-    required this.description,
-  });
-  final String title;
-  final String description;
-  Map<String, Object> get _content => {
-        'title': title,
-        'description': description,
-      };
-  T getContent<T>(String key) {
-    final Object? value = _content[key];
-    if (value is T) {
-      return value;
-    }
-    throw ArgumentError('Not found content for the key $key');
-  }
-
-  dynamic operator [](Object? key) {
-    return _content[key];
-  }
-}
-
-class PagesProduct {
-  const PagesProduct({
-    required this.title,
-  });
-
-  /// How many products do we have?
-  final String Function(int howMany, {int? precision}) title;
-
-  Map<String, Object> get _content => {
-        'title': title,
-      };
-  T getContent<T>(String key) {
-    final Object? value = _content[key];
-    if (value is T) {
-      return value;
-    }
-    throw ArgumentError('Not found content for the key $key');
-  }
-
-  dynamic operator [](Object? key) {
-    return _content[key];
-  }
-}
-
-class Greetings3 {
-  const Greetings3({
-    required this.home,
-    required this.settings,
-    required this.custom,
-  });
-  final String Function({required String username}) home;
-
-  final String Function({required String username}) settings;
-
-  final String Function({required String username, required String page}) custom;
-
-  Map<String, Object> get _content => {
-        'home': home,
-        'settings': settings,
-        'custom': custom,
-      };
-  T getContent<T>(String key) {
-    final Object? value = _content[key];
-    if (value is T) {
-      return value;
-    }
-    throw ArgumentError('Not found content for the key $key');
-  }
-
-  dynamic operator [](Object? key) {
-    return _content[key];
+    return value;
   }
 }
 
 class LocalizationMessages {
   LocalizationMessages({
-    required this.title,
-    required this.intro,
-    required this.product,
-    required this.bookAfterwords,
-    required this.pages,
-    required this.greetings,
-    required this.greetings2,
-    required this.greetings3,
-    required this.aboutCows,
+    required this.appTitle,
+    required this.language,
+    required this.mainScreen,
+    required this.author,
+    required this.privacyPolicyUrl,
+    required this.employees,
+    required this.source,
   });
-  final String title;
+  factory LocalizationMessages.fromJson(Map<String, dynamic> json) {
+    return LocalizationMessages(
+      appTitle: (json['app_title'] ?? '').toString(),
+      language: ({required String language, required String country}) => (json['language'] ?? '')
+          .toString()
+          .replaceAll(r'${language}', language)
+          .replaceAll(r'${country}', country)
+          .replaceAll(_variableRegExp, ''),
+      mainScreen: MainScreen.fromJson((json['main_screen'] as Map).cast<String, dynamic>()),
+      author: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'author',
+        female: json['author']['female'] == null || json['author']['female'].toString().trim() == ''
+            ? null
+            : json['author']['female'].toString().replaceAll(r'${name}', name).replaceAll(_variableRegExp, ''),
+        male: json['author']['male'] == null || json['author']['male'].toString().trim() == ''
+            ? null
+            : json['author']['male'].toString().replaceAll(r'${name}', name).replaceAll(_variableRegExp, ''),
+        other: (json['author']['other'] ?? '').toString().replaceAll(r'${name}', name).replaceAll(_variableRegExp, ''),
+      ),
+      privacyPolicyUrl: (json['privacy_policy_url'] ?? '').toString(),
+      employees: Employees.fromJson((json['employees'] as Map).cast<String, dynamic>()),
+      source: (json['source'] ?? '').toString(),
+    );
+  }
+  final String appTitle;
+  final String Function({required String language, required String country}) language;
 
-  /// For some reason we decided to use exactly that title for that screen
-  final String intro;
+  final MainScreen mainScreen;
 
-  /// How many products do we have?
-  final String Function(int howMany, {int? precision}) product;
+  final String Function(Gender gender, {required String name}) author;
 
-  /// What the user will see, after he read the book
-  final String Function(Gender gender, {required String username}) bookAfterwords;
+  final String privacyPolicyUrl;
+  final Employees employees;
 
-  final Pages pages;
-
-  final String Function({required String username}) greetings;
-
-  /// This is greetings with an argument [username]
-  final String Function({required String username}) greetings2;
-
-  final Greetings3 greetings3;
-
-  final String Function(int howMany, {required String username, int? precision}) aboutCows;
-
+  final String source;
   Map<String, Object> get _content => {
-        'title': title,
-        'intro': intro,
-        'product': product,
-        'bookAfterwords': bookAfterwords,
-        'pages': pages,
-        'greetings': greetings,
-        'greetings2': greetings2,
-        'greetings3': greetings3,
-        'aboutCows': aboutCows,
+        r'''app_title''': appTitle,
+        r'''language''': language,
+        r'''main_screen''': mainScreen,
+        r'''author''': author,
+        r'''privacy_policy_url''': privacyPolicyUrl,
+        r'''employees''': employees,
+        r'''source''': source,
       };
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
       return value;
     }
-    throw ArgumentError('Not found content for the key $key');
+    throw ArgumentError('Not found content for the key $key with type $T');
   }
 
-  dynamic operator [](Object? key) {
-    return _content[key];
+  Map<String, Object> get content => _content;
+
+  List<Object> get contentList => _content.values.toList();
+
+  int get length => _content.length;
+
+  Object? operator [](Object? key) {
+    final Object? value = _content[key];
+    if (value == null && key is String) {
+      final int? index = int.tryParse(key);
+      if (index == null || index >= contentList.length || index < 0) {
+        return null;
+      }
+
+      return contentList[index];
+    }
+    return value;
   }
 }
 
-final LocalizationMessages fr = LocalizationMessages(
-  title: '''Easiest Localization App''',
-  intro: '''This is a intro screen title''',
-  product: (int howMany, {int? precision}) => Intl.plural(
-    howMany,
-    name: '''product''',
-    zero: '''There are ${howMany} products''',
-    one: '''There are ${howMany} product''',
-    two: '''There are ${howMany} products''',
-    few: '''There are ${howMany} products''',
-    many: '''There are ${howMany} products''',
-    other: '''There are ${howMany} products''',
-    precision: precision,
-  ),
-  bookAfterwords: (Gender gender, {required String username}) => Intl.gender(
-    gender.name,
-    name: '''bookAfterwords''',
-    female: '''Thank you for reading, ms. ${username}!''',
-    male: '''Thank you for reading, mr. ${username}!''',
-    other: '''Thank you for reading, dear ${username}!''',
-  ),
-  pages: Pages(
-    home: PagesHome(
-      title: '''Home''',
-      description: '''Here you can see the main content''',
-      counter: (int howMany, {int? precision}) => Intl.plural(
-        howMany,
-        name: '''counter''',
-        one: '''You have pushed the button ${howMany} many time''',
-        other: '''You have pushed the button ${howMany} many times''',
-        precision: precision,
-      ),
-      incrementButton: PagesHomeIncrementButton(
-        title: '''Increment''',
-      ),
-    ),
-    settings: PagesSettings(
-      title: '''Settings''',
-      description: '''Here you can change your settings''',
-    ),
-    profile: PagesProfile(
-      title: '''Profile''',
-      description: '''Here you can see your personal info and change it''',
-    ),
-    product: PagesProduct(
-      title: (int howMany, {int? precision}) => Intl.plural(
-        howMany,
-        name: '''title''',
-        zero: '''There are ${howMany} products''',
-        one: '''There are ${howMany} product''',
-        two: '''There are ${howMany} products''',
-        few: '''There are ${howMany} products''',
-        many: '''There are ${howMany} products''',
-        other: '''There are ${howMany} products''',
-        precision: precision,
-      ),
-    ),
-  ),
-  greetings: ({required String username}) => '''Hello, ${username}!''',
-  greetings2: ({required String username}) => '''Hello, dear ${username}!''',
-  greetings3: Greetings3(
-    home: ({required String username}) => '''Hello, ${username} at home page!''',
-    settings: ({required String username}) => '''Hello, ${username} at settings page!''',
-    custom: ({required String username, required String page}) => '''Hello, ${username} at ${page} page!''',
-  ),
-  aboutCows: (int howMany, {required String username, int? precision}) => Intl.plural(
-    howMany,
-    name: '''aboutCows''',
-    one: '''Maybe there are ${howMany} cow? What do you think, ${username}?''',
-    other: '''Maybe there are ${howMany} cows? What do you think, ${username}?''',
-    precision: precision,
-  ),
-);
 final LocalizationMessages en = LocalizationMessages(
-  title: '''Easiest Localization App''',
-  intro: '''This is a intro screen title''',
-  product: (int howMany, {int? precision}) => Intl.plural(
-    howMany,
-    name: '''product''',
-    zero: '''There are ${howMany} products''',
-    one: '''There are ${howMany} product''',
-    two: '''There are ${howMany} products''',
-    few: '''There are ${howMany} products''',
-    many: '''There are ${howMany} products''',
-    other: '''There are ${howMany} products''',
-    precision: precision,
+  appTitle: 'Library App',
+  language: ({required String language, required String country}) => '''Lang: ${language}''',
+  mainScreen: MainScreen(
+    greetings: ({required String username}) => '''Hello, ${username}!''',
+    books: MainScreenBooks(
+      add: 'Add Book',
+      amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'amount_of_new',
+        zero: 'There are no new books available at the moment :(',
+        one: '''There is ${howMany} new book available :)''',
+        two: null,
+        few: null,
+        many: null,
+        other: '''There are ${howMany} new books available :)''',
+        precision: precision,
+      ),
+    ),
+    todayDateFormat: 'MM/dd/yyyy',
+    welcome: '''# Welcome to our library!
+---
+## We are very happy to see you and would like you to enjoy reading our books.
+''',
   ),
-  bookAfterwords: (Gender gender, {required String username}) => Intl.gender(
+  author: (Gender gender, {required String name}) => Intl.gender(
     gender.name,
-    name: '''bookAfterwords''',
-    female: '''Thank you for reading, ms. ${username}!''',
-    male: '''Thank you for reading, mr. ${username}!''',
-    other: '''Thank you for reading, dear ${username}!''',
+    name: 'author',
+    female: '''${name} - she is the author of that book!''',
+    male: '''${name} - he is the author of that book!''',
+    other: '''${name} - they are the author of that book!''',
   ),
-  pages: Pages(
-    home: PagesHome(
-      title: '''Home''',
-      description: '''Here you can see the main content''',
-      counter: (int howMany, {int? precision}) => Intl.plural(
-        howMany,
-        name: '''counter''',
-        one: '''You have pushed the button ${howMany} many time''',
-        other: '''You have pushed the button ${howMany} many times''',
-        precision: precision,
-      ),
-      incrementButton: PagesHomeIncrementButton(
-        title: '''Increment''',
-      ),
-    ),
-    settings: PagesSettings(
-      title: '''Settings''',
-      description: '''Here you can change your settings''',
-    ),
-    profile: PagesProfile(
-      title: '''Profile''',
-      description: '''Here you can see your personal info and change it''',
-    ),
-    product: PagesProduct(
-      title: (int howMany, {int? precision}) => Intl.plural(
-        howMany,
-        name: '''title''',
-        zero: '''There are ${howMany} products''',
-        one: '''There are ${howMany} product''',
-        two: '''There are ${howMany} products''',
-        few: '''There are ${howMany} products''',
-        many: '''There are ${howMany} products''',
-        other: '''There are ${howMany} products''',
-        precision: precision,
-      ),
-    ),
+  privacyPolicyUrl: 'https://library.app/privacy_us.pdf',
+  employees: Employees(
+    n0: 'John Smith',
+    n1: 'Alice Johnson',
+    n2: 'Michael Brown',
+    n3: 'Emma Davis',
+    n4: 'William Taylor',
   ),
-  greetings: ({required String username}) => '''Hello, ${username}!''',
-  greetings2: ({required String username}) => '''Hello, dear ${username}!''',
-  greetings3: Greetings3(
-    home: ({required String username}) => '''Hello, ${username} at home page!''',
-    settings: ({required String username}) => '''Hello, ${username} at settings page!''',
-    custom: ({required String username, required String page}) => '''Hello, ${username} at ${page} page!''',
-  ),
-  aboutCows: (int howMany, {required String username, int? precision}) => Intl.plural(
-    howMany,
-    name: '''aboutCows''',
-    one: '''Maybe there are ${howMany} cow? What do you think, ${username}?''',
-    other: '''Maybe there are ${howMany} cows? What do you think, ${username}?''',
-    precision: precision,
-  ),
+  source: 'Easiest Localization',
 );
 final LocalizationMessages ru = LocalizationMessages(
-  title: '''Easiest Localization App''',
-  intro: '''This is a intro screen title''',
-  product: (int howMany, {int? precision}) => Intl.plural(
-    howMany,
-    name: '''product''',
-    zero: '''There are ${howMany} products''',
-    one: '''There are ${howMany} product''',
-    two: '''There are ${howMany} products''',
-    few: '''There are ${howMany} products''',
-    many: '''There are ${howMany} products''',
-    other: '''There are ${howMany} products''',
-    precision: precision,
+  appTitle: 'Библиотека',
+  language: ({required String language, required String country}) => '''Язык: ${language}''',
+  mainScreen: MainScreen(
+    greetings: ({required String username}) => '''Привет, ${username}!''',
+    books: MainScreenBooks(
+      add: 'Добавить книгу',
+      amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'amount_of_new',
+        zero: 'В настоящий момент доступных новых книг нет :(',
+        one: '''В настоящий момент доступна ${howMany} новая книга :)''',
+        two: '''В настоящий момент доступны ${howMany} новые книги :)''',
+        few: '''В настоящий момент доступно ${howMany} новые книги :)''',
+        many: '''В настоящий момент доступно ${howMany} новых книг :)''',
+        other: '''В настоящий момент доступно ${howMany} новые книги :)''',
+        precision: precision,
+      ),
+    ),
+    todayDateFormat: 'dd MMM yyyy',
+    welcome: '''# Добро пожаловать в нашу библиотеку!
+---
+## Мы очень рады вас видеть и хотели бы, чтобы вы получали удовольствие от чтения наших книг.
+''',
   ),
-  bookAfterwords: (Gender gender, {required String username}) => Intl.gender(
+  author: (Gender gender, {required String name}) => Intl.gender(
     gender.name,
-    name: '''bookAfterwords''',
-    female: '''Thank you for reading, ms. ${username}!''',
-    male: '''Thank you for reading, mr. ${username}!''',
-    other: '''Thank you for reading, dear ${username}!''',
+    name: 'author',
+    female: '''${name} - она автор этой книги!''',
+    male: '''${name} - он автор этой книги!''',
+    other: '''${name} - автор этой книги!''',
   ),
-  pages: Pages(
-    home: PagesHome(
-      title: '''Home''',
-      description: '''Here you can see the main content''',
-      counter: (int howMany, {int? precision}) => Intl.plural(
-        howMany,
-        name: '''counter''',
-        one: '''You have pushed the button ${howMany} many time''',
-        other: '''You have pushed the button ${howMany} many times''',
-        precision: precision,
-      ),
-      incrementButton: PagesHomeIncrementButton(
-        title: '''Increment''',
-      ),
-    ),
-    settings: PagesSettings(
-      title: '''Settings''',
-      description: '''Here you can change your settings''',
-    ),
-    profile: PagesProfile(
-      title: '''Profile''',
-      description: '''Here you can see your personal info and change it''',
-    ),
-    product: PagesProduct(
-      title: (int howMany, {int? precision}) => Intl.plural(
-        howMany,
-        name: '''title''',
-        zero: '''There are ${howMany} products''',
-        one: '''There are ${howMany} product''',
-        two: '''There are ${howMany} products''',
-        few: '''There are ${howMany} products''',
-        many: '''There are ${howMany} products''',
-        other: '''There are ${howMany} products''',
-        precision: precision,
-      ),
-    ),
+  privacyPolicyUrl: 'https://library.app/privacy_ru.pdf',
+  employees: Employees(
+    n0: 'Джон Смит',
+    n1: 'Алиса Джонсон',
+    n2: 'Майкл Браун',
+    n3: 'Эмма Дэвис',
+    n4: 'Уильям Тейлор',
   ),
-  greetings: ({required String username}) => '''Hello, ${username}!''',
-  greetings2: ({required String username}) => '''Hello, dear ${username}!''',
-  greetings3: Greetings3(
-    home: ({required String username}) => '''Hello, ${username} at home page!''',
-    settings: ({required String username}) => '''Hello, ${username} at settings page!''',
-    custom: ({required String username, required String page}) => '''Hello, ${username} at ${page} page!''',
-  ),
-  aboutCows: (int howMany, {required String username, int? precision}) => Intl.plural(
-    howMany,
-    name: '''aboutCows''',
-    one: '''Maybe there are ${howMany} cow? What do you think, ${username}?''',
-    other: '''Maybe there are ${howMany} cows? What do you think, ${username}?''',
-    precision: precision,
-  ),
+  source: '',
 );
-final Map<String, LocalizationMessages> _languageMap = {
-  '*': en,
-  'fr': fr,
-  'en': en,
-  'ru': ru,
+final LocalizationMessages es = LocalizationMessages(
+  appTitle: 'Aplicación de Biblioteca',
+  language: ({required String language, required String country}) => '''Idioma: ${language}''',
+  mainScreen: MainScreen(
+    greetings: ({required String username}) => '''¡Hola, ${username}!''',
+    books: MainScreenBooks(
+      add: 'Añadir libro',
+      amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'amount_of_new',
+        zero: 'No hay libros nuevos disponibles en este momento :(',
+        one: '''Hay ${howMany} libro nuevo disponible :)''',
+        two: null,
+        few: null,
+        many: null,
+        other: '''Hay ${howMany} libros nuevos disponibles :)''',
+        precision: precision,
+      ),
+    ),
+    todayDateFormat: 'dd/MM/yyyy',
+    welcome: '''# ¡Bienvenido a nuestra biblioteca!
+---
+## Estamos muy contentos de verte y nos gustaría que disfrutes leyendo nuestros libros.
+''',
+  ),
+  author: (Gender gender, {required String name}) => Intl.gender(
+    gender.name,
+    name: 'author',
+    female: '''¡${name} es la autora de ese libro!''',
+    male: '''¡${name} es el autor de ese libro!''',
+    other: '''¡${name} es el autor de ese libro!''',
+  ),
+  privacyPolicyUrl: 'https://library.app/privacy_mx.pdf',
+  employees: Employees(
+    n0: 'Juan Smith',
+    n1: 'Alicia Johnson',
+    n2: 'Miguel Brown',
+    n3: 'Emma Davis',
+    n4: 'Guillermo Taylor',
+  ),
+  source: '',
+);
+final LocalizationMessages en_CA = LocalizationMessages(
+  appTitle: 'Library App',
+  language: ({required String language, required String country}) => '''Lang: ${language}; Country: ${country}''',
+  mainScreen: MainScreen(
+    greetings: ({required String username}) => '''Hello, ${username}!''',
+    books: MainScreenBooks(
+      add: 'Add Book',
+      amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'amount_of_new',
+        zero: 'There are no new books available at the moment :(',
+        one: '''There is ${howMany} new book available :)''',
+        two: null,
+        few: null,
+        many: null,
+        other: '''There are ${howMany} new books available :)''',
+        precision: precision,
+      ),
+    ),
+    todayDateFormat: 'dd/MM/yyyy',
+    welcome: '''# Welcome to our library!
+---
+## We are very happy to see you and would like you to enjoy reading our books.
+''',
+  ),
+  author: (Gender gender, {required String name}) => Intl.gender(
+    gender.name,
+    name: 'author',
+    female: '''${name} - she is the author of that book!''',
+    male: '''${name} - he is the author of that book!''',
+    other: '''${name} - they are the author of that book!''',
+  ),
+  privacyPolicyUrl: 'https://library.app/privacy_ca.pdf',
+  employees: Employees(
+    n0: 'John Smith',
+    n1: 'Alice Johnson',
+    n2: 'Michael Brown',
+    n3: 'Emma Davis',
+    n4: 'William Taylor',
+  ),
+  source: 'Easiest Localization',
+);
+final Map<Locale, LocalizationMessages> _languageMap = {
+  Locale('en'): en,
+  Locale('ru'): ru,
+  Locale('es'): es,
+  Locale('en', 'CA'): en_CA,
 };
 
+final Map<Locale, LocalizationMessages> _providersLanguagesMap = {};
+
 class EasiestLocalizationDelegate extends LocalizationsDelegate<LocalizationMessages> {
-  @override
-  bool isSupported(Locale locale) => _languageMap.keys.contains(locale.languageCode);
+  EasiestLocalizationDelegate({
+    List<LocalizationProvider<LocalizationMessages>> providers = const [],
+  }) {
+    providers.forEach(registerProvider);
+  }
+
+  final List<LocalizationProvider<LocalizationMessages>> _providers = [];
+
+  void registerProvider(LocalizationProvider<LocalizationMessages> provider) {
+    _providers.add(provider);
+  }
 
   @override
+  bool isSupported(Locale locale) {
+    final bool supportedByProviders = _providers.any((LocalizationProvider value) => value.canLoad(locale));
+    if (supportedByProviders) {
+      return true;
+    }
+    final bool hasInLanguageMap = _languageMap.containsKey(locale);
+    if (hasInLanguageMap) {
+      return true;
+    }
+    for (final Locale supportedLocale in _languageMap.keys) {
+      if (supportedLocale.languageCode == locale.languageCode) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   Future<LocalizationMessages> load(Locale locale) async {
-    Intl.defaultLocale = locale.countryCode == null ? locale.languageCode : locale.toString();
-    final LocalizationMessages localeContent =
-        _languageMap[locale.languageCode] ?? _languageMap['*'] ?? _languageMap.values.first;
+    Intl.defaultLocale = locale.toString();
+
+    LocalizationProvider<LocalizationMessages>? localizationProvider;
+
+    for (final LocalizationProvider<LocalizationMessages> provider in _providers) {
+      if (provider.canLoad(locale)) {
+        localizationProvider = provider;
+        break;
+      }
+    }
+
+    LocalizationMessages? localeContent;
+
+    if (localizationProvider != null) {
+      try {
+        localeContent = await localizationProvider.fetchLocalization(locale);
+        _providersLanguagesMap[locale] = localeContent;
+      } catch (error, stackTrace) {
+        log('Error on loading localization with provider "${localizationProvider.name}"',
+            error: error, stackTrace: stackTrace);
+      }
+    }
+
+    localeContent ??= _loadLocalLocale(locale) ?? _languageMap.values.first;
     return localeContent;
   }
 
   @override
-  bool shouldReload(LocalizationsDelegate<LocalizationMessages> old) => false;
+  bool shouldReload(LocalizationsDelegate<LocalizationMessages> old) => old != this;
 }
 
 class Messages {
   static LocalizationMessages of(BuildContext context) => Localizations.of(context, LocalizationMessages)!;
 
-  static LocalizationMessages? getContent(String language) => _languageMap[language];
+  static LocalizationMessages? getContent(Locale locale) => _loadLocalLocale(locale);
 
   static LocalizationMessages get el {
-    final LocalizationMessages localeContent =
-        _languageMap[Intl.defaultLocale] ?? _languageMap['*'] ?? _languageMap.values.first;
+    final String? defaultLocaleString = Intl.defaultLocale;
+    final List<String> localeParticles = defaultLocaleString == null ? [] : defaultLocaleString.split(RegExp(r'[_-]'));
+    final Locale? defaultLocale = localeParticles.isEmpty
+        ? null
+        : Locale(localeParticles.first, localeParticles.length > 1 ? localeParticles[1] : null);
+    LocalizationMessages? localeContent = _providersLanguagesMap[defaultLocale];
+    localeContent ??= _languageMap[defaultLocale] ?? _languageMap.values.first;
     return localeContent;
   }
+}
+
+LocalizationMessages? _loadLocalLocale(Locale locale) {
+  final bool hasInLanguageMap = _languageMap.containsKey(locale);
+  if (hasInLanguageMap) {
+    return _languageMap[locale];
+  }
+  for (final Locale supportedLocale in _languageMap.keys) {
+    if (supportedLocale.languageCode == locale.languageCode) {
+      return _languageMap[supportedLocale];
+    }
+  }
+  return null;
 }
 
 LocalizationMessages get el => Messages.el;
@@ -522,11 +558,26 @@ final List<LocalizationsDelegate> localizationsDelegates = [
   ...GlobalMaterialLocalizations.delegates,
 ];
 
+List<LocalizationsDelegate> localizationsDelegatesWithProviders(
+    List<LocalizationProvider<LocalizationMessages>> providers) {
+  return [
+    EasiestLocalizationDelegate(providers: providers),
+    ...GlobalMaterialLocalizations.delegates,
+  ];
+}
+
+// Supported locales: en, ru, es, en_CA
 const List<Locale> supportedLocales = [
-  Locale('fr'),
   Locale('en'),
   Locale('ru'),
+  Locale('es'),
+  Locale('en', 'CA'),
 ];
+
+List<Locale> supportedLocalesWithProviders(List<LocalizationProvider<LocalizationMessages>> providers) => [
+      for (final LocalizationProvider provider in providers) ...provider.supportedLocales,
+      ...supportedLocales,
+    ];
 
 extension EasiestLocalizationContext on BuildContext {
   LocalizationMessages get el {

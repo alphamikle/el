@@ -1,40 +1,66 @@
 import 'dart:io';
 
-import 'package:easiest_localization/src/gen/generator.dart';
 import 'package:easiest_localization/src/gen/generator_config.dart';
-import 'package:easiest_localization/src/loader/assets_gen_loader.dart';
-import 'package:easiest_localization/src/loader/language_localization.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 
-const String sdk = '>= 3.0.0 < 4.0.0';
+import '../bin/easiest_localization.dart' as bin;
 
-// TODO(alphamikle):  Fix skipped tests
 void main() {
-  test('Test assets gen loader (default)', skip: true, () {
-    final AssetsGenLoader loader = AssetsGenLoader(const GeneratorConfig(dartSdk: sdk));
-    final List<LanguageLocalization> result = loader.load();
-    expect(result.length, 6);
+  test('Localization generation: E2E Test', () {
+    bin.main(['--format']);
+
+    final String output = File(path.join(path.current, 'localization', 'lib', 'localization.dart')).readAsStringSync();
+    final String goldenResult = File(path.join(path.current, 'test', 'golden_result.dart')).readAsStringSync();
+
+    expect(output, equals(goldenResult));
   });
 
-  test('Test assets gen loader (prefix = locale)', skip: true, () {
-    final AssetsGenLoader loader = AssetsGenLoader(const GeneratorConfig(dartSdk: sdk));
-    final List<LanguageLocalization> result = loader.load();
-    expect(result.length, 4);
-  });
+  test('Custom settings: yaml', () {
+    const String easiestLocalizationVersion = '2.0.0-beta';
+    const String dartSdk = '>=3.5.0 <4.0.0';
+    const String localizationsClassName = 'ElLocalization';
+    const String packageDescription = 'Custom description';
+    const String packageVersion = '1.0.1';
+    const String remoteVersion = '1.0.5';
 
-  test('Localization generation', () {
-    final Generator generator = Generator(
-      const GeneratorConfig(
-        dartSdk: sdk,
-        excludedPatterns: [
-          'localizely_example',
-        ],
-        // primaryLocalization: 'en',
+    bin.generate(
+      GeneratorConfig(
+        saveMergedFilesAs: 'yaml',
+        easiestLocalizationVersion: easiestLocalizationVersion,
+        dartSdk: dartSdk,
+        formatOutput: true,
+        localizationsClassName: localizationsClassName,
+        packageDescription: packageDescription,
+        packageName: 'custom_localization',
+        packagePath: './custom_path',
+        primaryLocalization: 'en',
+        packageVersion: packageVersion,
+        version: remoteVersion,
       ),
+      DateTime.now().millisecondsSinceEpoch,
     );
-    final (String, List<LanguageLocalization>) result = generator.generate();
-    final String goldenResult = File(join(current, 'test', 'golden_result.dart')).readAsStringSync();
-    expect(result.$1, goldenResult);
+
+    final String dartOutput = File(path.join(path.current, 'custom_path', 'custom_localization', 'lib', 'localization.dart')).readAsStringSync();
+
+    final String mergedOutput = File(path.join(path.current, 'custom_path', 'custom_localization', 'merged', remoteVersion, 'en_CA.yaml')).readAsStringSync();
+    final String mergedGoldenResult = File(path.join(path.current, 'test', 'golden_en_ca_merged_result.yaml')).readAsStringSync();
+
+    final String generatedPubSpec = File(path.join(path.current, 'custom_path', 'custom_localization', 'pubspec.yaml')).readAsStringSync();
+
+    expect(mergedOutput, equals(mergedGoldenResult));
+
+    const List<String> needToContain = [
+      easiestLocalizationVersion,
+      dartSdk,
+      packageDescription,
+      packageVersion,
+    ];
+
+    for (final String param in needToContain) {
+      expect(generatedPubSpec.contains(param), equals(true), reason: 'Not found param: $param');
+    }
+
+    expect(dartOutput.contains(localizationsClassName), equals(true));
   });
 }

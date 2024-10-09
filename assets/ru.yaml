@@ -13,7 +13,7 @@ main_screen:
       few: В настоящий момент доступно ${howMany} новые книги :)
       many: В настоящий момент доступно ${howMany} новых книг :)
       other: В настоящий момент доступно ${howMany} новые книги :)
-  today_date_format: DD MMM yyyy
+  today_date_format: dd MMM yyyy
   welcome: |
     # Добро пожаловать в нашу библиотеку!
     ---

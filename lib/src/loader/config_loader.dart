@@ -15,9 +15,10 @@ const String kPackageName = 'package_name';
 const String kPackagePath = 'package_path';
 const String kPackageVersion = 'package_version';
 const String kFormatOutput = 'format_output';
+const String kRemoteVersion = 'remote_version';
 const String kRegExp = 'reg_exp';
 const String kPrimaryLocalization = 'primary_localization';
-const String kSaveMergedFiles = 'save_merged_files';
+const String kSaveMergedFilesAs = 'save_merged_files_as';
 
 class ConfigLoader {
   GeneratorConfig load() {
@@ -45,7 +46,8 @@ class ConfigLoader {
       regExp: regExp,
       primaryLocalization: config[kPrimaryLocalization],
       formatOutput: bool.tryParse(config[kFormatOutput].toString()) ?? false,
-      saveMergedFiles: bool.tryParse(config[kSaveMergedFiles].toString()) ?? false,
+      saveMergedFilesAs: config[kSaveMergedFilesAs]?.toString(),
+      version: config[kRemoteVersion]?.toString(),
     );
   }
 }

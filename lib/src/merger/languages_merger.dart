@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:merger/merger.dart';
 import 'package:path/path.dart';
+import 'package:yaml_writer/yaml_writer.dart';
 
 import '../gen/generator_config.dart';
 import '../loader/language_localization.dart';
@@ -163,8 +164,10 @@ class LanguagesMerger {
       );
     }
 
-    if (config.saveMergedFiles != null) {
-      _saveMergedFiles(config, response);
+    if (config.saveMergedFilesAs != null) {
+      final bool saveAsJson = config.saveMergedFilesAs == 'json';
+
+      _saveMergedFiles(config, response, saveAsJson: saveAsJson);
     }
 
     response.add(scheme);
@@ -175,16 +178,32 @@ class LanguagesMerger {
 
 int sizeSorter(LanguageLocalization a, LanguageLocalization b) => b.size.compareTo(a.size);
 
-void _saveMergedFiles(GeneratorConfig config, List<LanguageLocalization> localizations) {
-  final String outputPath = join(Directory.current.path, config.packagePath, config.packageName, 'merged');
+void _saveMergedFiles(GeneratorConfig config, List<LanguageLocalization> localizations, {bool saveAsJson = false}) {
+  final String outputPath = join(
+    Directory.current.path,
+    config.packagePath,
+    config.packageName,
+    'merged',
+    config.version?.trim(),
+  );
 
   Directory(outputPath).createSync(recursive: true);
 
   for (final LanguageLocalization localization in localizations) {
-    final String fileName = '${[localization.language, if (localization.country != null) localization.country].join('_')}.json';
+    final String fileName = '${[localization.language, if (localization.country != null) localization.country].join('_')}.${saveAsJson ? 'json' : 'yaml'}';
     final Json clearJson = _clearJson(localization.content);
 
-    File(join(outputPath, fileName)).writeAsStringSync(jsonEncode(clearJson));
+    String contentToSave = '';
+
+    if (saveAsJson) {
+      contentToSave = jsonEncode(clearJson);
+    } else {
+      final YamlWriter yamlWriter = YamlWriter();
+      final String yamlDoc = yamlWriter.write(clearJson);
+      contentToSave = yamlDoc.toString();
+    }
+
+    File(join(outputPath, fileName)).writeAsStringSync(contentToSave);
   }
 }
 

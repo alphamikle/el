@@ -1,5 +1,6 @@
 ## Changelog
 
+- 2.0.0 - Stable and finalized version with support of type-safe remote localization sources
 - 2.0.0-beta
   - Added localization providers for loading localizations remotely.
   - Ability to merge different languages and several variations of the same language

@@ -103,14 +103,21 @@ flutter:
           throw Exception('Language code "$language" is not valid');
         }
 
-        final String? country = match.namedGroup('country');
+        String? country;
+
+        try {
+          country = match.namedGroup('country');
+        } catch (error) {
+          log('Error on getting country from the RegExp(${config.regExp.toString()})');
+        }
+
         final String rawContent = file.readAsStringSync();
         if (rawContent.isEmpty) {
           logOnce('[EASIEST_LOCALIZATION] File "${file.path}" have no localization content');
           continue;
         }
         final Json content = yamlMapToJson(loadYaml(rawContent));
-        localizationFiles.add(LanguageLocalization(language: language, country: country?.toUpperCase(), content: content));
+        localizationFiles.add(LanguageLocalization(language: language.toLowerCase(), country: country?.toUpperCase(), content: content));
         matchedFiles.add(file);
       }
     }

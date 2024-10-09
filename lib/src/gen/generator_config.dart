@@ -17,7 +17,8 @@ class GeneratorConfig {
     this.excludedPatterns = const [],
     this.formatOutput = false,
     this.primaryLocalization,
-    this.saveMergedFiles,
+    this.saveMergedFilesAs,
+    this.version,
     RegExp? regExp,
   }) : _regExp = regExp;
 
@@ -56,10 +57,14 @@ class GeneratorConfig {
   final String? primaryLocalization;
 
   /// Whether or not to generate json files containing full content for each language variation for later use from remote servers
-  final bool? saveMergedFiles;
+  final String? saveMergedFilesAs;
+
+  /// Version of the generated content.
+  /// Will take effect only for merged generated files (yaml or json), which can help you to have several version of the remote content for old users
+  final String? version;
 
   /// RegExp for localization files
-  RegExp get regExp => _regExp ?? RegExp(r'(\W)(?<pattern>intl)?_?(?<lang>[a-z]{2})[_-]?(?<country>[A-Z]{2})?.(ya?ml|json)$');
+  RegExp get regExp => _regExp ?? RegExp(r'(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$');
 
   GeneratorConfig copyWith({
     String? localizationsClassName,
@@ -73,7 +78,8 @@ class GeneratorConfig {
     bool? formatOutput,
     String? primaryLocalization,
     RegExp? regExp,
-    bool? saveMergedFiles,
+    String? saveMergedFilesAs,
+    String? version,
   }) {
     return GeneratorConfig(
       localizationsClassName: localizationsClassName ?? this.localizationsClassName,
@@ -87,7 +93,8 @@ class GeneratorConfig {
       formatOutput: formatOutput ?? this.formatOutput,
       primaryLocalization: primaryLocalization ?? this.primaryLocalization,
       regExp: regExp ?? _regExp,
-      saveMergedFiles: saveMergedFiles,
+      saveMergedFilesAs: saveMergedFilesAs,
+      version: version,
     );
   }
 }

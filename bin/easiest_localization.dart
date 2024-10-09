@@ -18,9 +18,13 @@ void main(List<String> args) {
   if (args.contains('--format')) {
     config = config.copyWith(formatOutput: true);
   }
+  generate(config, start);
+}
+
+void generate(GeneratorConfig config, int startedTimestamp) {
   final Generator generator = Generator(config);
   final (String, List<LanguageLocalization>) result = generator.generate();
-  final int end = (DateTime.now().millisecondsSinceEpoch - start);
+  final int end = (DateTime.now().millisecondsSinceEpoch - startedTimestamp);
 
   final List<String> locales = result.$2.map((LanguageLocalization it) => it.name).toList(growable: false);
 

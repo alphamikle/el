@@ -98,13 +98,13 @@ class Messages {
     final String? defaultLocaleString = Intl.defaultLocale;
     final List<String> localeParticles = defaultLocaleString == null ? [] : defaultLocaleString.split(RegExp(r'[_-]'));
     final Locale? defaultLocale = localeParticles.isEmpty ? null : Locale(localeParticles.first, localeParticles.length > 1 ? localeParticles[1] : null);
-    LocalizationMessages? localeContent = _providersLanguagesMap[defaultLocale];
+    $className? localeContent = _providersLanguagesMap[defaultLocale];
     localeContent ??= _languageMap[defaultLocale] ?? _languageMap.values.first;
     return localeContent;
   }
 }
 
-LocalizationMessages? _loadLocalLocale(Locale locale) {
+$className? _loadLocalLocale(Locale locale) {
   final bool hasInLanguageMap = _languageMap.containsKey(locale);
   if (hasInLanguageMap) {
     return _languageMap[locale];
