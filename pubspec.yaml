@@ -9,14 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  # *** Automatically added by easiest_localization ***
-  # If you find it useful, please consider giving a ⭐ on GitHub: https://github.com/alphamikle/el
-  # And leaving a 👍 on pub.dev: https://pub.dev/packages/easiest_localization
-  # Your support is very important!
-  localization:
-    path: ./localization
-
   flutter_localizations:
     sdk: flutter
   yaml: ^3.1.2
@@ -38,5 +30,3 @@ flutter:
 
 easiest_localization:
   easiest_localization_version: "\n    path: ../"
-  format: true
-  watch: true

@@ -36,7 +36,7 @@ dependencies:
 
 ```
 /assets
-├── /el_en.yaml
+├── /en.yaml
 ├── ...
 ├── /i18n
 │   ├── /es.yaml
@@ -57,14 +57,15 @@ The names of localization files must match the following RegExp:
 `(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$`
 
 That is, it must include at least a two-letter language code, and optionally, a country code separated by `-` or `_`:
-- `el_en.yaml`
+
+- `el_en.yaml` - `el_` is an optional prefix
 - `en.yaml`
 - `en_US.json`
 - `en-CA.yaml`
 
 ## ⚙️ Configuration
 
-You can place it as a root key in your `pubspec.yaml` file to configure **el** very deeply. Here are the all options and their default values (if applicable):
+You can place it as a root key in your `pubspec.yaml` file to configure **el** very deeply. Here are all the options and their default values:
 
 ```yaml
 # ... Other pubspec' content
@@ -160,7 +161,7 @@ dart run easiest_localization [--format] [--watch]
 - `--format` option tells the generator to auto-format the code after generation. Equals to `format_output: true` from the config
 - `--watch` option enables time-continuous code-generation that responds to changes in localization files (as well as the creation of new files), and to configuration changes in pubspec.yaml. Equals to `watch: true` from the config
 
-After that, the generated package will automatically be added as a dependency to your pubspec.yaml and the `flutter pub get` command will be executed. And you'll get something like this (with default settings):
+> After first run, the generated package will automatically be added as a dependency to your pubspec.yaml and the `flutter pub get` command will be executed. And you'll get something like this (with default settings):
 
 ```yaml
 dependencies:
@@ -175,7 +176,7 @@ After generation and installation of generated package was complete - you able t
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:localization/localization.dart'; // <- Import generated package
+import 'package:localization/localization.dart'; // <- Import the generated package
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -190,7 +191,7 @@ class MyApp extends StatelessWidget {
     return Builder(
       builder: (BuildContext context) {
         return MaterialApp(
-          /// The first variable - [supportedLocales], which contains all the generated and fallback locales
+          /// The first variable - [supportedLocales], which contains all the generated and fallback locales, alongside with default material, cupertino and so on
           supportedLocales: supportedLocales,
 
           /// The second - [localizationsDelegates], which contains generated and default delegates for work of localizations in general
@@ -203,7 +204,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
           home: Builder(
-            /// Or just by using a getter [el]                    ⬇ ︎
+            /// Or by using the easiest way - with a getter [el] ︎ ⬇ 
             builder: (BuildContext context) => MyHomePage(title: el.intro),
           ),
         );
@@ -215,7 +216,9 @@ class MyApp extends StatelessWidget {
 
 ### 🛠️ Methods of using
 
-As you saw above - **el** brings a lot of methods to retrieve localization content. They all splits into two groups: type safe and not. The first group - is recommended to use and the second - only if it is really necessary or if you want to retrieve localizations dynamically (by combining variables, for example), or...if you want to change the translation library at your app
+As you saw above - **el** brings several methods to retrieve localization content. They all splits into two groups: type safe and not.
+
+The first group - is recommended to use and the second - only if it is really necessary or if you want to retrieve localizations dynamically (by combining variables, for example), or...if you want to change the translation library at your app.
 
 ```dart
 typedef Greetings = String Function({required String username});
@@ -270,7 +273,13 @@ void showExample(BuildContext context) {
 
 ## 📜 Localization content
 
-For now you can use as a source only local `yaml` or `json` files. No remotes. Json example will be simpler, because of that let's take a look on a `yaml` localization file:
+You can use `yaml` or `json` files either locally or from a remote source. Without any restrictions on field names or nesting structure.
+
+> Using local files allows you to reduce content writing in `yaml` / `json` files for the same language used in different countries. In this case, you can describe all content in a main file, say - `en.yaml`, and describe only what needs to be different in additional files, say - `en_CA.yaml`, `en_UK.yaml`.
+
+> In the remotely accessible files, all content should be fully described for each language. However, you don't have to keep two copies of the files for remote and local use, as el generates “comprehensive” files for all languages and countries for you. More on this below, in the “Remote Localization” section. 
+
+Here is an example of localization file:
 
 ```yaml
 # Simple string
@@ -354,7 +363,7 @@ amount_of_new:
 If you specify arguments inside localization strings (it doesn't matter where exactly this string is located - in a pluralization block, gender definition or in a simple string), the corresponding function will be generated instead of the usual variable. And you will have to pass the corresponding named argument to this function. For example:
 
 ```yaml
-someKey: Hello, ${username}! What do you want to do ${day}? Will you go with me and ${friend} to the celebration? 
+someKey: Hello, ${username}! What do you want to do on ${day}? Will you go with me and ${friend} to the celebration? 
 ```
 
 will generate a code, which be able to use as a function with next signature:
@@ -363,9 +372,9 @@ will generate a code, which be able to use as a function with next signature:
 final String Function({required String username, required String day, required String friend}) someKey;
 ```
 
-You can embed arguments to any type of content - described, pluralized and nested (inside namespaces). But there are some restrictions about argument names:
+You can embed arguments to any type of the content - simple, plural and nested (inside namespaces), or gender-specific. But there are some restrictions about argument names:
 
-1. An argument named `howMany` will always be of type `num` if it is inside a pluralization block (specified inside one of the following keys: zero, one, two, few, many, other)
+1. Argument named `howMany` will always be of type `num` if it is inside a pluralization block (specified inside one of the following keys: zero, one, two, few, many, other)
 2. The argument called `precision` will always be of type `double` if it is inside a pluralization block (see above)
 3. An argument called `gender` will always be of type `Gender` if it is specified inside the gender definition block (specified inside one of the following keys: female, male, other)
 

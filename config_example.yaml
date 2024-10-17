@@ -1,0 +1,79 @@
+# An example of configuration and test-config as well
+easiest_localization:
+  # List of strings / patterns that will not be processed despite matching reg_exp
+  # Empty list by default
+  excluded: []
+
+  # The name of the class containing the localization content
+  class_name: LocalizationMessages
+
+  # Description of the generated localization package
+  description: Generated localization package
+
+  # The version of the easiest_localization_version package used as a dependency
+  # in the generated localization package
+  #
+  # May be useful if you are using easiest_localization not from pub.dev
+  # By default, it is the same version as in your application's pubspec.yaml file, and you don't need to change it
+  #
+  # Examples: 2.0.0, "\n    path: ../../easiest_localization", "\n    git:\n      path: abc\n      url: abc\n      ref: 2.0.0"
+  easiest_localization_version: <installed version>
+
+  # Name of the generated localization package and the folder with it
+  package_name: localization
+
+  # Relative path to the generated localization package
+  package_path: './'
+
+  # Version of the generated localization package
+  package_version: 1.0.0
+
+  # An example of supported file names with a default RegExp: https://regex101.com/r/CALDhV/3
+  #
+  # !!! A mandatory requirement for RegExp: it must have named parameter (?<lang>[a-z]{2}) !!!
+  reg_exp: "(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$"
+
+  # The language code or full localization to be used as the content source,
+  # defaulting to other languages if no fields are described
+  #
+  # By default - null. This means that if one language has content for certain keys,
+  # and another language does not have those keys at all - all values for those keys in
+  # the other language will be empty
+  #
+  # Examples: "en", "en_US", "en_CA", etc
+  primary_localization: null
+
+  # Whether to apply code formatting to the generated localization package
+  #
+  # If true - generation takes ~1 second longer. false by default
+  format_output: false
+
+  # This can be useful when you have multiple files for the same language
+  # For example - en, en_CA and en_UK. In this case, the main localization file - en,
+  # will contain all the content. And each of the specific files - en_CA / en_UK can contain
+  # only the content that should be different from the main file
+  #
+  # However, for cloud storages, each of the language files must be fulfilled -
+  # this is where merged files will be useful
+  #
+  # In other words - the easiest way to support cloud localization is to use generated files
+  #
+  # Examples:
+  # - yaml - generated files will be in yaml format
+  # - json - generated files will be in json format
+  # - null - no files will be generated
+  save_merged_files_as: yaml
+
+  # Version of the generated content.
+  # Will take effect only for merged generated files (yaml or json), which can help you to have several version of the remote content for old users
+  #
+  # Examples: "1", "v1", 1, anything else - String | int | double
+  remote_version: null
+
+  # Determines whether changes to localization files and settings in pubspec.yaml will be watched in real time
+  #
+  # If true, code-generation will run until the command is explicitly closed
+  # If false, code generation will occur only once. Until the command is executed again
+  #
+  # Default value = false
+  watch: false

@@ -42,7 +42,7 @@ class GeneratorConfig {
   final String packageVersion;
 
   /// Path to generated package (excluding package name)
-  /// Example: path = "./" and name = "i18n" will place package folder at "<your_app_path>/i18n"
+  /// Example: path = "./" and name = "i18n" will place package folder at "your_app_path/i18n"
   final String packagePath;
 
   /// A list of patterns whose presence in the path or name of localization files will cause them to be excluded
