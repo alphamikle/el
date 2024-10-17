@@ -15,7 +15,8 @@ Easiest localization is like [easy_localization](https://pub.dev/packages/easy_l
 - ↩️ Fallback locale keys redirection
 - ❤️ Ability to use without context access and still reactive support of language change
 - 💻 Full code generation for localization files and keys with 100% type-safety
-- 🛡️ Null safety and, which is more important - type safety! Your app just will not compile, if you missed some contents
+- 🔄 Watch code-generation mode
+- 🛡️ Null safety and, which is more important - **type safety**! Your app just will not compile, if you missed some content
 - 🌐 Generated code supports [remote localization](https://pub.dev/packages/easiest_remote_localization) without any changes
 
 If you are not happy with your localization library, want type-safety or incredible flexibility in naming of your strings - you just have to pay attention to `easiest_localization`
@@ -80,7 +81,7 @@ easiest_localization:
   description: Generated localization package
   
   # The version of the easiest_localization_version package used as a dependency
-  # in the generated localization package;
+  # in the generated localization package
   #
   # May be useful if you are using easiest_localization not from pub.dev
   # By default, it is the same version as in your application's pubspec.yaml file, and you don't need to change it
@@ -103,27 +104,27 @@ easiest_localization:
   reg_exp: "(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$"
   
   # The language code or full localization to be used as the content source,
-  # defaulting to other languages if no fields are described.
+  # defaulting to other languages if no fields are described
   #
   # By default - null. This means that if one language has content for certain keys,
   # and another language does not have those keys at all - all values for those keys in
-  # the other language will be empty.
+  # the other language will be empty
   #
-  # Examples: "en", "en_US", "en_CA", etc.
+  # Examples: "en", "en_US", "en_CA", etc
   primary_localization: null
 
-  # Whether to apply code formatting to the generated localization package.
+  # Whether to apply code formatting to the generated localization package
   #
   # If true - generation takes ~1 second longer. false by default
   format_output: false
 
-  # This can be useful when you have multiple files for the same language.
+  # This can be useful when you have multiple files for the same language
   # For example - en, en_CA and en_UK. In this case, the main localization file - en,
   # will contain all the content. And each of the specific files - en_CA / en_UK can contain
-  # only the content that should be different from the main file.
+  # only the content that should be different from the main file
   #
   # However, for cloud storages, each of the language files must be fulfilled -
-  # this is where merged files will be useful.
+  # this is where merged files will be useful
   #
   # In other words - the easiest way to support cloud localization is to use generated files
   # 
@@ -138,6 +139,14 @@ easiest_localization:
   #
   # Examples: "1", "v1", 1, anything else - String | int | double
   remote_version: null
+
+  # Determines whether changes to localization files and settings in pubspec.yaml will be watched in real time
+  #
+  # If true, code-generation will run until the command is explicitly closed
+  # If false, code generation will occur only once. Until the command is executed again
+  #
+  # Default value = false
+  watch: false
 ```
 
 ## 🖨️ Code generation
@@ -145,15 +154,19 @@ easiest_localization:
 Once you installed **el**, specified assets under `pubspec.yaml` and have, at least, one localization file at your assets folder - you able to generate type-safe localization code. To do that just run:
 
 ```bash
-dart run easiest_localization [--format]
+dart run easiest_localization [--format] [--watch]
 ```
 
-After that you will see the generated package with the default or your own name under specified folder. Then - you should install that package to your app. By default it would be like that:
+- `--format` option tells the generator to auto-format the code after generation. Equals to `format_output: true` from the config
+- `--watch` option enables time-continuous code-generation that responds to changes in localization files (as well as the creation of new files), and to configuration changes in pubspec.yaml. Equals to `watch: true` from the config
+
+After that, the generated package will automatically be added as a dependency to your pubspec.yaml and the `flutter pub get` command will be executed. And you'll get something like this (with default settings):
 
 ```yaml
 dependencies:
+  # ...
   localization:
-    path: ./ # here should be a default path - "./" or [package_path] from the configuration
+    path: ./localization
 ```
 
 ## ✍️ How to use

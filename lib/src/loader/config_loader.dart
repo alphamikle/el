@@ -17,12 +17,13 @@ const String kPackageVersion = 'package_version';
 const String kFormatOutput = 'format_output';
 const String kRemoteVersion = 'remote_version';
 const String kRegExp = 'reg_exp';
+const String kWatchMode = 'watch';
 const String kPrimaryLocalization = 'primary_localization';
 const String kSaveMergedFilesAs = 'save_merged_files_as';
 
 class ConfigLoader {
   GeneratorConfig load() {
-    final YamlMap pubspecContent = PubspecLoader().load();
+    final YamlMap pubspecContent = PubspecLoader(config: null).load();
     final YamlMap? config = pubspecContent[kConfig];
     final String dartSdk = (pubspecContent[kEnv] as YamlMap)[kSdk] as String;
 
@@ -48,6 +49,7 @@ class ConfigLoader {
       formatOutput: bool.tryParse(config[kFormatOutput].toString()) ?? false,
       saveMergedFilesAs: config[kSaveMergedFilesAs]?.toString(),
       version: config[kRemoteVersion]?.toString(),
+      watch: bool.tryParse(config[kWatchMode].toString()) ?? false,
     );
   }
 }

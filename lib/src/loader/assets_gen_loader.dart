@@ -34,36 +34,17 @@ class AssetsGenLoader implements ContentLoader {
 
   @override
   List<LanguageLocalization> load() {
-    _pubspecContent = PubspecLoader().load();
-    final YamlMap? flutter = _pubspecContent[kFlutter];
-    if (flutter == null) {
-      throw Exception('Not found "flutter" section in pubspec.yaml');
-    }
-    final YamlList? assets = flutter[kAssets];
-    if (assets == null || assets.isEmpty) {
-      throw Exception('''
-Not found "assets" section in the pubspec.yaml file or this section is empty. Please, add at least one folder to assets section like that:
-# pubspec.yaml
-#...
-flutter:
-  #...
-  assets: <-- 1
-    - assets/ <-- 2 # or name of your assets folder
-#...
-''');
-    }
+    final List<String> assets = PubspecLoader(config: config).loadAssetsPaths();
     final Map<String, LanguageLocalization> localizationsCache = {};
     final List<LanguageLocalization> result = [];
 
-    for (final dynamic asset in assets) {
-      if (asset is String) {
-        final String dirPath = join(Directory.current.path, asset);
-        final (List<File> matchedFiles, List<LanguageLocalization> localizations) = _scanDir(Directory(dirPath));
-        for (int i = 0; i < matchedFiles.length; i++) {
-          final File file = matchedFiles[i];
-          final LanguageLocalization localization = localizations[i];
-          localizationsCache[file.path] = localization;
-        }
+    for (final String asset in assets) {
+      final String dirPath = join(Directory.current.path, asset);
+      final (List<File> matchedFiles, List<LanguageLocalization> localizations) = _scanDir(Directory(dirPath));
+      for (int i = 0; i < matchedFiles.length; i++) {
+        final File file = matchedFiles[i];
+        final LanguageLocalization localization = localizations[i];
+        localizationsCache[file.path] = localization;
       }
     }
 
@@ -76,31 +57,17 @@ flutter:
 
   (List<File>, List<LanguageLocalization>) _scanDir(Directory directory) {
     final List<LanguageLocalization> localizationFiles = [];
-    final List<File> matchedFiles = [];
-    final List<File> allFiles = directory.listSync(recursive: true).whereType<File>().toList();
-    for (final File file in allFiles) {
-      bool isExcluded = false;
-      String? exclusionPattern;
-      for (final String excludedPattern in config.excludedPatterns) {
-        final RegExp excludedRegExp = RegExp(excludedPattern);
+    final List<File> allFiles = PubspecLoader(config: config).loadSupportedFiles();
 
-        isExcluded = excludedRegExp.hasMatch(file.path);
-        if (isExcluded) {
-          exclusionPattern = excludedPattern;
-          break;
-        }
-      }
-      if (isExcluded) {
-        logOnce('[EASIEST_LOCALIZATION] File "${file.path}" was excluded from generation by pattern "$exclusionPattern"');
-        continue;
-      }
+    for (final File file in allFiles) {
       final RegExpMatch? match = config.regExp.firstMatch(file.path);
 
       if (match != null) {
         final String? language = match.namedGroup('lang');
 
         if (language == null || language.length != 2) {
-          throw Exception('Language code "$language" is not valid');
+          log('Language code "$language" is not valid'.asRed());
+          continue;
         }
 
         String? country;
@@ -108,19 +75,18 @@ flutter:
         try {
           country = match.namedGroup('country');
         } catch (error) {
-          log('Error on getting country from the RegExp(${config.regExp.toString()})');
+          log('Error on getting country from the RegExp(${config.regExp.toString()})'.asRed());
         }
 
         final String rawContent = file.readAsStringSync();
         if (rawContent.isEmpty) {
-          logOnce('[EASIEST_LOCALIZATION] File "${file.path}" have no localization content');
+          logOnce('File "${file.path}" have no localization content'.asYellow());
           continue;
         }
         final Json content = yamlMapToJson(loadYaml(rawContent));
         localizationFiles.add(LanguageLocalization(language: language.toLowerCase(), country: country?.toUpperCase(), content: content));
-        matchedFiles.add(file);
       }
     }
-    return (matchedFiles, localizationFiles);
+    return (allFiles, localizationFiles);
   }
 }

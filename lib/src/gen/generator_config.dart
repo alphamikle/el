@@ -19,6 +19,7 @@ class GeneratorConfig {
     this.primaryLocalization,
     this.saveMergedFilesAs,
     this.version,
+    this.watch = false,
     RegExp? regExp,
   }) : _regExp = regExp;
 
@@ -63,6 +64,9 @@ class GeneratorConfig {
   /// Will take effect only for merged generated files (yaml or json), which can help you to have several version of the remote content for old users
   final String? version;
 
+  /// Determines whether changes to localization files and settings in pubspec.yaml will be watched in real time
+  final bool watch;
+
   /// RegExp for localization files
   RegExp get regExp => _regExp ?? RegExp(r'(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$');
 
@@ -80,6 +84,7 @@ class GeneratorConfig {
     RegExp? regExp,
     String? saveMergedFilesAs,
     String? version,
+    bool? watch,
   }) {
     return GeneratorConfig(
       localizationsClassName: localizationsClassName ?? this.localizationsClassName,
@@ -93,8 +98,9 @@ class GeneratorConfig {
       formatOutput: formatOutput ?? this.formatOutput,
       primaryLocalization: primaryLocalization ?? this.primaryLocalization,
       regExp: regExp ?? _regExp,
-      saveMergedFilesAs: saveMergedFilesAs,
-      version: version,
+      saveMergedFilesAs: saveMergedFilesAs ?? this.saveMergedFilesAs,
+      version: version ?? this.version,
+      watch: watch ?? this.watch,
     );
   }
 }
