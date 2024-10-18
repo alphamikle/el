@@ -301,6 +301,10 @@ extension ExtendedConvertableCodeName on String {
 
     final String clearString = replaceAll(clearingRegExp, '_').replaceAll(severalSnakesRegExp, '_').replaceFirst(privateRegExp, '');
 
+    if (_isKeyword(clearString)) {
+      return '$clearString\$';
+    }
+
     return clearString;
   }
 
@@ -330,4 +334,71 @@ extension ExtendedConvertableCodeName on String {
   }
 
   bool get _isPrivate => startsWith('_');
+
+  bool _isKeyword(String word) {
+    const Set<String> keywords = {
+      'abstract',
+      'as',
+      'assert',
+      'async',
+      'await',
+      'break',
+      'case',
+      'catch',
+      'class',
+      'const',
+      'continue',
+      'covariant',
+      'default',
+      'deferred',
+      'do',
+      'dynamic',
+      'else',
+      'enum',
+      'export',
+      'extends',
+      'external',
+      'factory',
+      'false',
+      'final',
+      'finally',
+      'for',
+      'Function',
+      'get',
+      'goto',
+      'if',
+      'implements',
+      'import',
+      'in',
+      'interface',
+      'is',
+      'late',
+      'library',
+      'mixin',
+      'new',
+      'null',
+      'on',
+      'operator',
+      'part',
+      'rethrow',
+      'return',
+      'set',
+      'show',
+      'static',
+      'super',
+      'switch',
+      'sync',
+      'this',
+      'throw',
+      'true',
+      'try',
+      'typedef',
+      'var',
+      'void',
+      'while',
+      'with',
+      'yield'
+    };
+    return keywords.contains(word);
+  }
 }

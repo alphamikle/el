@@ -68,33 +68,6 @@ class StringUnit extends LocalizationUnit {
   final List<String> parents;
 }
 
-class StringWithDescriptionUnit extends LocalizationUnit {
-  const StringWithDescriptionUnit({
-    required this.fieldKey,
-    required this.value,
-    required this.schemaValue,
-    required this.parents,
-  });
-
-  @override
-  String get fieldName => fieldKey.asClearCamelCase(parents.join());
-
-  @override
-  String get rawName => fieldKey;
-
-  @override
-  final String fieldKey;
-
-  @override
-  final StringWithDescriptionValue value;
-
-  @override
-  final StringWithDescriptionValue schemaValue;
-
-  @override
-  final List<String> parents;
-}
-
 class GenderUnit extends LocalizationUnit {
   const GenderUnit({
     required this.fieldKey,

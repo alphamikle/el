@@ -1,50 +1,56 @@
-![Logo](./assets/logo.png)
+# Easiest Localization (el)
+
+![Easiest Localization Logo](./assets/logo.png)
 
 ---
 
-Easiest localization / **el** is the package, focused on providing the easiest and fastest way to localize your Flutter application with a type-safe generated code and full remote support in one jar.
+**Easiest Localization** (**el**) is a powerful Flutter package that provides the easiest and fastest way to localize your Flutter application. With type-safe generated code and full remote support—all in one package—it's the ultimate solution for your localization needs.
 
-Easiest localization is like [easy_localization](https://pub.dev/packages/easy_localization), but easier 😉, safer, better!
+Easiest Localization is like [easy_localization](https://pub.dev/packages/easy_localization), but easier 😉, safer, and better!
 
-# Why easiest_localization?
+## Why Choose Easiest Localization?
 
-- 🚀 Easiest translation for any language and country
-- 🔌 Use as a source `json` or `yaml` files
-- 💾 React and persist to locale changes in real time
-- ⚡ Supports plural, gender, nesting, RTL locales and more
-- ↩️ Fallback locale keys redirection
-- ❤️ Ability to use without context access and still reactive support of language change
-- 💻 Full code generation for localization files and keys with 100% type-safety
-- 🔄 Watch code-generation mode
-- 🛡️ Null safety and, which is more important - **type safety**! Your app just will not compile, if you missed some content
-- 🌐 Generated code supports [remote localization](https://pub.dev/packages/easiest_remote_localization) without any changes
+- 🚀 **Effortless Translation**: Simplify translations for any language and region.
+- 🔌 **Flexible Source Files**: Use `json` or `yaml` files as your localization sources.
+- 💾 **Real-Time Locale Changes**: React to and persist locale changes instantly.
+- ⚡ **Advanced Features**: Supports pluralization, gender-specific strings, nesting, RTL locales, and more.
+- ↩️ **Fallback Localization**: Automatic fallback to default locale keys when necessary.
+- ❤️ **Context-Free Usage**: Use without context access while still supporting reactive language changes.
+- 💻 **100% Type-Safe Code Generation**: Generate code for localization files and keys with complete type safety.
+- 🔄 **Live Code Generation**: Enable watch mode for real-time code generation during development.
+- 🛡️ **Null and Type Safety**: Your app won't compile if any content is missing, ensuring reliability.
+- 🌐 **Seamless Remote Localization**: Generated code supports [remote localization](https://pub.dev/packages/easiest_remote_localization) without any changes.
 
-If you are not happy with your localization library, want type-safety or incredible flexibility in naming of your strings - you just have to pay attention to `easiest_localization`
+**If you're seeking a localization library that offers type safety and incredible flexibility in naming your strings, look no further than Easiest Localization!**
 
-# Getting started
+---
 
-## 🔩 Installation
+## Getting Started with Easiest Localization
 
-### Add easiest_localization package, as a normal dependency
+### 🔩 Installation
+
+Add `easiest_localization` to your project's dependencies in `pubspec.yaml`:
 
 ```yaml
 dependencies:
   easiest_localization: ^2.0.0
 ```
 
-### Add `yaml` or `json` localization files under any assets folder, which is described in your `pubspec.yaml`:
+### 📁 Adding Localization Files
+
+Place your `yaml` or `json` localization files in an assets folder specified in your `pubspec.yaml`:
 
 ```
 /assets
-├── /en.yaml
+├── en.yaml
 ├── ...
 ├── /i18n
-│   ├── /es.yaml
-│   └── /ru.yaml
-└── ...any other structures will be acceptable
+│   ├── es.yaml
+│   └── ru.yaml
+└── ...any other structure is acceptable
 ```
 
-Remember to add your assets in `pubspec.yaml`:
+Update your `pubspec.yaml` to include the assets:
 
 ```yaml
 flutter:
@@ -53,19 +59,25 @@ flutter:
     - assets/i18n/
 ```
 
-The names of localization files must match the following RegExp:
-`(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$`
+**File Naming Convention:**
 
-That is, it must include at least a two-letter language code, and optionally, a country code separated by `-` or `_`:
+Localization file names must match the following pattern:
 
-- `el_en.yaml` - `el_` is an optional prefix
+- Include at least a two-letter language code.
+- Optionally include a country code, separated by `-` or `_`.
+
+Examples:
+
+- `el_en.yaml` (optional `el_` prefix)
 - `en.yaml`
 - `en_US.json`
 - `en-CA.yaml`
 
-## ⚙️ Configuration
+---
 
-You can place it as a root key in your `pubspec.yaml` file to configure **el** very deeply. Here are all the options and their default values:
+### ⚙️ Configuration
+
+Customize **Easiest Localization** by adding a configuration in your `pubspec.yaml`. Below are the options with their default values:
 
 ```yaml
 # ... Other pubspec' content
@@ -74,13 +86,13 @@ easiest_localization:
   # List of strings / patterns that will not be processed despite matching reg_exp
   # Empty list by default
   excluded: []
-  
+
   # The name of the class containing the localization content
   class_name: LocalizationMessages
-  
+
   # Description of the generated localization package
   description: Generated localization package
-  
+
   # The version of the easiest_localization_version package used as a dependency
   # in the generated localization package
   #
@@ -89,21 +101,21 @@ easiest_localization:
   # 
   # Examples: 2.0.0, "\n    path: ../../easiest_localization", "\n    git:\n      path: abc\n      url: abc\n      ref: 2.0.0"
   easiest_localization_version: <installed version>
-  
+
   # Name of the generated localization package and the folder with it
   package_name: localization
-  
+
   # Relative path to the generated localization package
   package_path: './'
-  
+
   # Version of the generated localization package
   package_version: 1.0.0
-  
+
   # An example of supported file names with a default RegExp: https://regex101.com/r/CALDhV/3
   #
   # !!! A mandatory requirement for RegExp: it must have named parameter (?<lang>[a-z]{2}) !!!
   reg_exp: "(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$"
-  
+
   # The language code or full localization to be used as the content source,
   # defaulting to other languages if no fields are described
   #
@@ -150,18 +162,20 @@ easiest_localization:
   watch: false
 ```
 
-## 🖨️ Code generation
+---
 
-Once you installed **el**, specified assets under `pubspec.yaml` and have, at least, one localization file at your assets folder - you able to generate type-safe localization code. To do that just run:
+### 🖨️ Code Generation
+
+After setting up your localization files, generate type-safe localization code by running:
 
 ```bash
 dart run easiest_localization [--format] [--watch]
 ```
 
-- `--format` option tells the generator to auto-format the code after generation. Equals to `format_output: true` from the config
-- `--watch` option enables time-continuous code-generation that responds to changes in localization files (as well as the creation of new files), and to configuration changes in pubspec.yaml. Equals to `watch: true` from the config
+- `--format`: Auto-format the code after generation. Equals to `format_output: true` from the config.
+- `--watch`: Enable watch mode for real-time code generation. Equals to `watch: true` from the config.
 
-> After first run, the generated package will automatically be added as a dependency to your pubspec.yaml and the `flutter pub get` command will be executed. And you'll get something like this (with default settings):
+The generated package will be automatically added to your `pubspec.yaml` dependencies:
 
 ```yaml
 dependencies:
@@ -170,9 +184,11 @@ dependencies:
     path: ./localization
 ```
 
-## ✍️ How to use
+---
 
-After generation and installation of generated package was complete - you able to use **el**. To do so you just need to add few variables to your `MaterialApp`:
+### ✍️ How to Use Easiest Localization
+
+Import the generated package and configure your `MaterialApp`:
 
 ```dart
 import 'package:flutter/material.dart';
@@ -214,11 +230,11 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-### 🛠️ Methods of using
+#### 🛠️ Accessing Localization Strings
 
 As you saw above - **el** brings several methods to retrieve localization content. They all splits into two groups: type safe and not.
 
-The first group - is recommended to use and the second - only if it is really necessary or if you want to retrieve localizations dynamically (by combining variables, for example), or...if you want to change the translation library at your app.
+> The first group - is recommended to use and the second - only if it is really necessary or if you want to retrieve localizations dynamically (by combining variables, for example), or...if you want to change the translation library at your app.
 
 ```dart
 typedef Greetings = String Function({required String username});
@@ -271,15 +287,17 @@ void showExample(BuildContext context) {
 }
 ```
 
-## 📜 Localization content
+---
 
-You can use `yaml` or `json` files either locally or from a remote source. Without any restrictions on field names or nesting structure.
+## 📜 Localization Content
+
+You can use `yaml` or `json` files, locally or remotely, without restrictions on field names or nesting structures.
 
 > Using local files allows you to reduce content writing in `yaml` / `json` files for the same language used in different countries. In this case, you can describe all content in a main file, say - `en.yaml`, and describe only what needs to be different in additional files, say - `en_CA.yaml`, `en_UK.yaml`.
 
-> In the remotely accessible files, all content should be fully described for each language. However, you don't have to keep two copies of the files for remote and local use, as el generates “comprehensive” files for all languages and countries for you. More on this below, in the “Remote Localization” section. 
+> In the remotely accessible files, all content should be fully described for each language. However, you don't have to keep two copies of the files for remote and local use, as el generates “comprehensive” files for all languages and countries for you. More on this below, in the “Remote Localization” section.
 
-Here is an example of localization file:
+**Example Localization File (`en.yaml`):**
 
 ```yaml
 # Simple string
@@ -295,14 +313,15 @@ main_screen:
   greetings: Hello, ${username}!
   books:
     add: Add Book
-    
+
     # Pluralization
+    # To create a plural string, you need to define at least [one] and [other] fields
     amount_of_new:
       zero: There are no new books available at the moment :(
       one: There is ${howMany} new book available :)
       other: There are ${howMany} new books available :)
   today_date_format: MM/dd/yyyy
-  
+
   # Multi-row strings (thanks to YAML)
   welcome: |
     # Welcome to our library!
@@ -310,6 +329,7 @@ main_screen:
     ## We are very happy to see you and would like you to enjoy reading our books.
 
 # Gender-specific strings
+# To create a gender string, you need to define at least [other] field
 author:
   male: ${name} - he is the author of that book!
   female: ${name} - she is the author of that book!
@@ -326,9 +346,30 @@ employees:
   "4": William Taylor
 ```
 
+### Arguments
+
+If you specify arguments inside localization strings (it doesn't matter where exactly this string is located - in a pluralization block, gender definition or in a simple string), the corresponding function will be generated instead of the usual variable. And you will have to pass the corresponding named argument to this function. For example:
+
+```yaml
+someKey: Hello, ${username}! What do you want to do on ${day}? Will you go with me and ${friend} to the celebration? 
+```
+
+will generate a code, which be able to use as a function with next signature:
+
+```dart
+final String Function({required String username, required String day, required String friend}) someKey;
+```
+
+You can embed arguments to any type of the content - simple, plural and nested (inside namespaces), or gender-specific. But there are some restrictions about argument names:
+
+1. Argument named `howMany` will always be of type `num` if it is inside a pluralization block (specified inside one of the following keys: zero, one, two, few, many, other)
+2. The argument called `precision` will always be of type `double` if it is inside a pluralization block (see above)
+3. An argument called `gender` will always be of type `Gender` if it is specified inside the gender definition block (specified inside one of the following keys: female, male, other)
+
 ### Pluralization
 
 You, of course, able to pluralize the content. See an example above, near the comment "Pluralization".
+
 And also, you are able to have any arguments (any String arguments) at your localization content. To make content pluralized, you should specify at least two keys:
 - `one`
 - `other`
@@ -358,37 +399,33 @@ amount_of_new:
   other: В настоящий момент доступно ${howMany} новые книги :)
 ```
 
-### Arguments
+### Gender-specific Strings
 
-If you specify arguments inside localization strings (it doesn't matter where exactly this string is located - in a pluralization block, gender definition or in a simple string), the corresponding function will be generated instead of the usual variable. And you will have to pass the corresponding named argument to this function. For example:
+Defining strings specific to different genders is also supported if you define at least one field in the section:
+- `other`
+
+And also available for defining the next fields:
+- `female`
+- `male`
 
 ```yaml
-someKey: Hello, ${username}! What do you want to do on ${day}? Will you go with me and ${friend} to the celebration? 
+author:
+  male: ${name} - he is the author of that book!
+  female: ${name} - she is the author of that book!
+  other: ${name} - they are the author of that book!
 ```
 
-will generate a code, which be able to use as a function with next signature:
+---
 
-```dart
-final String Function({required String username, required String day, required String friend}) someKey;
-```
+## 🌐 Remote Localization
 
-You can embed arguments to any type of the content - simple, plural and nested (inside namespaces), or gender-specific. But there are some restrictions about argument names:
-
-1. Argument named `howMany` will always be of type `num` if it is inside a pluralization block (specified inside one of the following keys: zero, one, two, few, many, other)
-2. The argument called `precision` will always be of type `double` if it is inside a pluralization block (see above)
-3. An argument called `gender` will always be of type `Gender` if it is specified inside the gender definition block (specified inside one of the following keys: female, male, other)
-
-# Remote localization
-
-## General Information
-
-`easiest_localization` generates type-safe code, which makes it a pleasure to use. Additionally, you have the option to use remote localization sources from anywhere.
+`easiest_localization` generates type-safe code, which makes it a pleasure to use. Additionally, you have an option to use remote localization sources from anywhere.
 
 There are many different services for app localization, but the core purpose of any of them is to provide your application with a JSON document (whether via API or as a file—it's not so important).
 
 The [easiest_remote_localization](https://pub.dev/packages/easiest_remote_localization) package allows you to retrieve JSON or YAML documents or files from any remote source and use the retrieved data as an argument for the constructor of the generated class, which serves as the representation of your localization code.
 
-## Setup
+### Setup
 
 The initialization process is extremely simple:
 
@@ -471,23 +508,23 @@ class _MyAppState extends State<MyApp> {
 }
 ```
 
-> If you need 101% customization, you can use the low-level constructor `RemoteLocalizationProvider.raw` or implement your own `LocalizationProvider<LocalizationMessages>`
+> If you need 101% customization, you can use the low-level constructor `RemoteLocalizationProvider.raw` or implement your own `LocalizationProvider<LocalizationMessages>` class
 
-## Caching
+### Caching
 
 You can set a cache lifespan (or disable caching entirely), ensuring that the user only downloads localization data once during a certain interval. This allows the use of remote content even when the user is offline. Caching is implemented using `shared_preferences`.
 
-## Safety
+### Safety
 
 Since your app will always have a local version of the localization, even if remote content cannot be loaded due to backend issues or the user has no internet and the cache is empty, the user will still see the localization from the local version.
 
 If you’ve added a new language that is only available remotely and has never been downloaded, a fallback language defined by you, or the first language in the list, will be shown instead.
 
-## Dynamic Language Expansion
+### Dynamic Languages Expansion
 
 As mentioned above, since you can store content for any language remotely, including new ones that are not yet in the app, this opens the possibility of adding new languages in real-time without needing to update the app.
 
-## Best Practices
+### Best Practices
 
 Maximum synergy can be achieved as follows: you develop the app and add or modify localized content. Simultaneously, comprehensive localization files will be generated if the corresponding setting is set to `save_merged_files_as: yaml` or `save_merged_files_as: json`. In this case, an additional `merged` folder will be created in the generated localization package, where you will find a list of JSON or YAML files that can be placed, for example, on your CDN. This process can be fully automated using CI/CD, allowing your users to receive the freshest content updates in real-time.
 
@@ -497,6 +534,6 @@ For this specific purpose, there is a `remote_version` parameter in the configur
 
 ---
 
-Let me know if you need any further adjustments!
+A comprehensive example application is available at the link:
 
-
+https://github.com/alphamikle/localization_battle

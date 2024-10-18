@@ -9,10 +9,16 @@ String capitalize(String? string) {
   if (string == null || string.isEmpty) {
     return '';
   }
-  final String pascalCaseString = string.asPascalCase;
+  String pascalCaseString = string.asPascalCase;
+
   if (pascalCaseString == 'Locale') {
-    return r'$Locale';
+    pascalCaseString = r'$Locale';
   }
+
+  if (pascalCaseString.endsWith(r'$')) {
+    pascalCaseString = pascalCaseString.replaceFirst(RegExp(r'\$$'), '');
+  }
+
   return pascalCaseString;
 }
 
