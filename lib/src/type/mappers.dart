@@ -5,10 +5,19 @@ import 'package:yaml/yaml.dart';
 import '../tools/names_converter.dart';
 import 'types.dart';
 
+final Map<String, String> _cache = {};
+
 String capitalize(String? string) {
   if (string == null || string.isEmpty) {
     return '';
   }
+
+  final String? cached = _cache[string];
+
+  if (cached != null) {
+    return cached;
+  }
+
   String pascalCaseString = string.asPascalCase;
 
   if (pascalCaseString == 'Locale') {
@@ -18,6 +27,8 @@ String capitalize(String? string) {
   if (pascalCaseString.endsWith(r'$')) {
     pascalCaseString = pascalCaseString.replaceFirst(RegExp(r'\$$'), '');
   }
+
+  _cache[string] = pascalCaseString;
 
   return pascalCaseString;
 }

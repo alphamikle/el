@@ -5,6 +5,7 @@ typedef DMap = Map<dynamic, dynamic>;
 extension EmptyableMap on DMap {
   Json empty() {
     final Json result = {};
+
     for (final MapEntry(:key, :value) in entries) {
       final String strKey = key is String ? key : key.toString();
 
@@ -13,9 +14,10 @@ extension EmptyableMap on DMap {
       } else if (value is Map) {
         result[strKey] = value.empty();
       } else if (value is List) {
-        throw Exception('Unsupported type of data');
+        result[key] = {};
       }
     }
+
     return result;
   }
 }

@@ -2,6 +2,11 @@ import 'extensions.dart';
 
 typedef NameConverter = String Function(String value);
 
+final RegExp clearingRegExp = RegExp(r'[^A-Za-z0-9_]');
+final RegExp severalSnakesRegExp = RegExp(r'_+');
+final RegExp privateRegExp = RegExp(r'^_');
+final RegExp numbersRegExp = RegExp(r'^\d+');
+
 enum NamingStrategy {
   // Name will be the same, as variable
   plain,
@@ -46,6 +51,9 @@ enum NamingStrategy {
   }
 }
 
+final Map<String, String> _cache = {};
+final Map<String, List<String>> _splitCache = {};
+
 String _transformer({
   required String input,
   String joiner = '',
@@ -54,6 +62,14 @@ String _transformer({
   bool capitalizeAll = false,
   bool lowerAll = false,
 }) {
+  final String id = '$input:$joiner:$capitalizeFirst:$allowPrivate:$capitalizeAll:$lowerAll';
+
+  final String? cachedValue = _cache[id];
+
+  if (cachedValue != null) {
+    return cachedValue;
+  }
+
   final List<String> words = _split(input);
   if (words.isEmpty) {
     return '';
@@ -89,7 +105,11 @@ String _transformer({
     return (index == 0 || isPrivate && index == 1) ? mapped.toLowerCase() : mapped;
   }
 
-  return '${(isPrivate && allowPrivate ? '_' : '')}${words.mapIndexed(wordMapper).join(joiner)}';
+  final String result = '${(isPrivate && allowPrivate ? '_' : '')}${words.mapIndexed(wordMapper).join(joiner)}';
+
+  _cache[id] = result;
+
+  return result;
 }
 
 String toCamelCase(String input) => _transformer(input: input);
@@ -161,12 +181,20 @@ bool _isUnderscore(String? char) {
 }
 
 List<String> _split(String input) {
+  final List<String>? cached = _splitCache[input];
+
+  if (cached != null) {
+    return cached;
+  }
+
   final List<String> output = [];
-  final List<String> word = [];
+  final StringBuffer word = StringBuffer();
+  String? prevChar;
 
   void addWord() {
-    output.add(word.join());
+    output.add(word.toString());
     word.clear();
+    prevChar = null;
   }
 
   for (int i = 0; i < input.length; i++) {
@@ -179,7 +207,6 @@ List<String> _split(String input) {
     final bool isDollar = _isDollar(char);
     final bool isUnderscore = _isUnderscore(char);
 
-    final String? prevChar = word.isEmpty ? null : word.last;
     final bool isPrevNumber = _isNumber(prevChar);
     final bool isPrevUpper = _isUpperCase(prevChar);
     final bool isPrevSmall = _isSmallChar(prevChar);
@@ -208,57 +235,66 @@ List<String> _split(String input) {
 
     /// ? when word = 123... and char is 0-9, then adding char to the word
     if (isNumber && (wordIsNotEmpty && isPrevNumber || wordIsEmpty)) {
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
 
     /// ? when word is not a sequence of numbers and char is 0-9, then adding word and after that - adding char to the word
     if (isNumber && wordIsNotEmpty && isPrevNumber == false) {
       addWord();
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
 
     /// ? when word is abc || 123 || A-Z, then adding word and after - adding char to the word
     if (isUpperCase && wordIsNotEmpty && (isPrevSmall || isPrevNumber)) {
       addWord();
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
 
     /// ? when word is [$] - adding char to the word
     if (isUpperCase && word.length == 1 && isPrevDollar) {
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
 
     /// ? when word is empty - adding char to the word
     if (isUpperCase && wordIsEmpty) {
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
 
     /// ? when word is AAA..., also - just adding char to the word
     if (isUpperCase && isPrevUpper) {
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
 
     /// ? always adding any new small chars to the word if the last is not a number
     if (isSmallChar && isPrevNumber == false) {
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
 
     /// ? always adding any new small chars to the word if the last is not a number
     if (isSmallChar && isPrevNumber) {
       addWord();
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
 
     if (isDollar && (wordIsEmpty || isPrevDollar)) {
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
 
@@ -266,7 +302,8 @@ List<String> _split(String input) {
     /// ? $smallValue => [$small, Value]; $small$value => [$small, $value]; $small123$456value => [$small, 123, $, 456, value]
     if (isDollar && wordIsNotEmpty && isPrevDollar == false) {
       addWord();
-      word.add(char);
+      word.write(char);
+      prevChar = char;
       continue;
     }
   }
@@ -274,6 +311,9 @@ List<String> _split(String input) {
   if (word.isNotEmpty) {
     addWord();
   }
+
+  _splitCache[input] = output;
+
   return output;
 }
 
@@ -295,10 +335,6 @@ extension ExtendedConvertableCodeName on String {
   String get asDotCase => toDotCase(this);
 
   String get clear {
-    final RegExp clearingRegExp = RegExp(r'[^A-Za-z0-9_]');
-    final RegExp severalSnakesRegExp = RegExp(r'_+');
-    final RegExp privateRegExp = RegExp(r'^_');
-
     final String clearString = replaceAll(clearingRegExp, '_').replaceAll(severalSnakesRegExp, '_').replaceFirst(privateRegExp, '');
 
     if (_isKeyword(clearString)) {
@@ -310,7 +346,8 @@ extension ExtendedConvertableCodeName on String {
 
   String asClearCamelCase(String className) {
     String clearString = clear.asCamelCase;
-    if (RegExp(r'^\d+').hasMatch(clearString)) {
+
+    if (numbersRegExp.hasMatch(clearString)) {
       clearString = 'n$clearString';
     }
 

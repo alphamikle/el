@@ -7,6 +7,7 @@ import '../template/class_factory_template.dart';
 import '../template/imports_template.dart';
 import '../tools/code_tools.dart';
 import '../tools/localization_tools.dart';
+import '../tools/null_value_exception.dart';
 import '../type/types.dart';
 import 'generator_config.dart';
 
@@ -41,7 +42,11 @@ class LocalizationFileInterfaceGenerator {
       throw ArgumentError('localizations argument should not be empty. It seems - you have no any localization files');
     }
     final Json content = scheme.content;
-    for (final MapEntry(:String key, :Object value) in content.entries) {
+    for (final MapEntry(:String key, :Object? value) in content.entries) {
+      if (value == null) {
+        nullValueException(key: key);
+      }
+
       final LocalizationUnit localizationUnit = localizeValue(key, value, value);
       units.add(localizationUnit);
     }
@@ -82,6 +87,7 @@ Object? operator [](Object? key) {
       ...externalCode,
       classBeginningTemplate(className: config.localizationsClassName),
       ...constructorArgumentsCode,
+      if (constructorArgumentsCode.isEmpty) 'String? stub,',
       '});',
       classFactoryBeginningTemplate(className: config.localizationsClassName),
       ...factoryArgumentsCode,

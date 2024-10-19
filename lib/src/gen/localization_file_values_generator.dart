@@ -3,6 +3,7 @@ import '../locale/localization_unit.dart';
 import '../template/language_value_beginning_template.dart';
 import '../tools/code_tools.dart';
 import '../tools/localization_tools.dart';
+import '../tools/null_value_exception.dart';
 import 'generator_config.dart';
 
 class LocalizationFileValuesGenerator {
@@ -30,8 +31,13 @@ class LocalizationFileValuesGenerator {
         languageValueBeginningTemplate(lang: languageLocalization.name, className: config.localizationsClassName),
       ];
 
-      for (final MapEntry(:String key, :Object value) in languageLocalization.content.entries) {
-        final Object schemaValue = scheme.content[key];
+      for (final MapEntry(:String key, :Object? value) in languageLocalization.content.entries) {
+        final Object? schemaValue = scheme.content[key];
+
+        if (value == null || schemaValue == null) {
+          nullValueException(key: key);
+        }
+
         final LocalizationUnit localizationUnit = localizeValue(key, value, schemaValue);
         code.add(localizationUnitToValue(localizationUnit).classArgumentCode);
       }

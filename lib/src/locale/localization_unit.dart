@@ -14,12 +14,14 @@ enum UnitType {
 
   factory UnitType.fromValue(Object? value) {
     return switch (value) {
+      double() => UnitType.string,
+      int() => UnitType.string,
+      bool() => UnitType.string,
       String() => UnitType.string,
-      {'value': final String _, 'desc': final String _} => UnitType.string,
-      {'value': final String _} => UnitType.string,
       {'other': final String _, 'one': final String _} => UnitType.plural,
       {'other': final String _} => UnitType.gender,
       Map() => UnitType.namespace,
+      List() => UnitType.namespace,
       _ => UnitType.unknown,
     };
   }

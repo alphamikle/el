@@ -35,15 +35,19 @@ void main(List<String> args) {
 }
 
 void generate(GeneratorConfig config, int startedTimestamp) {
-  final Generator generator = Generator(config);
-  final (String, List<LanguageLocalization>) result = generator.generate();
-  final int end = (DateTime.now().millisecondsSinceEpoch - startedTimestamp);
+  try {
+    final Generator generator = Generator(config);
+    final (String, List<LanguageLocalization>) result = generator.generate();
+    final int end = (DateTime.now().millisecondsSinceEpoch - startedTimestamp);
 
-  final List<String> locales = result.$2.map((LanguageLocalization it) => it.name).toList(growable: false);
+    final List<String> locales = result.$2.map((LanguageLocalization it) => it.name).toList(growable: false);
 
-  log('Localizations generation completed in ${end}ms with [${locales.join(', ')}] ${_locales(locales.length)}'.asBlue());
+    log('Localizations generation completed in ${end}ms with [${locales.join(', ')}] ${_locales(locales.length)}'.asBlue());
 
-  FirstStartChecker(config: config).updatePubSpec();
+    FirstStartChecker(config: config).updatePubSpec();
+  } catch (error) {
+    log(error.toString().asRed());
+  }
 }
 
 void _watch(GeneratorConfig initialConfig) {

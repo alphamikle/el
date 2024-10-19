@@ -4,16 +4,12 @@ import '../code_output.dart';
 import '../localization_unit.dart';
 
 CodeOutput namespacedUnitToValue(NamespacedUnit unit) {
-  final List<String> variableParents = [];
   final List<String> constructorParents = [];
+
   for (int i = 0; i < unit.parents.length; i++) {
-    if (i == 0) {
-      variableParents.add(unit.parents[i]);
-    } else {
-      variableParents.add(capitalize(unit.parents[i]));
-    }
     constructorParents.add(capitalize(unit.parents[i]));
   }
+
   final String variableName = unit.fieldName;
   final String constructorName = [...constructorParents, capitalize(unit.fieldName)].join();
 

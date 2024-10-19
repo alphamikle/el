@@ -5,15 +5,9 @@ import '../code_output.dart';
 import '../localization_unit.dart';
 
 CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword = true}) {
-  final List<String> variableParents = [];
   final List<String> constructorParents = [];
 
   for (int i = 0; i < unit.parents.length; i++) {
-    if (i == 0) {
-      variableParents.add(unit.parents[i]);
-    } else {
-      variableParents.add(capitalize(unit.parents[i]));
-    }
     constructorParents.add(capitalize(unit.parents[i]));
   }
 
@@ -79,6 +73,7 @@ final $constructorName $variableName;
     'class $constructorName {',
     'const $constructorName ({',
     ...childrenCodeWithThisKeyword.map((CodeOutput code) => code.classArgumentCode),
+    if (childrenCodeWithThisKeyword.isEmpty) 'String? stub,',
     '});',
     classFactoryBeginningTemplate(className: constructorName),
     ...childrenCodeWithThisKeyword.map((CodeOutput code) => code.factoryArgumentCode ?? ''),
