@@ -83,7 +83,7 @@ Object? operator [](Object? key) {
 ''',
     ]);
     final String code = [
-      importsTemplate,
+      importsTemplate(config),
       ...externalCode,
       classBeginningTemplate(className: config.localizationsClassName),
       ...constructorArgumentsCode,

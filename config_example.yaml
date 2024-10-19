@@ -77,3 +77,6 @@ easiest_localization:
   #
   # Default value = false
   watch: false
+
+  # Needed or not to install a generated package into the pubspec and call [flutter pub get]
+  init_pubspec: true

@@ -37,6 +37,7 @@ void main() {
         primaryLocalization: 'en',
         packageVersion: packageVersion,
         version: remoteVersion,
+        initPubspec: false,
       ),
       DateTime.now().millisecondsSinceEpoch,
     );

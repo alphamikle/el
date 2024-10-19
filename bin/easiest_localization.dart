@@ -26,6 +26,10 @@ void main(List<String> args) {
     config = config.copyWith(watch: true);
   }
 
+  if (args.contains('--no-init')) {
+    config = config.copyWith(initPubspec: false);
+  }
+
   generate(config, start);
 
   if (config.watch) {

@@ -160,6 +160,9 @@ easiest_localization:
   #
   # Default value = false
   watch: false
+
+  # Needed or not to install a generated package into the pubspec and call [flutter pub get]
+  init_pubspec: true
 ```
 
 ---
@@ -169,11 +172,12 @@ easiest_localization:
 After setting up your localization files, generate type-safe localization code by running:
 
 ```bash
-dart run easiest_localization [--format] [--watch]
+dart run easiest_localization [--format] [--watch] [--no-init]
 ```
 
 - `--format`: Auto-format the code after generation. Equals to `format_output: true` from the config.
 - `--watch`: Enable watch mode for real-time code generation. Equals to `watch: true` from the config.
+- `--no-init`: Disable automatic package initialization on the very first run. Equals to `init_pubspec: false` from the config.
 
 The generated package will be automatically added to your `pubspec.yaml` dependencies:
 
@@ -188,11 +192,11 @@ dependencies:
 
 ### ✍️ How to Use Easiest Localization
 
-Import the generated package and configure your `MaterialApp`:
+Import the generated package and configure your `MaterialApp` within 3 steps:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:localization/localization.dart'; // <- Import the generated package
+import 'package:localization/localization.dart'; // <- 1️⃣ Import the generated package
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -207,12 +211,13 @@ class MyApp extends StatelessWidget {
     return Builder(
       builder: (BuildContext context) {
         return MaterialApp(
-          /// The first variable - [supportedLocales], which contains all the generated and fallback locales, alongside with default material, cupertino and so on
+          /// 2️⃣ The first variable - [supportedLocales], which contains all the generated and fallback locales, alongside with default material, cupertino and so on
           supportedLocales: supportedLocales,
 
-          /// The second - [localizationsDelegates], which contains generated and default delegates for work of localizations in general
+          /// 3️⃣ The second - [localizationsDelegates], which contains generated and default delegates for work of localizations in general
           localizationsDelegates: localizationsDelegates,
 
+          /// ❗ Using examples ❗
           /// Access to locale from the context               ⬇ ︎
           onGenerateTitle: (BuildContext context) => context.el.title,
           theme: ThemeData(
@@ -427,11 +432,11 @@ The [easiest_remote_localization](https://pub.dev/packages/easiest_remote_locali
 
 ### Setup
 
-The initialization process is extremely simple:
+The initialization process is only 4 steps and extremely simple:
 
 ```dart
 import 'package:easiest_localization/easiest_localization.dart';
-import 'package:easiest_remote_localization/easiest_remote_localization.dart';
+import 'package:easiest_remote_localization/easiest_remote_localization.dart'; // <- 1️⃣ Import package
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
@@ -449,7 +454,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  /// Create remote providers - as many, as you want. But usually, you will need only one
+  /// 2️⃣ Create remote providers - as many, as you want. But usually, you will need only one
   late final List<LocalizationProvider<LocalizationMessages>> remoteProviders = [
     RemoteLocalizationProvider<LocalizationMessages>(
       /// Set the cache duration
@@ -497,10 +502,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       onGenerateTitle: (BuildContext context) => el.appTitle,
 
-      /// Use localizationsDelegatesWithProviders(remoteProviders) instead of localizationsDelegates
+      /// 3️⃣ Use localizationsDelegatesWithProviders(remoteProviders) instead of localizationsDelegates
       localizationsDelegates: localizationsDelegatesWithProviders(remoteProviders),
 
-      /// And finally - use supportedLocalesWithProviders(remoteProviders) instead of supportedLocales
+      /// 4️⃣ And finally - use supportedLocalesWithProviders(remoteProviders) instead of supportedLocales
       supportedLocales: supportedLocalesWithProviders(remoteProviders),
       home: Home(),
     );

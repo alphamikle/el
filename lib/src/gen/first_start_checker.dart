@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 
+import '../loader/config_loader.dart';
 import '../tools/log.dart';
 import 'generator_config.dart';
 
@@ -31,6 +32,14 @@ class FirstStartChecker {
 
     if (pubspecContent.contains(packagePath)) {
       // Package already added to the pubspec previously
+      return;
+    }
+
+    if (config.initPubspec == false) {
+      log(
+        'You have chosen not to initialize “$packageName” automatically. To use it you need to manually add the package to pubspec.yaml => dependencies, or you can enable the “$kUnitPubspec: true” parameter'
+            .asYellow(),
+      );
       return;
     }
 

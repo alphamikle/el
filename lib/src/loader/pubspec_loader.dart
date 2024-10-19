@@ -95,10 +95,11 @@ flutter:
     for (final String excludedPattern in config!.excludedPatterns) {
       final RegExp excludedRegExp = RegExp(excludedPattern);
 
-      isExcluded = excludedRegExp.hasMatch(file.path);
+      isExcluded = file.path.contains(excludedPattern) || excludedRegExp.hasMatch(file.path);
 
       if (isExcluded) {
         exclusionPattern = excludedPattern;
+        break;
       }
     }
 

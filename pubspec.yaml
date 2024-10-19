@@ -28,5 +28,9 @@ flutter:
   assets:
     - assets/
 
+# This configuration used for testing purposes
 easiest_localization:
   easiest_localization_version: "\n    path: ../"
+  init_pubspec: false
+  excluded:
+    - es.yaml

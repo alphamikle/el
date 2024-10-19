@@ -20,6 +20,7 @@ const String kRegExp = 'reg_exp';
 const String kWatchMode = 'watch';
 const String kPrimaryLocalization = 'primary_localization';
 const String kSaveMergedFilesAs = 'save_merged_files_as';
+const String kUnitPubspec = 'init_pubspec';
 
 class ConfigLoader {
   GeneratorConfig load() {
@@ -50,6 +51,7 @@ class ConfigLoader {
       saveMergedFilesAs: config[kSaveMergedFilesAs]?.toString(),
       version: config[kRemoteVersion]?.toString(),
       watch: bool.tryParse(config[kWatchMode].toString()) ?? false,
+      initPubspec: bool.tryParse(config[kUnitPubspec].toString()) ?? true,
     );
   }
 }

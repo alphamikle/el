@@ -20,6 +20,7 @@ class GeneratorConfig {
     this.saveMergedFilesAs,
     this.version,
     this.watch = false,
+    this.initPubspec = true,
     RegExp? regExp,
   }) : _regExp = regExp;
 
@@ -67,6 +68,9 @@ class GeneratorConfig {
   /// Determines whether changes to localization files and settings in pubspec.yaml will be watched in real time
   final bool watch;
 
+  /// Needed or not to install a generated package into the pubspec and call [flutter pub get]
+  final bool initPubspec;
+
   /// RegExp for localization files
   RegExp get regExp => _regExp ?? RegExp(r'(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$');
 
@@ -85,6 +89,7 @@ class GeneratorConfig {
     String? saveMergedFilesAs,
     String? version,
     bool? watch,
+    bool? initPubspec,
   }) {
     return GeneratorConfig(
       localizationsClassName: localizationsClassName ?? this.localizationsClassName,
@@ -101,6 +106,7 @@ class GeneratorConfig {
       saveMergedFilesAs: saveMergedFilesAs ?? this.saveMergedFilesAs,
       version: version ?? this.version,
       watch: watch ?? this.watch,
+      initPubspec: initPubspec ?? this.initPubspec,
     );
   }
 }

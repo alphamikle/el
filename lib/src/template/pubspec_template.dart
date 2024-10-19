@@ -1,11 +1,14 @@
 import '../gen/generator_config.dart';
 
 String assetsPubspecTemplate(GeneratorConfig config) => '''
-# Generated with easiest_localization: https://pub.dev/packages/easiest_localization
+# *** Automatically added by easiest_localization ***
+# If you find it useful, please consider giving a ⭐ on GitHub: https://github.com/alphamikle/el
+# And leaving a 👍 on pub.dev: https://pub.dev/packages/easiest_localization
+# Your support is very important!
 name: ${config.packageName}
 description: ${config.packageDescription}
 publish_to: none
-version: ${config.packageVersion}
+version: ${config.packageVersion}${config.version == null ? '' : '+${config.version}'}
 
 environment:
   sdk: "${config.dartSdk}"

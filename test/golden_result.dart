@@ -2,17 +2,21 @@
 
 // ignore_for_file: type=lint
 
-import 'dart:developer';
+import 'dart:developer' show log;
 
-import 'package:easiest_localization/easiest_localization.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
+import 'package:easiest_localization/easiest_localization.dart' show LocalizationProvider;
+import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/widgets.dart' show BuildContext, Locale, Localizations, LocalizationsDelegate;
+import 'package:flutter_localizations/flutter_localizations.dart' show GlobalMaterialLocalizations;
+import 'package:intl/intl.dart' show Intl;
 
 final RegExp _variableRegExp = RegExp(r'\$\{[^}]+\} ?');
 
 typedef Checker<T> = bool Function(T value);
+
+const String localizationPackageVersion = r'1.0.0';
+
+const String? localizationVersion = null;
 
 enum Gender {
   male,
@@ -365,48 +369,6 @@ final LocalizationMessages ru = LocalizationMessages(
   ),
   source: '',
 );
-final LocalizationMessages es = LocalizationMessages(
-  appTitle: 'Aplicación de Biblioteca',
-  language: ({required String language, required String country}) => '''Idioma: ${language}''',
-  mainScreen: MainScreen(
-    greetings: ({required String username}) => '''¡Hola, ${username}!''',
-    books: MainScreenBooks(
-      add: 'Añadir libro',
-      amountOfNew: (num howMany, {int? precision}) => Intl.plural(
-        howMany,
-        name: 'amount_of_new',
-        zero: 'No hay libros nuevos disponibles en este momento :(',
-        one: '''Hay ${howMany} libro nuevo disponible :)''',
-        two: null,
-        few: null,
-        many: null,
-        other: '''Hay ${howMany} libros nuevos disponibles :)''',
-        precision: precision,
-      ),
-    ),
-    todayDateFormat: 'dd/MM/yyyy',
-    welcome: '''# ¡Bienvenido a nuestra biblioteca!
----
-## Estamos muy contentos de verte y nos gustaría que disfrutes leyendo nuestros libros.
-''',
-  ),
-  author: (Gender gender, {required String name}) => Intl.gender(
-    gender.name,
-    name: 'author',
-    female: '''¡${name} es la autora de ese libro!''',
-    male: '''¡${name} es el autor de ese libro!''',
-    other: '''¡${name} es el autor de ese libro!''',
-  ),
-  privacyPolicyUrl: 'https://library.app/privacy_mx.pdf',
-  employees: Employees(
-    n0: 'Juan Smith',
-    n1: 'Alicia Johnson',
-    n2: 'Miguel Brown',
-    n3: 'Emma Davis',
-    n4: 'Guillermo Taylor',
-  ),
-  source: '',
-);
 final LocalizationMessages en_CA = LocalizationMessages(
   appTitle: 'Library App',
   language: ({required String language, required String country}) => '''Lang: ${language}; Country: ${country}''',
@@ -452,7 +414,6 @@ final LocalizationMessages en_CA = LocalizationMessages(
 final Map<Locale, LocalizationMessages> _languageMap = {
   Locale('en'): en,
   Locale('ru'): ru,
-  Locale('es'): es,
   Locale('en', 'CA'): en_CA,
 };
 
@@ -566,11 +527,10 @@ List<LocalizationsDelegate> localizationsDelegatesWithProviders(
   ];
 }
 
-// Supported locales: en, ru, es, en_CA
+// Supported locales: en, ru, en_CA
 const List<Locale> supportedLocales = [
   Locale('en'),
   Locale('ru'),
-  Locale('es'),
   Locale('en', 'CA'),
 ];
 
