@@ -34,6 +34,7 @@ class MainScreen {
     required this.todayDateFormat,
     required this.welcome,
   });
+
   factory MainScreen.fromJson(Map<String, dynamic> json) {
     return MainScreen(
       greetings: ({required String username}) => (json['greetings'] ?? '')
@@ -46,18 +47,21 @@ class MainScreen {
       welcome: (json['welcome'] ?? '').toString(),
     );
   }
+
   final String Function({required String username}) greetings;
 
   final MainScreenBooks books;
 
   final String todayDateFormat;
   final String welcome;
+
   Map<String, Object> get _content => {
         r'''greetings''': greetings,
         r'''books''': books,
         r'''today_date_format''': todayDateFormat,
         r'''welcome''': welcome,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -91,6 +95,7 @@ class MainScreenBooks {
     required this.add,
     required this.amountOfNew,
   });
+
   factory MainScreenBooks.fromJson(Map<String, dynamic> json) {
     return MainScreenBooks(
       add: (json['add'] ?? '').toString(),
@@ -131,6 +136,7 @@ class MainScreenBooks {
       ),
     );
   }
+
   final String add;
 
   final String Function(num howMany, {int? precision}) amountOfNew;
@@ -139,6 +145,7 @@ class MainScreenBooks {
         r'''add''': add,
         r'''amount_of_new''': amountOfNew,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -175,6 +182,7 @@ class Employees {
     required this.n3,
     required this.n4,
   });
+
   factory Employees.fromJson(Map<String, dynamic> json) {
     return Employees(
       n0: (json['0'] ?? '').toString(),
@@ -184,11 +192,13 @@ class Employees {
       n4: (json['4'] ?? '').toString(),
     );
   }
+
   final String n0;
   final String n1;
   final String n2;
   final String n3;
   final String n4;
+
   Map<String, Object> get _content => {
         r'''0''': n0,
         r'''1''': n1,
@@ -196,6 +206,7 @@ class Employees {
         r'''3''': n3,
         r'''4''': n4,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -234,6 +245,7 @@ class LocalizationMessages {
     required this.employees,
     required this.source,
   });
+
   factory LocalizationMessages.fromJson(Map<String, dynamic> json) {
     return LocalizationMessages(
       appTitle: (json['app_title'] ?? '').toString(),
@@ -273,6 +285,7 @@ class LocalizationMessages {
       source: (json['source'] ?? '').toString(),
     );
   }
+
   final String appTitle;
   final String Function({required String language, required String country})
       language;
@@ -285,6 +298,7 @@ class LocalizationMessages {
   final Employees employees;
 
   final String source;
+
   Map<String, Object> get _content => {
         r'''app_title''': appTitle,
         r'''language''': language,
@@ -294,6 +308,7 @@ class LocalizationMessages {
         r'''employees''': employees,
         r'''source''': source,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {

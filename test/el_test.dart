@@ -16,7 +16,7 @@ void main() {
             path.join(path.current, 'localization', 'lib', 'localization.dart'))
         .readAsStringSync();
     final String goldenResult =
-        File(path.join(path.current, 'test', 'golden_result.dart'))
+        File(path.join(path.current, 'test', 'golden_result.dart.txt'))
             .readAsStringSync();
 
     expect(output, equals(goldenResult));

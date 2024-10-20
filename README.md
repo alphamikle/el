@@ -33,7 +33,7 @@ Add `easiest_localization` to your project's dependencies in `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  easiest_localization: ^2.0.0
+  easiest_localization: ^2.0.1
 ```
 
 ### 📁 Adding Localization Files
@@ -99,7 +99,7 @@ easiest_localization:
   # May be useful if you are using easiest_localization not from pub.dev
   # By default, it is the same version as in your application's pubspec.yaml file, and you don't need to change it
   # 
-  # Examples: 2.0.0, "\n    path: ../../easiest_localization", "\n    git:\n      path: abc\n      url: abc\n      ref: 2.0.0"
+  # Examples: 2.0.1, "\n    path: ../../easiest_localization", "\n    git:\n      path: abc\n      url: abc\n      ref: 2.0.0"
   easiest_localization_version: <installed version>
 
   # Name of the generated localization package and the folder with it
