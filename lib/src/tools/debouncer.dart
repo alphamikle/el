@@ -6,7 +6,8 @@ abstract final class Debouncer {
   static final Map<String, Timer> _timers = {};
   static final Map<String, Timer> _throttlers = {};
 
-  static void run(String id, Callback callback, {Duration delay = const Duration(milliseconds: 100)}) {
+  static void run(String id, Callback callback,
+      {Duration delay = const Duration(milliseconds: 100)}) {
     _timers[id]?.cancel();
     _timers.remove(id);
     _timers[id] = Timer(delay, () {
@@ -15,7 +16,8 @@ abstract final class Debouncer {
     });
   }
 
-  static void throttle(String id, Callback callback, {Duration delay = const Duration(milliseconds: 100)}) {
+  static void throttle(String id, Callback callback,
+      {Duration delay = const Duration(milliseconds: 100)}) {
     if (_throttlers.containsKey(id)) {
       return;
     }

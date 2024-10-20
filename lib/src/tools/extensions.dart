@@ -44,7 +44,8 @@ extension ExtendedInt on int {
     return spreader(this, collection[this]);
   }
 
-  Future<List<Object>> spreadAsync<T>(List<T> collection, AsyncSpreader<T> spreader) async {
+  Future<List<Object>> spreadAsync<T>(
+      List<T> collection, AsyncSpreader<T> spreader) async {
     return spreader(this, collection[this]);
   }
 }

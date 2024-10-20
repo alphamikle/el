@@ -7,11 +7,17 @@ import 'package:path/path.dart' as path;
 import '../bin/easiest_localization.dart' as bin;
 
 void main() {
-  test('Localization generation: E2E Test', () {
+  test('Localization generation: E2E Test', () async {
     bin.main(['--format']);
 
-    final String output = File(path.join(path.current, 'localization', 'lib', 'localization.dart')).readAsStringSync();
-    final String goldenResult = File(path.join(path.current, 'test', 'golden_result.dart')).readAsStringSync();
+    await Process.run('dart', ['format', '.'], runInShell: true);
+
+    final String output = File(
+            path.join(path.current, 'localization', 'lib', 'localization.dart'))
+        .readAsStringSync();
+    final String goldenResult =
+        File(path.join(path.current, 'test', 'golden_result.dart'))
+            .readAsStringSync();
 
     expect(output, equals(goldenResult));
   });
@@ -42,12 +48,20 @@ void main() {
       DateTime.now().millisecondsSinceEpoch,
     );
 
-    final String dartOutput = File(path.join(path.current, 'custom_path', 'custom_localization', 'lib', 'localization.dart')).readAsStringSync();
+    final String dartOutput = File(path.join(path.current, 'custom_path',
+            'custom_localization', 'lib', 'localization.dart'))
+        .readAsStringSync();
 
-    final String mergedOutput = File(path.join(path.current, 'custom_path', 'custom_localization', 'merged', remoteVersion, 'en_CA.yaml')).readAsStringSync();
-    final String mergedGoldenResult = File(path.join(path.current, 'test', 'golden_en_ca_merged_result.yaml')).readAsStringSync();
+    final String mergedOutput = File(path.join(path.current, 'custom_path',
+            'custom_localization', 'merged', remoteVersion, 'en_CA.yaml'))
+        .readAsStringSync();
+    final String mergedGoldenResult =
+        File(path.join(path.current, 'test', 'golden_en_ca_merged_result.yaml'))
+            .readAsStringSync();
 
-    final String generatedPubSpec = File(path.join(path.current, 'custom_path', 'custom_localization', 'pubspec.yaml')).readAsStringSync();
+    final String generatedPubSpec = File(path.join(
+            path.current, 'custom_path', 'custom_localization', 'pubspec.yaml'))
+        .readAsStringSync();
 
     expect(mergedOutput, equals(mergedGoldenResult));
 
@@ -59,7 +73,8 @@ void main() {
     ];
 
     for (final String param in needToContain) {
-      expect(generatedPubSpec.contains(param), equals(true), reason: 'Not found param: $param');
+      expect(generatedPubSpec.contains(param), equals(true),
+          reason: 'Not found param: $param');
     }
 
     expect(dartOutput.contains(localizationsClassName), equals(true));

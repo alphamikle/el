@@ -24,7 +24,8 @@ class FirstStartChecker {
     final File pubspecFile = File(pubspecPath);
 
     if (pubspecFile.existsSync() == false) {
-      log('pubspec.yaml has not found at $pubspecPath; Unable to automatically init $packageName package'.asRed());
+      log('pubspec.yaml has not found at $pubspecPath; Unable to automatically init $packageName package'
+          .asRed());
       return;
     }
 
@@ -49,7 +50,8 @@ class FirstStartChecker {
     }
 
     if (pubspecContent.contains(entrypoint) == false) {
-      log('Not found "dependencies" section in pubspec.yaml. Unable to automatically init $packageName package'.asRed());
+      log('Not found "dependencies" section in pubspec.yaml. Unable to automatically init $packageName package'
+          .asRed());
       return;
     }
 
@@ -67,7 +69,8 @@ class FirstStartChecker {
 ''',
     ].join('\n');
 
-    final String newContent = pubspecContent.replaceFirst(entrypoint, dependency);
+    final String newContent =
+        pubspecContent.replaceFirst(entrypoint, dependency);
 
     pubspecFile.writeAsStringSync(newContent);
 
@@ -80,9 +83,11 @@ class FirstStartChecker {
     final ProcessResult result = await Process.run('flutter', ['pub', 'get']);
 
     if (result.exitCode == 0) {
-      log('Dependencies automatically updated. Enjoy the easiest_localization!'.asGreen());
+      log('Dependencies automatically updated. Enjoy the easiest_localization!'
+          .asGreen());
     } else {
-      log('Failed to run flutter pub get. Please, get dependencies by yourself to use ${config.packageName} package'.asRed());
+      log('Failed to run flutter pub get. Please, get dependencies by yourself to use ${config.packageName} package'
+          .asRed());
     }
   }
 }

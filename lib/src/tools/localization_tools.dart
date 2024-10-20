@@ -17,17 +17,31 @@ LocalizationUnit localizeValue(
   Object effectiveScheme = scheme;
 
   if (value is List) {
-    effectiveValue = Map.fromEntries(List.generate(value.length, (int index) => MapEntry(index.toString(), value[index])));
+    effectiveValue = Map.fromEntries(List.generate(
+        value.length, (int index) => MapEntry(index.toString(), value[index])));
   }
 
   if (scheme is List) {
-    effectiveScheme = Map.fromEntries(List.generate(scheme.length, (int index) => MapEntry(index.toString(), scheme[index])));
+    effectiveScheme = Map.fromEntries(List.generate(scheme.length,
+        (int index) => MapEntry(index.toString(), scheme[index])));
   }
 
   final LocalizationUnit localizationUnit = switch (effectiveValue) {
-    num() => StringUnit(fieldKey: key, value: effectiveValue.toString(), schemaValue: effectiveScheme.toString(), parents: parents ?? []),
-    bool() => StringUnit(fieldKey: key, value: effectiveValue.toString(), schemaValue: effectiveScheme.toString(), parents: parents ?? []),
-    String() => StringUnit(fieldKey: key, value: effectiveValue, schemaValue: effectiveScheme.toString(), parents: parents ?? []),
+    num() => StringUnit(
+        fieldKey: key,
+        value: effectiveValue.toString(),
+        schemaValue: effectiveScheme.toString(),
+        parents: parents ?? []),
+    bool() => StringUnit(
+        fieldKey: key,
+        value: effectiveValue.toString(),
+        schemaValue: effectiveScheme.toString(),
+        parents: parents ?? []),
+    String() => StringUnit(
+        fieldKey: key,
+        value: effectiveValue,
+        schemaValue: effectiveScheme.toString(),
+        parents: parents ?? []),
     {'other': final String $other, 'one': final String $one} => PluralizedUnit(
         fieldKey: key,
         value: (
@@ -68,7 +82,8 @@ LocalizationUnit localizeValue(
       ),
     Map() => NamespacedUnit(
         fieldKey: key,
-        value: _localizeMap(key, effectiveValue, effectiveScheme as Map, parents ?? [], deepness),
+        value: _localizeMap(key, effectiveValue, effectiveScheme as Map,
+            parents ?? [], deepness),
         schemaValue: {},
         parents: parents ?? [],
       ),
@@ -95,9 +110,11 @@ Map<String, LocalizationUnit> _localizeMap(
     }
 
     if (deepness >= criticalDeepnessLevel) {
-      final StringBuffer messageBuffer = StringBuffer('Field "${[...parents, parent, key].join('.')}" ');
+      final StringBuffer messageBuffer =
+          StringBuffer('Field "${[...parents, parent, key].join('.')}" ');
       messageBuffer.write('has critical deepness level = $deepness. ');
-      messageBuffer.write('Consider to place it on a higher level of the content tree t achieve higher generation performance.');
+      messageBuffer.write(
+          'Consider to place it on a higher level of the content tree t achieve higher generation performance.');
 
       final String message = messageBuffer.toString();
 
@@ -110,9 +127,11 @@ Map<String, LocalizationUnit> _localizeMap(
     final UnitType type = UnitType.fromValue(value);
 
     if (type == UnitType.namespace) {
-      namespacedValue[key] = localizeValue(key, value, schemaValue, [...parents, parent], deepness + 1);
+      namespacedValue[key] = localizeValue(
+          key, value, schemaValue, [...parents, parent], deepness + 1);
     } else {
-      namespacedValue[key] = localizeValue(key, value, schemaValue, [parent], deepness + 1);
+      namespacedValue[key] =
+          localizeValue(key, value, schemaValue, [parent], deepness + 1);
     }
   }
 
@@ -120,7 +139,8 @@ Map<String, LocalizationUnit> _localizeMap(
 }
 
 String pluralizedValueToString(PluralizedValue value) {
-  return [value.zero, value.one, value.two, value.few, value.many, value.other].join(' ');
+  return [value.zero, value.one, value.two, value.few, value.many, value.other]
+      .join(' ');
 }
 
 String genderValueToString(GenderValue value) {

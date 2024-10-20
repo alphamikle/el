@@ -14,7 +14,8 @@ class PackageSaver {
   final GeneratorConfig config;
 
   String save(String code) {
-    final String absolutePackagePath = path.join(config.packagePath, config.packageName);
+    final String absolutePackagePath =
+        path.join(config.packagePath, config.packageName);
 
     final Directory dir = Directory(absolutePackagePath);
     if (!dir.existsSync()) {
@@ -32,11 +33,13 @@ class PackageSaver {
     try {
       formattedCode = formatter.format(code);
     } catch (error, stackTrace) {
-      log('Some error was happened when formatting of the code performed\n$error\n$stackTrace', name: 'ERROR');
+      log('Some error was happened when formatting of the code performed\n$error\n$stackTrace',
+          name: 'ERROR');
     }
 
     libFile.writeAsStringSync(formattedCode);
-    final File pubspecFile = File(path.join(absolutePackagePath, 'pubspec.yaml'));
+    final File pubspecFile =
+        File(path.join(absolutePackagePath, 'pubspec.yaml'));
     pubspecFile.writeAsStringSync(assetsPubspecTemplate(config));
     if (config.formatOutput) {
       fixPackage(libFile.path);

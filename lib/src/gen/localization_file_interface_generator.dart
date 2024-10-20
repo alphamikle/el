@@ -39,7 +39,8 @@ class LocalizationFileInterfaceGenerator {
   String generate() {
     final List<LocalizationUnit> units = [];
     if (localizations.isEmpty) {
-      throw ArgumentError('localizations argument should not be empty. It seems - you have no any localization files');
+      throw ArgumentError(
+          'localizations argument should not be empty. It seems - you have no any localization files');
     }
     final Json content = scheme.content;
     for (final MapEntry(:String key, :Object? value) in content.entries) {
@@ -47,7 +48,8 @@ class LocalizationFileInterfaceGenerator {
         nullValueException(key: key);
       }
 
-      final LocalizationUnit localizationUnit = localizeValue(key, value, value);
+      final LocalizationUnit localizationUnit =
+          localizeValue(key, value, value);
       units.add(localizationUnit);
     }
     _proceedUnits(units);

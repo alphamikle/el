@@ -9,12 +9,15 @@ import '../locale/unit_to_value_generator/namespaced_unit_to_value_generator.dar
 import '../locale/unit_to_value_generator/pluralized_unit_to_value_generator.dart';
 import '../locale/unit_to_value_generator/string_unit_to_value_generator.dart';
 
-CodeOutput localizationUnitToInterface(LocalizationUnit unit, {bool useThisKeyword = true}) {
+CodeOutput localizationUnitToInterface(LocalizationUnit unit,
+    {bool useThisKeyword = true}) {
   return switch (unit) {
     StringUnit() => stringUnitToInterface(unit, useThisKeyword: useThisKeyword),
-    PluralizedUnit() => pluralizedUnitToInterface(unit, useThisKeyword: useThisKeyword),
+    PluralizedUnit() =>
+      pluralizedUnitToInterface(unit, useThisKeyword: useThisKeyword),
     GenderUnit() => genderUnitToInterface(unit, useThisKeyword: useThisKeyword),
-    NamespacedUnit() => namespacedUnitToInterface(unit, useThisKeyword: useThisKeyword),
+    NamespacedUnit() =>
+      namespacedUnitToInterface(unit, useThisKeyword: useThisKeyword),
   };
 }
 

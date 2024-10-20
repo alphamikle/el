@@ -21,7 +21,8 @@ String factoryValueGenerator({
       extraction,
       '.toString()',
       if (withHowMany) ".replaceAll(r'\${howMany}', howMany.toString())",
-      for (final argument in arguments) ".replaceAll(r'\${$argument}', $argument)",
+      for (final argument in arguments)
+        ".replaceAll(r'\${$argument}', $argument)",
       if (hasArguments) ".replaceAll(_variableRegExp, '')",
     ].join();
   }
@@ -30,7 +31,8 @@ String factoryValueGenerator({
     "($extraction",
     " ?? '').toString()",
     if (withHowMany) ".replaceAll(r'\${howMany}', howMany.toString())",
-    for (final argument in arguments) ".replaceAll(r'\${$argument}', $argument)",
+    for (final argument in arguments)
+      ".replaceAll(r'\${$argument}', $argument)",
     if (hasArguments) ".replaceAll(_variableRegExp, '')",
   ].join();
 }

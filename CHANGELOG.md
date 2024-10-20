@@ -1,5 +1,6 @@
 ## Changelog
 
+- 2.0.1 – Minor code-style changes for better pub.dev rating
 - 2.0.0
   - Stable and finalized version with support of type-safe remote localization sources
   - Watch mode for code-generation
@@ -9,9 +10,9 @@
   - Added localization providers for loading localizations remotely.
   - Ability to merge different languages and several variations of the same language
   - Support of country-codes
-- 1.0.3 - Hotfix
-- 1.0.2 - Screening of variable names in dynamic objects
-- 1.0.1 - Small fixes due to flutter analyze
-- 1.0.0 - Style fixes for pub.dev analysis and some logic fixes for codegen
-- 0.0.2 - Release with all code-generation features, including genders
-- 0.0.1 - Initial release
+- 1.0.3 – Hotfix
+- 1.0.2 – Screening of variable names in dynamic objects
+- 1.0.1 – Small fixes due to flutter analyze
+- 1.0.0 – Style fixes for pub.dev analysis and some logic fixes for codegen
+- 0.0.2 – Release with all code-generation features, including genders
+- 0.0.1 – Initial release
