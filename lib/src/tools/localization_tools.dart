@@ -36,6 +36,12 @@ LocalizationUnit localizeValue(
           schemaValue: effectiveScheme is DMap && effectiveScheme.isEmpty ? [] : effectiveScheme as List<Object?>,
           parents: parents ?? [],
         ),
+      Map() => MapUnit(
+          fieldKey: key,
+          value: (effectiveValue as DMap).cast<String, Object?>(),
+          schemaValue: (effectiveScheme as DMap).cast<String, Object?>(),
+          parents: parents ?? [],
+        ),
       _ => _toUnit(
           key: key,
           effectiveValue: effectiveValue,

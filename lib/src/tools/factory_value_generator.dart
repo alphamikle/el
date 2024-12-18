@@ -36,10 +36,11 @@ String factoryValueGenerator({
 
   return [
     if (multiEntity == MultiEntity.list) contentList,
+    if (multiEntity == MultiEntity.map) contentMap,
     "($extraction",
     switch (multiEntity) {
       MultiEntity.list => " is List<Object?> ? $extraction : <Object?>[])",
-      MultiEntity.map => "throw UnimplementedError()),",
+      MultiEntity.map => " is Map<String, Object?> ? $extraction : <String, Object?>{})",
       null => " ?? '').toString()",
     },
     if (withHowMany && multiEntity == null) ".replaceAll(r'\${howMany}', howMany.toString())",

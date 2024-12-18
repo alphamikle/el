@@ -24,7 +24,11 @@ enum Gender {
   other,
 }
 
-extension type ContentList(List<Object?> _contentList) implements Iterable<Object?> {
+class ContentList extends Iterable<Object?> {
+  const ContentList(this._contentList);
+
+  final List<Object?> _contentList;
+
   Object? at(int index) {
     if (index >= _contentList.length || index < 0) {
       return null;
@@ -35,6 +39,18 @@ extension type ContentList(List<Object?> _contentList) implements Iterable<Objec
   Object? operator [](int index) => at(index);
 
   Iterator<Object?> get iterator => _contentList.iterator;
+}
+
+class ContentMap extends Iterable<MapEntry<String, Object?>> {
+  const ContentMap(this._contentMap);
+
+  final Map<String, Object?> _contentMap;
+
+  Object? at(String key) => _contentMap[key];
+
+  Object? operator [](String key) => at(key);
+
+  Iterator<MapEntry<String, Object?>> get iterator => _contentMap.entries.iterator;
 }
 
 class MainScreen {
@@ -268,6 +284,50 @@ class UsersCities {
   final ContentList mainCity;
   Map<String, Object> get _content => {
         r'''main_city*''': mainCity,
+        r'''main_city''': mainCity,
+      };
+  T getContent<T>(String key) {
+    final Object? value = _content[key];
+    if (value is T) {
+      return value;
+    }
+    throw ArgumentError('Not found content for the key $key with type $T');
+  }
+
+  Map<String, Object> get content => _content;
+
+  List<Object> get contentList => _content.values.toList();
+
+  int get length => _content.length;
+
+  Object? operator [](Object? key) {
+    final Object? value = _content[key];
+    if (value == null && key is String) {
+      final int? index = int.tryParse(key);
+      if (index == null || index >= contentList.length || index < 0) {
+        return null;
+      }
+
+      return contentList[index];
+    }
+    return value;
+  }
+}
+
+class DynamicMapInside {
+  const DynamicMapInside({
+    required this.categories,
+  });
+  factory DynamicMapInside.fromJson(Map<String, dynamic> json) {
+    return DynamicMapInside(
+      categories:
+          ContentMap((json['categories*'] ?? json['categories']) is Map<String, Object?> ? (json['categories*'] ?? json['categories']) : <String, Object?>{}),
+    );
+  }
+  final ContentMap categories;
+  Map<String, Object> get _content => {
+        r'''categories*''': categories,
+        r'''categories''': categories,
       };
   T getContent<T>(String key) {
     final Object? value = _content[key];
@@ -299,19 +359,21 @@ class UsersCities {
 
 class LocalizationMessages {
   LocalizationMessages({
+    required this.source,
     required this.appTitle,
     required this.language,
     required this.mainScreen,
     required this.author,
     required this.privacyPolicyUrl,
     required this.employees,
-    required this.source,
     required this.dynamicListOfStrings,
     required this.dynamicListOfObjects,
     required this.users,
+    required this.dynamicMapInside,
   });
   factory LocalizationMessages.fromJson(Map<String, dynamic> json) {
     return LocalizationMessages(
+      source: (json['source'] ?? '').toString(),
       appTitle: (json['app_title'] ?? '').toString(),
       language: ({required String language, required String country}) =>
           (json['language'] ?? '').toString().replaceAll(r'${language}', language).replaceAll(r'${country}', country).replaceAll(_variableRegExp, ''),
@@ -329,7 +391,6 @@ class LocalizationMessages {
       ),
       privacyPolicyUrl: (json['privacy_policy_url'] ?? '').toString(),
       employees: Employees.fromJson((json['employees'] as Map).cast<String, dynamic>()),
-      source: (json['source'] ?? '').toString(),
       dynamicListOfStrings: ContentList((json['dynamic_list_of_strings*'] ?? json['dynamic_list_of_strings']) is List<Object?>
           ? (json['dynamic_list_of_strings*'] ?? json['dynamic_list_of_strings'])
           : <Object?>[]),
@@ -337,8 +398,10 @@ class LocalizationMessages {
           ? (json['dynamic_list_of_objects*'] ?? json['dynamic_list_of_objects'])
           : <Object?>[]),
       users: Users.fromJson((json['users'] as Map).cast<String, dynamic>()),
+      dynamicMapInside: DynamicMapInside.fromJson((json['dynamic_map_inside'] as Map).cast<String, dynamic>()),
     );
   }
+  final String source;
   final String appTitle;
   final String Function({required String language, required String country}) language;
 
@@ -349,24 +412,26 @@ class LocalizationMessages {
   final String privacyPolicyUrl;
   final Employees employees;
 
-  final String source;
   final ContentList dynamicListOfStrings;
   final ContentList dynamicListOfObjects;
   final Users users;
 
+  final DynamicMapInside dynamicMapInside;
+
   Map<String, Object> get _content => {
+        r'''source''': source,
         r'''app_title''': appTitle,
         r'''language''': language,
         r'''main_screen''': mainScreen,
         r'''author''': author,
         r'''privacy_policy_url''': privacyPolicyUrl,
         r'''employees''': employees,
-        r'''source''': source,
         r'''dynamic_list_of_strings*''': dynamicListOfStrings,
         r'''dynamic_list_of_strings''': dynamicListOfStrings,
         r'''dynamic_list_of_objects*''': dynamicListOfObjects,
         r'''dynamic_list_of_objects''': dynamicListOfObjects,
         r'''users''': users,
+        r'''dynamic_map_inside''': dynamicMapInside,
       };
   T getContent<T>(String key) {
     final Object? value = _content[key];
@@ -397,6 +462,7 @@ class LocalizationMessages {
 }
 
 final LocalizationMessages en = LocalizationMessages(
+  source: 'Easiest Localization',
   appTitle: 'Library App',
   language: ({required String language, required String country}) => '''Lang: ${language}''',
   mainScreen: MainScreen(
@@ -436,16 +502,32 @@ final LocalizationMessages en = LocalizationMessages(
     n3: 'Emma Davis',
     n4: 'William Taylor',
   ),
-  source: 'Easiest Localization',
-  dynamicListOfStrings: ContentList([]),
-  dynamicListOfObjects: ContentList([]),
+  dynamicListOfStrings: ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
+  dynamicListOfObjects: ContentList([
+    {"id": 123, "name": "Mike", "lastname": "Alfa"},
+    {"id": 456, "name": "John", "lastname": "Pies"}
+  ]),
   users: Users(
     cities: UsersCities(
-      mainCity: ContentList([]),
+      mainCity: ContentList([
+        {"id": 1, "name": "Mike"},
+        {"id": 2, "name": "Alena"},
+        {"id": 3, "name": "Grace"}
+      ]),
     ),
+  ),
+  dynamicMapInside: DynamicMapInside(
+    categories: ContentMap({
+      "abc": "Hello",
+      "bcd": "How are you?",
+      "cde": "We are here!",
+      "def": "Let's go with us!",
+      "efg": {"id": 123, "name": "Mike", "talk": true}
+    }),
   ),
 );
 final LocalizationMessages ru = LocalizationMessages(
+  source: 'Easiest Localization',
   appTitle: 'Библиотека',
   language: ({required String language, required String country}) => '''Язык: ${language}''',
   mainScreen: MainScreen(
@@ -485,56 +567,6 @@ final LocalizationMessages ru = LocalizationMessages(
     n3: 'Эмма Дэвис',
     n4: 'Уильям Тейлор',
   ),
-  source: 'Easiest Localization',
-  dynamicListOfStrings: ContentList([]),
-  dynamicListOfObjects: ContentList([]),
-  users: Users(
-    cities: UsersCities(
-      mainCity: ContentList([]),
-    ),
-  ),
-);
-final LocalizationMessages fr = LocalizationMessages(
-  appTitle: 'Library App',
-  language: ({required String language, required String country}) => '''Lang: ${language}''',
-  mainScreen: MainScreen(
-    greetings: ({required String username}) => '''Hello, ${username}!''',
-    books: MainScreenBooks(
-      add: 'Add Book',
-      amountOfNew: (num howMany, {int? precision}) => Intl.plural(
-        howMany,
-        name: 'amount_of_new',
-        zero: 'There are no new books available at the moment :(',
-        one: '''There is ${howMany} new book available :)''',
-        two: null,
-        few: null,
-        many: null,
-        other: '''There are ${howMany} new books available :)''',
-        precision: precision,
-      ),
-    ),
-    todayDateFormat: 'MM/dd/yyyy',
-    welcome: '''# Welcome to our library!
----
-## We are very happy to see you and would like you to enjoy reading our books.
-''',
-  ),
-  author: (Gender gender, {required String name}) => Intl.gender(
-    gender.name,
-    name: 'author',
-    female: '''${name} - she is the author of that book!''',
-    male: '''${name} - he is the author of that book!''',
-    other: '''${name} - they are the author of that book!''',
-  ),
-  privacyPolicyUrl: 'https://library.app/privacy_us.pdf',
-  employees: Employees(
-    n0: 'John Smith',
-    n1: 'Alice Johnson',
-    n2: 'Michael Brown',
-    n3: 'Emma Davis',
-    n4: 'William Taylor',
-  ),
-  source: 'Easiest Localization',
   dynamicListOfStrings: ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
   dynamicListOfObjects: ContentList([
     {"id": 123, "name": "Mike", "lastname": "Alfa"},
@@ -549,8 +581,18 @@ final LocalizationMessages fr = LocalizationMessages(
       ]),
     ),
   ),
+  dynamicMapInside: DynamicMapInside(
+    categories: ContentMap({
+      "abc": "Hello",
+      "bcd": "How are you?",
+      "cde": "We are here!",
+      "def": "Let's go with us!",
+      "efg": {"id": 123, "name": "Mike", "talk": true}
+    }),
+  ),
 );
 final LocalizationMessages en_CA = LocalizationMessages(
+  source: 'Easiest Localization',
   appTitle: 'Library App',
   language: ({required String language, required String country}) => '''Lang: ${language}; Country: ${country}''',
   mainScreen: MainScreen(
@@ -590,19 +632,33 @@ final LocalizationMessages en_CA = LocalizationMessages(
     n3: 'Emma Davis',
     n4: 'William Taylor',
   ),
-  source: 'Easiest Localization',
-  dynamicListOfStrings: ContentList([]),
-  dynamicListOfObjects: ContentList([]),
+  dynamicListOfStrings: ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
+  dynamicListOfObjects: ContentList([
+    {"id": 123, "name": "Mike", "lastname": "Alfa"},
+    {"id": 456, "name": "John", "lastname": "Pies"}
+  ]),
   users: Users(
     cities: UsersCities(
-      mainCity: ContentList([]),
+      mainCity: ContentList([
+        {"id": 1, "name": "Mike"},
+        {"id": 2, "name": "Alena"},
+        {"id": 3, "name": "Grace"}
+      ]),
     ),
+  ),
+  dynamicMapInside: DynamicMapInside(
+    categories: ContentMap({
+      "abc": "Hello",
+      "bcd": "How are you?",
+      "cde": "We are here!",
+      "def": "Let's go with us!",
+      "efg": {"id": 123, "name": "Mike", "talk": true}
+    }),
   ),
 );
 final Map<Locale, LocalizationMessages> _languageMap = {
   Locale('en'): en,
   Locale('ru'): ru,
-  Locale('fr'): fr,
   Locale('en', 'CA'): en_CA,
 };
 
@@ -712,11 +768,10 @@ List<LocalizationsDelegate> localizationsDelegatesWithProviders(List<Localizatio
   ];
 }
 
-// Supported locales: en, ru, fr, en_CA
+// Supported locales: en, ru, en_CA
 const List<Locale> supportedLocales = [
   Locale('en'),
   Locale('ru'),
-  Locale('fr'),
   Locale('en', 'CA'),
 ];
 

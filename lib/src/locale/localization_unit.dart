@@ -178,29 +178,29 @@ class ListUnit extends LocalizationUnit {
   final List<String> parents;
 }
 
-// class MapUnit extends LocalizationUnit {
-//   const MapUnit({
-//     required this.fieldKey,
-//     required this.value,
-//     required this.schemaValue,
-//     required this.parents,
-//   });
-//
-//   @override
-//   String get fieldName => fieldKey.asClearCamelCase(parents.join());
-//
-//   @override
-//   String get rawName => fieldKey;
-//
-//   @override
-//   final String fieldKey;
-//
-//   @override
-//   final Map<String, Object?> value;
-//
-//   @override
-//   final Map<String, Object?> schemaValue;
-//
-//   @override
-//   final List<String> parents;
-// }
+class MapUnit extends LocalizationUnit {
+  const MapUnit({
+    required this.fieldKey,
+    required this.value,
+    required this.schemaValue,
+    required this.parents,
+  });
+
+  @override
+  String get fieldName => fieldKey.asClearCamelCase(parents.join());
+
+  @override
+  String get rawName => fieldKey;
+
+  @override
+  final String fieldKey;
+
+  @override
+  final Map<String, Object?> value;
+
+  @override
+  final Map<String, Object?> schemaValue;
+
+  @override
+  final List<String> parents;
+}

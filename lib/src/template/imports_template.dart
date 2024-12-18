@@ -28,7 +28,11 @@ enum Gender {
   other, 
 }
 
-extension type $contentList(List<Object?> _contentList) implements Iterable<Object?> {
+class ContentList extends Iterable<Object?> {
+  const ContentList(this._contentList);
+
+  final List<Object?> _contentList;
+
   Object? at(int index) {
     if (index >= _contentList.length || index < 0) {
       return null;
@@ -40,6 +44,19 @@ extension type $contentList(List<Object?> _contentList) implements Iterable<Obje
 
   Iterator<Object?> get iterator => _contentList.iterator;
 }
+
+class ContentMap extends Iterable<MapEntry<String, Object?>> {
+  const ContentMap(this._contentMap);
+
+  final Map<String, Object?> _contentMap;
+
+  Object? at(String key) => _contentMap[key];
+
+  Object? operator [](String key) => at(key);
+
+  Iterator<MapEntry<String, Object?>> get iterator => _contentMap.entries.iterator;
+}
 ''';
 
 const String contentList = 'ContentList';
+const String contentMap = 'ContentMap';

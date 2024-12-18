@@ -109,7 +109,7 @@ Object? operator [](Object? key) {
       externalCode.add(code.externalCode);
       classBodyCode.add(code.classBodyCode);
       dynamicContent.add("r'''${unit.rawName}''': ${unit.fieldName},");
-      if (unit is ListUnit) {
+      if (unit is ListUnit || unit is MapUnit) {
         dynamicContent.add("r'''${unit.rawName.clearMultiKey()}''': ${unit.fieldName},");
       }
     }

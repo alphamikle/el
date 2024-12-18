@@ -1,5 +1,6 @@
 import '../../template/class_factory_template.dart';
 import '../../tools/code_tools.dart';
+import '../../tools/extensions.dart';
 import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
@@ -25,6 +26,9 @@ CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword =
     childrenCodeWithoutThisKeyword.add(localizationUnitToInterface(value, useThisKeyword: false));
     childrenCodeWithThisKeyword.add(localizationUnitToInterface(value));
     dynamicContent.add("r'''${value.rawName}''': ${value.fieldName},");
+    if (value is ListUnit || value is MapUnit) {
+      dynamicContent.add("r'''${value.rawName.clearMultiKey()}''': ${value.fieldName},");
+    }
   }
 
   dynamicContent.addAll([
