@@ -68,7 +68,7 @@ class HomeState extends State<Home> {
   }
 
   String pickName() {
-    final List<Object> names = el.employees.contentList;
+    final List<Object> names = el.employees.cast<Object>().toList();
     return names[booksAmount % names.length].toString();
   }
 
@@ -124,7 +124,7 @@ class HomeState extends State<Home> {
           ...text(el.mainScreen.welcome, md: true),
           ...text(el.author(pickGender(), name: pickName())),
           ...text(el.privacyPolicyUrl),
-          for (final Object employee in el.employees.contentList) ...text(employee.toString()),
+          for (final Object? employee in el.employees) ...text(employee.toString()),
           ...text(
             el.mainScreen.books.amountOfNew(booksAmount),
             style: const TextStyle(

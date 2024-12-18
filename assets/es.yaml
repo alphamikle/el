@@ -24,8 +24,8 @@ author:
 privacy_policy_url: https://library.app/privacy_mx.pdf
 
 employees:
-  "0": Juan Smith
-  "1": Alicia Johnson
-  "2": Miguel Brown
-  "3": Emma Davis
-  "4": Guillermo Taylor
+  - Juan Smith
+  - Alicia Johnson
+  - Miguel Brown
+  - Emma Davis
+  - Guillermo Taylor

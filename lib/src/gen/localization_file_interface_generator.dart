@@ -109,8 +109,10 @@ Object? operator [](Object? key) {
       externalCode.add(code.externalCode);
       classBodyCode.add(code.classBodyCode);
       dynamicContent.add("r'''${unit.rawName}''': ${unit.fieldName},");
-      if (unit is ListUnit || unit is MapUnit) {
-        dynamicContent.add("r'''${unit.rawName.clearMultiKey()}''': ${unit.fieldName},");
+
+      final String asteriskClearName = unit.rawName.clearMultiKey();
+      if (unit.rawName != asteriskClearName && (unit is ListUnit || unit is MapUnit)) {
+        dynamicContent.add("r'''$asteriskClearName''': ${unit.fieldName},");
       }
     }
   }

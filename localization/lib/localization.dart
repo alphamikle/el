@@ -173,63 +173,6 @@ class MainScreenBooks {
   }
 }
 
-class Employees {
-  const Employees({
-    required this.n0,
-    required this.n1,
-    required this.n2,
-    required this.n3,
-    required this.n4,
-  });
-  factory Employees.fromJson(Map<String, dynamic> json) {
-    return Employees(
-      n0: (json['0'] ?? '').toString(),
-      n1: (json['1'] ?? '').toString(),
-      n2: (json['2'] ?? '').toString(),
-      n3: (json['3'] ?? '').toString(),
-      n4: (json['4'] ?? '').toString(),
-    );
-  }
-  final String n0;
-  final String n1;
-  final String n2;
-  final String n3;
-  final String n4;
-  Map<String, Object> get _content => {
-        r'''0''': n0,
-        r'''1''': n1,
-        r'''2''': n2,
-        r'''3''': n3,
-        r'''4''': n4,
-      };
-  T getContent<T>(String key) {
-    final Object? value = _content[key];
-    if (value is T) {
-      return value;
-    }
-    throw ArgumentError('Not found content for the key $key with type $T');
-  }
-
-  Map<String, Object> get content => _content;
-
-  List<Object> get contentList => _content.values.toList();
-
-  int get length => _content.length;
-
-  Object? operator [](Object? key) {
-    final Object? value = _content[key];
-    if (value == null && key is String) {
-      final int? index = int.tryParse(key);
-      if (index == null || index >= contentList.length || index < 0) {
-        return null;
-      }
-
-      return contentList[index];
-    }
-    return value;
-  }
-}
-
 class Users {
   const Users({
     required this.cities,
@@ -390,7 +333,7 @@ class LocalizationMessages {
         other: (json['author']['other'] ?? '').toString().replaceAll(r'${name}', name).replaceAll(_variableRegExp, ''),
       ),
       privacyPolicyUrl: (json['privacy_policy_url'] ?? '').toString(),
-      employees: Employees.fromJson((json['employees'] as Map).cast<String, dynamic>()),
+      employees: ContentList((json['employees*'] ?? json['employees']) is List<Object?> ? (json['employees*'] ?? json['employees']) : <Object?>[]),
       dynamicListOfStrings: ContentList((json['dynamic_list_of_strings*'] ?? json['dynamic_list_of_strings']) is List<Object?>
           ? (json['dynamic_list_of_strings*'] ?? json['dynamic_list_of_strings'])
           : <Object?>[]),
@@ -410,8 +353,7 @@ class LocalizationMessages {
   final String Function(Gender gender, {required String name}) author;
 
   final String privacyPolicyUrl;
-  final Employees employees;
-
+  final ContentList employees;
   final ContentList dynamicListOfStrings;
   final ContentList dynamicListOfObjects;
   final Users users;
@@ -425,6 +367,7 @@ class LocalizationMessages {
         r'''main_screen''': mainScreen,
         r'''author''': author,
         r'''privacy_policy_url''': privacyPolicyUrl,
+        r'''employees*''': employees,
         r'''employees''': employees,
         r'''dynamic_list_of_strings*''': dynamicListOfStrings,
         r'''dynamic_list_of_strings''': dynamicListOfStrings,
@@ -495,13 +438,7 @@ final LocalizationMessages en = LocalizationMessages(
     other: '''${name} - they are the author of that book!''',
   ),
   privacyPolicyUrl: 'https://library.app/privacy_us.pdf',
-  employees: Employees(
-    n0: 'John Smith',
-    n1: 'Alice Johnson',
-    n2: 'Michael Brown',
-    n3: 'Emma Davis',
-    n4: 'William Taylor',
-  ),
+  employees: ContentList(["John Smith", "Alice Johnson", "Michael Brown", "Emma Davis", "William Taylor", "Mr. Nobody"]),
   dynamicListOfStrings: ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
   dynamicListOfObjects: ContentList([
     {"id": 123, "name": "Mike", "lastname": "Alfa"},
@@ -560,13 +497,7 @@ final LocalizationMessages ru = LocalizationMessages(
     other: '''${name} - автор этой книги!''',
   ),
   privacyPolicyUrl: 'https://library.app/privacy_ru.pdf',
-  employees: Employees(
-    n0: 'Джон Смит',
-    n1: 'Алиса Джонсон',
-    n2: 'Майкл Браун',
-    n3: 'Эмма Дэвис',
-    n4: 'Уильям Тейлор',
-  ),
+  employees: ContentList(["Джон Смит", "Алиса Джонсон", "Майкл Браун", "Эмма Дэвис", "Уильям Тейлор", "Mr. Nobody"]),
   dynamicListOfStrings: ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
   dynamicListOfObjects: ContentList([
     {"id": 123, "name": "Mike", "lastname": "Alfa"},
@@ -625,13 +556,7 @@ final LocalizationMessages en_CA = LocalizationMessages(
     other: '''${name} - they are the author of that book!''',
   ),
   privacyPolicyUrl: 'https://library.app/privacy_ca.pdf',
-  employees: Employees(
-    n0: 'John Smith',
-    n1: 'Alice Johnson',
-    n2: 'Michael Brown',
-    n3: 'Emma Davis',
-    n4: 'William Taylor',
-  ),
+  employees: ContentList(["John Smith", "Alice Johnson", "Michael Brown", "Emma Davis", "William Taylor", "Mr. Nobody"]),
   dynamicListOfStrings: ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
   dynamicListOfObjects: ContentList([
     {"id": 123, "name": "Mike", "lastname": "Alfa"},

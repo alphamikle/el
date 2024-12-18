@@ -116,7 +116,7 @@ LocalizationUnit _toUnit({
         schemaValue: {},
         parents: parents ?? [],
       ),
-    _ => throw UnsupportedError('Value "$effectiveValue" is not supported'),
+    _ => throw UnsupportedError('Key "$key" with value "$effectiveValue" is not supported'),
   };
 }
 

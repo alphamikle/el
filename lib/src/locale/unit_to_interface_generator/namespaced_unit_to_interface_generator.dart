@@ -26,8 +26,10 @@ CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword =
     childrenCodeWithoutThisKeyword.add(localizationUnitToInterface(value, useThisKeyword: false));
     childrenCodeWithThisKeyword.add(localizationUnitToInterface(value));
     dynamicContent.add("r'''${value.rawName}''': ${value.fieldName},");
-    if (value is ListUnit || value is MapUnit) {
-      dynamicContent.add("r'''${value.rawName.clearMultiKey()}''': ${value.fieldName},");
+
+    final String asteriskClearName = value.rawName.clearMultiKey();
+    if (value.rawName != asteriskClearName && (value is ListUnit || value is MapUnit)) {
+      dynamicContent.add("r'''$asteriskClearName''': ${value.fieldName},");
     }
   }
 

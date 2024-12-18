@@ -12,7 +12,7 @@ bool isMultiEntity({
   final bool isStar = key.endsWith('*');
 
   if (isStar == false) {
-    return false;
+    return value is List<Object?> || value is YamlList;
   }
 
   return value is List<Object?> || value is Map<String, Object?> || value is YamlList || value is YamlMap;

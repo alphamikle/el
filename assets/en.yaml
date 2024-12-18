@@ -25,12 +25,13 @@ author:
 
 privacy_policy_url: https://library.app/privacy_us.pdf
 
-employees:
-  "0": John Smith
-  "1": Alice Johnson
-  "2": Michael Brown
-  "3": Emma Davis
-  "4": William Taylor
+employees*:
+  - John Smith
+  - Alice Johnson
+  - Michael Brown
+  - Emma Davis
+  - William Taylor
+  - Mr. Nobody
 
 dynamic_list_of_strings*:
   - John Smith

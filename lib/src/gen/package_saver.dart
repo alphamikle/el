@@ -26,7 +26,7 @@ class PackageSaver {
       libDir.createSync(recursive: true);
     }
     final File libFile = File(path.join(libPath, 'localization.dart'));
-    final DartFormatter formatter = DartFormatter(pageWidth: 120);
+    final DartFormatter formatter = DartFormatter(pageWidth: 160, languageVersion: DartFormatter.latestShortStyleLanguageVersion);
     String formattedCode = code;
 
     try {

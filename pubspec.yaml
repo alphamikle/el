@@ -12,17 +12,17 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   yaml: ^3.1.2
-  yaml_writer: ^2.0.0
+  yaml_writer: ^2.0.1
   intl: ^0.19.0
-  dart_style: ^2.3.7
-  path: ^1.9.0
+  dart_style: ^3.0.0
+  path: ^1.9.1
   merger: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  analyzer: ^6.8.0
+  analyzer: ^7.1.0
 
 flutter:
   assets:
