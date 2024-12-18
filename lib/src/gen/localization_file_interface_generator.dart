@@ -6,6 +6,7 @@ import '../template/class_end_template.dart';
 import '../template/class_factory_template.dart';
 import '../template/imports_template.dart';
 import '../tools/code_tools.dart';
+import '../tools/extensions.dart';
 import '../tools/localization_tools.dart';
 import '../tools/null_value_exception.dart';
 import '../type/types.dart';
@@ -39,8 +40,7 @@ class LocalizationFileInterfaceGenerator {
   String generate() {
     final List<LocalizationUnit> units = [];
     if (localizations.isEmpty) {
-      throw ArgumentError(
-          'localizations argument should not be empty. It seems - you have no any localization files');
+      throw ArgumentError('localizations argument should not be empty. It seems - you have no any localization files');
     }
     final Json content = scheme.content;
     for (final MapEntry(:String key, :Object? value) in content.entries) {
@@ -48,8 +48,7 @@ class LocalizationFileInterfaceGenerator {
         nullValueException(key: key);
       }
 
-      final LocalizationUnit localizationUnit =
-          localizeValue(key, value, value);
+      final LocalizationUnit localizationUnit = localizeValue(key, value, value);
       units.add(localizationUnit);
     }
     _proceedUnits(units);
@@ -110,6 +109,9 @@ Object? operator [](Object? key) {
       externalCode.add(code.externalCode);
       classBodyCode.add(code.classBodyCode);
       dynamicContent.add("r'''${unit.rawName}''': ${unit.fieldName},");
+      if (unit is ListUnit) {
+        dynamicContent.add("r'''${unit.rawName.clearMultiKey()}''': ${unit.fieldName},");
+      }
     }
   }
 }

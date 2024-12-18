@@ -5,8 +5,7 @@ import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
 
-CodeOutput stringUnitToInterface(StringUnit unit,
-    {bool useThisKeyword = true}) {
+CodeOutput stringUnitToInterface(StringUnit unit, {bool useThisKeyword = true}) {
   final Set<String> arguments = extractArguments(unit.schemaValue);
   String parentClassName = unit.parents.map(capitalize).join();
   if (parentClassName.isNotEmpty) {
@@ -21,8 +20,7 @@ CodeOutput stringUnitToInterface(StringUnit unit,
     );
   }
 
-  final String functionArguments =
-      '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
+  final String functionArguments = '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
 
   return CodeOutput(
     classArgumentCode:

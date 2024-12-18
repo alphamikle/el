@@ -4,8 +4,7 @@ import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
 
-CodeOutput namespacedUnitToInterface(NamespacedUnit unit,
-    {bool useThisKeyword = true}) {
+CodeOutput namespacedUnitToInterface(NamespacedUnit unit, {bool useThisKeyword = true}) {
   final List<String> constructorParents = [];
 
   for (int i = 0; i < unit.parents.length; i++) {
@@ -13,8 +12,7 @@ CodeOutput namespacedUnitToInterface(NamespacedUnit unit,
   }
 
   final String variableName = unit.fieldName;
-  final String constructorName =
-      [...constructorParents, capitalize(unit.fieldName)].join();
+  final String constructorName = [...constructorParents, capitalize(unit.fieldName)].join();
 
   final List<CodeOutput> childrenCodeWithoutThisKeyword = [];
   final List<CodeOutput> childrenCodeWithThisKeyword = [];
@@ -24,8 +22,7 @@ CodeOutput namespacedUnitToInterface(NamespacedUnit unit,
   ];
 
   for (final MapEntry(:value) in unit.value.entries) {
-    childrenCodeWithoutThisKeyword
-        .add(localizationUnitToInterface(value, useThisKeyword: false));
+    childrenCodeWithoutThisKeyword.add(localizationUnitToInterface(value, useThisKeyword: false));
     childrenCodeWithThisKeyword.add(localizationUnitToInterface(value));
     dynamicContent.add("r'''${value.rawName}''': ${value.fieldName},");
   }
@@ -64,9 +61,7 @@ Object? operator [](Object? key) {
 
   final List<String> classArgumentCode = [
     '${useThisKeyword ? 'required this.' : ''}$variableName${useThisKeyword ? ',' : ':'}${useThisKeyword ? '' : ' const $constructorName('}',
-    if (useThisKeyword == false)
-      ...childrenCodeWithoutThisKeyword
-          .map((CodeOutput code) => code.classArgumentCode),
+    if (useThisKeyword == false) ...childrenCodeWithoutThisKeyword.map((CodeOutput code) => code.classArgumentCode),
     if (useThisKeyword == false) '),'
   ];
 
@@ -77,13 +72,11 @@ final $constructorName $variableName;
   final List<String> externalCode = [
     'class $constructorName {',
     'const $constructorName ({',
-    ...childrenCodeWithThisKeyword
-        .map((CodeOutput code) => code.classArgumentCode),
+    ...childrenCodeWithThisKeyword.map((CodeOutput code) => code.classArgumentCode),
     if (childrenCodeWithThisKeyword.isEmpty) 'String? stub,',
     '});',
     classFactoryBeginningTemplate(className: constructorName),
-    ...childrenCodeWithThisKeyword
-        .map((CodeOutput code) => code.factoryArgumentCode ?? ''),
+    ...childrenCodeWithThisKeyword.map((CodeOutput code) => code.factoryArgumentCode ?? ''),
     classFactoryEndTemplate(),
     ...childrenCodeWithThisKeyword.map((CodeOutput code) => code.classBodyCode),
     ...dynamicContent,
@@ -95,7 +88,6 @@ final $constructorName $variableName;
     classArgumentCode: classArgumentCode.join('\n'),
     classBodyCode: classBodyCode,
     externalCode: externalCode.join('\n'),
-    factoryArgumentCode:
-        '${unit.fieldName}: $constructorName.fromJson((json[${qu(unit.rawName)}] as Map).cast<String, dynamic>()),',
+    factoryArgumentCode: '${unit.fieldName}: $constructorName.fromJson((json[${qu(unit.rawName)}] as Map).cast<String, dynamic>()),',
   );
 }

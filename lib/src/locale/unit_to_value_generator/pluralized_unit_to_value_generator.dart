@@ -9,12 +9,11 @@ import '../localization_unit.dart';
 const Set<String> _reservedArguments = {'howMany', 'precision'};
 
 CodeOutput pluralizedUnitToValue(PluralizedUnit unit) {
-  final Set<String> arguments =
-      extractArguments(pluralizedValueToString(unit.schemaValue))
-          .where(
-            (String arg) => _reservedArguments.contains(arg) == false,
-          )
-          .toSet();
+  final Set<String> arguments = extractArguments(pluralizedValueToString(unit.schemaValue))
+      .where(
+        (String arg) => _reservedArguments.contains(arg) == false,
+      )
+      .toSet();
   String parentClassName = unit.parents.map(capitalize).join();
   if (parentClassName.isNotEmpty) {
     parentClassName = '$parentClassName.';
@@ -27,8 +26,7 @@ CodeOutput pluralizedUnitToValue(PluralizedUnit unit) {
     );
   }
 
-  String functionArguments =
-      arguments.map((String arg) => 'required String $arg').join(', ');
+  String functionArguments = arguments.map((String arg) => 'required String $arg').join(', ');
   functionArguments = '(num howMany, {$functionArguments, int? precision})';
 
   return CodeOutput(

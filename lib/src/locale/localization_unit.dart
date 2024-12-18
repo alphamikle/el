@@ -1,21 +1,8 @@
 import '../tools/names_converter.dart';
 
 typedef StringWithDescriptionValue = ({String value, String description});
-typedef PluralizedValue = ({
-  String? zero,
-  String one,
-  String? two,
-  String? few,
-  String? many,
-  String other,
-  String? description
-});
-typedef GenderValue = ({
-  String? male,
-  String? female,
-  String? other,
-  String? description
-});
+typedef PluralizedValue = ({String? zero, String one, String? two, String? few, String? many, String other, String? description});
+typedef GenderValue = ({String? male, String? female, String? other, String? description});
 typedef NamespacedValue = Map<String, LocalizationUnit>;
 
 enum UnitType {
@@ -163,3 +150,57 @@ class NamespacedUnit extends LocalizationUnit {
   @override
   final List<String> parents;
 }
+
+class ListUnit extends LocalizationUnit {
+  const ListUnit({
+    required this.fieldKey,
+    required this.value,
+    required this.schemaValue,
+    required this.parents,
+  });
+
+  @override
+  String get fieldName => fieldKey.asClearCamelCase(parents.join());
+
+  @override
+  String get rawName => fieldKey;
+
+  @override
+  final String fieldKey;
+
+  @override
+  final List<Object?> value;
+
+  @override
+  final List<Object?> schemaValue;
+
+  @override
+  final List<String> parents;
+}
+
+// class MapUnit extends LocalizationUnit {
+//   const MapUnit({
+//     required this.fieldKey,
+//     required this.value,
+//     required this.schemaValue,
+//     required this.parents,
+//   });
+//
+//   @override
+//   String get fieldName => fieldKey.asClearCamelCase(parents.join());
+//
+//   @override
+//   String get rawName => fieldKey;
+//
+//   @override
+//   final String fieldKey;
+//
+//   @override
+//   final Map<String, Object?> value;
+//
+//   @override
+//   final Map<String, Object?> schemaValue;
+//
+//   @override
+//   final List<String> parents;
+// }

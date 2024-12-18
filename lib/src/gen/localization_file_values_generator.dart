@@ -28,21 +28,17 @@ class LocalizationFileValuesGenerator {
     }
     for (final LanguageLocalization languageLocalization in localizations) {
       final List<String> code = [
-        languageValueBeginningTemplate(
-            lang: languageLocalization.name,
-            className: config.localizationsClassName),
+        languageValueBeginningTemplate(lang: languageLocalization.name, className: config.localizationsClassName),
       ];
 
-      for (final MapEntry(:String key, :Object? value)
-          in languageLocalization.content.entries) {
+      for (final MapEntry(:String key, :Object? value) in languageLocalization.content.entries) {
         final Object? schemaValue = scheme.content[key];
 
         if (value == null || schemaValue == null) {
           nullValueException(key: key);
         }
 
-        final LocalizationUnit localizationUnit =
-            localizeValue(key, value, schemaValue);
+        final LocalizationUnit localizationUnit = localizeValue(key, value, schemaValue);
         code.add(localizationUnitToValue(localizationUnit).classArgumentCode);
       }
 

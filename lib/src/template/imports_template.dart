@@ -27,4 +27,19 @@ enum Gender {
   female,
   other, 
 }
+
+extension type $contentList(List<Object?> _contentList) implements Iterable<Object?> {
+  Object? at(int index) {
+    if (index >= _contentList.length || index < 0) {
+      return null;
+    }
+    return _contentList[index];
+  }
+
+  Object? operator [](int index) => at(index);
+
+  Iterator<Object?> get iterator => _contentList.iterator;
+}
 ''';
+
+const String contentList = 'ContentList';

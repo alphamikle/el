@@ -7,8 +7,7 @@ import '../code_output.dart';
 import '../localization_unit.dart';
 
 CodeOutput genderUnitToValue(GenderUnit unit) {
-  final Set<String> arguments =
-      extractArguments(genderValueToString(unit.schemaValue)).toSet();
+  final Set<String> arguments = extractArguments(genderValueToString(unit.schemaValue)).toSet();
   String parentClassName = unit.parents.map(capitalize).join();
   if (parentClassName.isNotEmpty) {
     parentClassName = '$parentClassName.';
@@ -21,8 +20,7 @@ CodeOutput genderUnitToValue(GenderUnit unit) {
     );
   }
 
-  String functionArguments =
-      arguments.map((String arg) => 'required String $arg').join(', ');
+  String functionArguments = arguments.map((String arg) => 'required String $arg').join(', ');
   functionArguments = '(Gender gender, {$functionArguments})';
 
   return CodeOutput(

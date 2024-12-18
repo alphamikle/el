@@ -15,12 +15,10 @@ CodeOutput stringUnitToValue(StringUnit unit) {
       externalCode: '',
     );
   }
-  final String functionArguments =
-      '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
+  final String functionArguments = '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
 
   return CodeOutput(
-    classArgumentCode:
-        "${unit.fieldName}: $functionArguments => ${prettyValue(unit.value)},",
+    classArgumentCode: "${unit.fieldName}: $functionArguments => ${prettyValue(unit.value)},",
     classBodyCode: '',
     factoryArgumentCode: _factoryCode(unit, arguments),
     externalCode: '',

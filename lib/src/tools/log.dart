@@ -33,6 +33,11 @@ extension LoggableString on String {
     return '$yellow$this'._reset();
   }
 
+  String asWhite() {
+    const String white = '\u001b[37m';
+    return '$white$this'._reset();
+  }
+
   String _reset() {
     const String reset = '\u001b[0m';
     return '$this$reset';

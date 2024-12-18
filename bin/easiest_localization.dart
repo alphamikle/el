@@ -14,9 +14,11 @@ String _locales(int howMany) => Intl.plural(
       other: 'locales',
     );
 
-void main(List<String> args) {
+void main(List<String> args) => runner(args);
+
+void runner(List<String> args, [GeneratorConfig? configOverride]) {
   final int start = DateTime.now().millisecondsSinceEpoch;
-  GeneratorConfig config = ConfigLoader().load();
+  GeneratorConfig config = configOverride ?? ConfigLoader().load();
 
   if (args.contains('--format')) {
     config = config.copyWith(formatOutput: true);
@@ -44,16 +46,14 @@ void generate(GeneratorConfig config, int startedTimestamp) {
     final (String, List<LanguageLocalization>) result = generator.generate();
     final int end = (DateTime.now().millisecondsSinceEpoch - startedTimestamp);
 
-    final List<String> locales = result.$2
-        .map((LanguageLocalization it) => it.name)
-        .toList(growable: false);
+    final List<String> locales = result.$2.map((LanguageLocalization it) => it.name).toList(growable: false);
 
-    log('Localizations generation completed in ${end}ms with [${locales.join(', ')}] ${_locales(locales.length)}'
-        .asBlue());
+    log('Localizations generation completed in ${end}ms with [${locales.join(', ')}] ${_locales(locales.length)}'.asBlue());
 
     FirstStartChecker(config: config).updatePubSpec();
-  } catch (error) {
+  } catch (error, stackTrace) {
     log(error.toString().asRed());
+    log(stackTrace.toString());
   }
 }
 

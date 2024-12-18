@@ -1,5 +1,3 @@
-String languageValueBeginningTemplate(
-        {required String lang, required String className}) =>
-    '''
+String languageValueBeginningTemplate({required String lang, required String className}) => '''
 final $className $lang = $className(
 ''';

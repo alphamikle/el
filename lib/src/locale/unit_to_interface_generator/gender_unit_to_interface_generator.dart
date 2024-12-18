@@ -5,10 +5,8 @@ import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
 
-CodeOutput genderUnitToInterface(GenderUnit unit,
-    {bool useThisKeyword = true}) {
-  final Set<String> arguments =
-      extractArguments(genderValueToString(unit.schemaValue)).toSet();
+CodeOutput genderUnitToInterface(GenderUnit unit, {bool useThisKeyword = true}) {
+  final Set<String> arguments = extractArguments(genderValueToString(unit.schemaValue)).toSet();
   String parentClassName = unit.parents.map(capitalize).join();
 
   if (parentClassName.isNotEmpty) {
@@ -23,8 +21,7 @@ CodeOutput genderUnitToInterface(GenderUnit unit,
     );
   }
 
-  String functionArguments =
-      arguments.map((String arg) => 'required String $arg').join(', ');
+  String functionArguments = arguments.map((String arg) => 'required String $arg').join(', ');
   functionArguments = '(Gender gender, {$functionArguments})';
 
   return CodeOutput(

@@ -8,9 +8,7 @@ import '../bin/easiest_localization.dart' as bin;
 
 void main() {
   test('Localization generation: E2E Test', () async {
-    bin.main(['--format']);
-
-    await Process.run('dart', ['format', '.'], runInShell: true);
+    // await Process.run('dart', ['format', '.'], runInShell: true);
 
     final String output = File(
             path.join(path.current, 'localization', 'lib', 'localization.dart'))
@@ -78,5 +76,18 @@ void main() {
     }
 
     expect(dartOutput.contains(localizationsClassName), equals(true));
+  });
+
+  test('Runner', () async {
+    final GeneratorConfig config = GeneratorConfig(
+      excludedPatterns: [
+        'en_CA',
+        'es',
+        'ru',
+        'en',
+      ],
+    );
+
+    bin.runner(['--format'], config);
   });
 }

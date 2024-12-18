@@ -18,13 +18,9 @@ class PubspecLoader {
   final GeneratorConfig? config;
 
   YamlMap load() {
-    final List<File> files =
-        Directory.current.listSync().whereType<File>().toList();
-    final File pubspec = files.firstWhere(
-        (File it) => it.path.contains(_pubspecRegExp),
-        orElse: () => throw Exception('Not found pubspec.yaml file'));
-    final YamlMap pubspecContent =
-        loadYaml(pubspec.readAsStringSync()) as YamlMap;
+    final List<File> files = Directory.current.listSync().whereType<File>().toList();
+    final File pubspec = files.firstWhere((File it) => it.path.contains(_pubspecRegExp), orElse: () => throw Exception('Not found pubspec.yaml file'));
+    final YamlMap pubspecContent = loadYaml(pubspec.readAsStringSync()) as YamlMap;
     return pubspecContent;
   }
 
@@ -99,8 +95,7 @@ flutter:
     for (final String excludedPattern in config!.excludedPatterns) {
       final RegExp excludedRegExp = RegExp(excludedPattern);
 
-      isExcluded = file.path.contains(excludedPattern) ||
-          excludedRegExp.hasMatch(file.path);
+      isExcluded = file.path.contains(excludedPattern) || excludedRegExp.hasMatch(file.path);
 
       if (isExcluded) {
         exclusionPattern = excludedPattern;
@@ -109,9 +104,7 @@ flutter:
     }
 
     if (isExcluded) {
-      logOnce(
-          'File "${file.path}" was excluded from generation by pattern "$exclusionPattern"'
-              .asYellow());
+      logOnce('File "${file.path}" was excluded from generation by pattern "$exclusionPattern"'.asYellow());
       return false;
     }
 

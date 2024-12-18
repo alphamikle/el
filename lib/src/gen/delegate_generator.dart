@@ -17,10 +17,7 @@ class DelegateGenerator {
   String generate() {
     final String className = config.localizationsClassName;
     final Set<LocaleInfo> languages = {
-      ...localizations.map((LanguageLocalization localization) => (
-            localization.language.toLowerCase(),
-            localization.country?.toUpperCase()
-          )),
+      ...localizations.map((LanguageLocalization localization) => (localization.language.toLowerCase(), localization.country?.toUpperCase())),
     };
 
     return '''
@@ -134,10 +131,7 @@ List<LocalizationsDelegate> localizationsDelegatesWithProviders(List<Localizatio
   ];
 }
 
-// Supported locales: ${languages.map((LocaleInfo it) => [
-              it.$1,
-              if (it.$2 != null) it.$2
-            ].join('_')).join(', ')}
+// Supported locales: ${languages.map((LocaleInfo it) => [it.$1, if (it.$2 != null) it.$2].join('_')).join(', ')}
 const List<Locale> supportedLocales = [
   ${languages.map((LocaleInfo it) => "Locale('${it.$1}'${it.$2 == null ? '' : ", '${it.$2}'"}),").join('\n')}
 ];
