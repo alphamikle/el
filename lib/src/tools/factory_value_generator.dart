@@ -13,8 +13,10 @@ String factoryValueGenerator({
 }) {
   final bool hasArguments = arguments.isNotEmpty;
   String extraction = switch (multiEntity) {
-    MultiEntity.list => "(json[${qu(rawName)}] ?? json[${qu(rawName.clearMultiKey())}])",
-    MultiEntity.map => "(json[${qu(rawName)}] ?? json[${qu(rawName.clearMultiKey())}])",
+    MultiEntity.list =>
+      "(json[${qu(rawName)}] ?? json[${qu(rawName.clearMultiKey())}])",
+    MultiEntity.map =>
+      "(json[${qu(rawName)}] ?? json[${qu(rawName.clearMultiKey())}])",
     null => "json[${qu(rawName)}]",
   };
   extraction = [
@@ -29,7 +31,8 @@ String factoryValueGenerator({
       extraction,
       '.toString()',
       if (withHowMany) ".replaceAll(r'\${howMany}', howMany.toString())",
-      for (final argument in arguments) ".replaceAll(r'\${$argument}', $argument)",
+      for (final argument in arguments)
+        ".replaceAll(r'\${$argument}', $argument)",
       if (hasArguments) ".replaceAll(_variableRegExp, '')",
     ].join();
   }
@@ -40,12 +43,15 @@ String factoryValueGenerator({
     "($extraction",
     switch (multiEntity) {
       MultiEntity.list => " is List<Object?> ? $extraction : <Object?>[])",
-      MultiEntity.map => " is Map<String, Object?> ? $extraction : <String, Object?>{})",
+      MultiEntity.map =>
+        " is Map<String, Object?> ? $extraction : <String, Object?>{})",
       null => " ?? '').toString()",
     },
-    if (withHowMany && multiEntity == null) ".replaceAll(r'\${howMany}', howMany.toString())",
+    if (withHowMany && multiEntity == null)
+      ".replaceAll(r'\${howMany}', howMany.toString())",
     if (multiEntity == null)
-      for (final argument in arguments) ".replaceAll(r'\${$argument}', $argument)",
+      for (final argument in arguments)
+        ".replaceAll(r'\${$argument}', $argument)",
     if (multiEntity == null && hasArguments) ".replaceAll(_variableRegExp, '')",
   ].join();
 }

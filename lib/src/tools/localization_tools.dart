@@ -2,6 +2,7 @@ import '../locale/localization_unit.dart';
 import '../type/types.dart';
 import 'debouncer.dart';
 import 'emptier.dart';
+import 'extensions.dart';
 import 'log.dart';
 import 'multi_entity.dart';
 import 'null_value_exception.dart';
@@ -15,8 +16,8 @@ LocalizationUnit localizeValue(
   List<String>? parents,
   int deepness = 0,
 ]) {
-  Object effectiveValue = value;
-  Object effectiveScheme = scheme;
+  final Object effectiveValue = value;
+  final Object effectiveScheme = scheme;
 
   // if (value is List) {
   //   effectiveValue = Map.fromEntries(List.generate(value.length, (int index) => MapEntry(index.toString(), value[index])));
@@ -38,8 +39,8 @@ LocalizationUnit localizeValue(
         ),
       Map() => MapUnit(
           fieldKey: key,
-          value: (effectiveValue as DMap).cast<String, Object?>(),
-          schemaValue: (effectiveScheme as DMap).cast<String, Object?>(),
+          value: (effectiveValue as DMap).toJson(),
+          schemaValue: (effectiveScheme as DMap).toJson(),
           parents: parents ?? [],
         ),
       _ => _toUnit(

@@ -24,8 +24,20 @@ void runner(List<String> args, [GeneratorConfig? configOverride]) {
     config = config.copyWith(formatOutput: true);
   }
 
+  if (args.contains('--no-format')) {
+    config = config.copyWith(formatOutput: false);
+  }
+
   if (args.contains('--watch')) {
     config = config.copyWith(watch: true);
+  }
+
+  if (args.contains('--no-watch')) {
+    config = config.copyWith(watch: false);
+  }
+
+  if (args.contains('--init')) {
+    config = config.copyWith(initPubspec: true);
   }
 
   if (args.contains('--no-init')) {

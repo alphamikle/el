@@ -172,12 +172,12 @@ easiest_localization:
 After setting up your localization files, generate type-safe localization code by running:
 
 ```bash
-dart run easiest_localization [--format] [--watch] [--no-init]
+dart run easiest_localization [--format] [--[no-]watch] [--no-init]
 ```
 
 - `--format`: Auto-format the code after generation. Equals to `format_output: true` from the config.
-- `--watch`: Enable watch mode for real-time code generation. Equals to `watch: true` from the config.
-- `--no-init`: Disable automatic package initialization on the very first run. Equals to `init_pubspec: false` from the config.
+- `--[no-]watch`: Enable / disable watch mode for real-time code generation. Equals to `watch: true` from the config.
+- `--[no-]init`: Enable / disable automatic package initialization on the very first run. Equals to `init_pubspec: false` from the config.
 
 The generated package will be automatically added to your `pubspec.yaml` dependencies:
 
@@ -419,6 +419,44 @@ author:
   female: ${name} - she is the author of that book!
   other: ${name} - they are the author of that book!
 ```
+
+### Multiple Entities
+
+A **multiple entity** is a key that ends with an asterisk (`*`) and represents a dynamic mapping of content whose child keys are **not** generated as individual fields. This is particularly useful if you have a set of IDs (or any keys) coming from a backend that you want to localize but cannot—or do not want to—rely on them being predefined in your code.
+
+For example, consider the following:
+
+```yaml
+# Here we have a Map<int, String> with N-categories, determined by their integer ID's
+categories*:
+  1: Sport
+  2: Fun
+  3: Cinema
+  4: Guns
+  # ...
+
+# And here we have a List<Map<String, String>> with N-bullet-points and ordering as we want them to be in
+our_achievements:
+  bullet_points*:
+    - title: Best UI/UX Design
+      subtitle: Awarded by Design Critics International 2022
+
+    - title: 1M+ Downloads
+      subtitle: Achieved within the first month of release
+
+    - title: Rising Star Startup
+      subtitle: Recognized by Global Tech Summit 2023
+
+    - title: 99% Crash-Free Rate
+      subtitle: Verified by App Health Monitor
+
+    - title: Multi-Platform Support
+      subtitle: Fully functional on iOS, Android, and the Web
+
+    # ...
+```
+
+> 
 
 ---
 

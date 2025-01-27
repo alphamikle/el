@@ -15,5 +15,8 @@ bool isMultiEntity({
     return value is List<Object?> || value is YamlList;
   }
 
-  return value is List<Object?> || value is Map<String, Object?> || value is YamlList || value is YamlMap;
+  return value is List<Object?> ||
+      value is Map<String, Object?> ||
+      value is YamlList ||
+      value is YamlMap;
 }

@@ -1,0 +1,54 @@
+{
+  "source": "Easiest Localization",
+  "app_title": "Library App",
+  "language": "Lang: ${language}; Country: ${country}",
+  "main_screen": {
+    "greetings": "Hello, ${username}!",
+    "books": {
+      "add": "Add Book",
+      "amount_of_new": {
+        "zero": "There are no new books available at the moment :(",
+        "one": "There is ${howMany} new book available :)",
+        "other": "There are ${howMany} new books available :)"
+      }
+    },
+    "today_date_format": "dd/MM/yyyy",
+    "welcome": "# Welcome to our library!\n---\n## We are very happy to see you and would like you to enjoy reading our books.\n"
+  },
+  "author": {
+    "male": "${name} - he is the author of that book!",
+    "female": "${name} - she is the author of that book!",
+    "other": "${name} - they are the author of that book!"
+  },
+  "privacy_policy_url": "https://library.app/privacy_ca.pdf",
+  "employees*": {},
+  "dynamic_list_of_strings*": {},
+  "dynamic_list_of_objects*": {},
+  "users": {
+    "cities": {
+      "main_city*": {}
+    }
+  },
+  "dynamic_map_inside": {
+    "categories*": {
+      "abc": "Hello",
+      "bcd": "How are you?",
+      "cde": "We are here!",
+      "def": "Let's go with us!",
+      "efg": {
+        "id": 123,
+        "name": "Mike",
+        "talk": true
+      }
+    }
+  },
+  "categories*": {
+    "1": "Sport",
+    "2": "Fun",
+    "3": "Cinema",
+    "4": "Guns"
+  },
+  "our_achievements": {
+    "bullet_points*": {}
+  }
+}

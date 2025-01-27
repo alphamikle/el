@@ -1,3 +1,5 @@
+import '../type/types.dart';
+
 typedef Checker<T> = bool Function(T value);
 typedef PresenceTest<T> = bool Function(T it);
 typedef Spreader<T> = List<Object> Function(int index, T value);
@@ -66,5 +68,18 @@ extension ExtendedMap on Map<Object, Object?> {
     }
 
     return size;
+  }
+}
+
+extension JsonableMap on DJson {
+  Map<String, Object> toJson() {
+    final Map<String, Object> result = {};
+    for (final MapEntry(:key, :value) in entries) {
+      if (value == null) {
+        continue;
+      }
+      result[key.toString()] = value;
+    }
+    return result;
   }
 }

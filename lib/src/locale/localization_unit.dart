@@ -1,8 +1,21 @@
 import '../tools/names_converter.dart';
 
 typedef StringWithDescriptionValue = ({String value, String description});
-typedef PluralizedValue = ({String? zero, String one, String? two, String? few, String? many, String other, String? description});
-typedef GenderValue = ({String? male, String? female, String? other, String? description});
+typedef PluralizedValue = ({
+  String? zero,
+  String one,
+  String? two,
+  String? few,
+  String? many,
+  String other,
+  String? description
+});
+typedef GenderValue = ({
+  String? male,
+  String? female,
+  String? other,
+  String? description
+});
 typedef NamespacedValue = Map<String, LocalizationUnit>;
 
 enum UnitType {

@@ -1,5 +1,6 @@
 Never nullValueException({String? key}) {
-  throw NullValueException('Null value is not acceptable${key == null ? '' : ' at the field $key'}');
+  throw NullValueException(
+      'Null value is not acceptable${key == null ? '' : ' at the field $key'}');
 }
 
 class NullValueException implements Exception {

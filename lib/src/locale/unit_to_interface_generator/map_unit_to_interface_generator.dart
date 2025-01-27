@@ -12,7 +12,8 @@ CodeOutput mapUnitToInterface(MapUnit unit, {bool useThisKeyword = true}) {
   final bool hasArgs = hasArguments(unit.schemaValue);
 
   if (hasArgs) {
-    throw Exception('Entity of type MapUnit can not have any arguments in the content');
+    throw Exception(
+        'Entity of type MapUnit can not have any arguments in the content');
   }
 
   String parentClassName = unit.parents.map(capitalize).join();

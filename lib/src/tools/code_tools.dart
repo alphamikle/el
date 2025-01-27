@@ -19,9 +19,11 @@ CodeOutput localizationUnitToInterface(
 }) {
   return switch (unit) {
     StringUnit() => stringUnitToInterface(unit, useThisKeyword: useThisKeyword),
-    PluralizedUnit() => pluralizedUnitToInterface(unit, useThisKeyword: useThisKeyword),
+    PluralizedUnit() =>
+      pluralizedUnitToInterface(unit, useThisKeyword: useThisKeyword),
     GenderUnit() => genderUnitToInterface(unit, useThisKeyword: useThisKeyword),
-    NamespacedUnit() => namespacedUnitToInterface(unit, useThisKeyword: useThisKeyword),
+    NamespacedUnit() =>
+      namespacedUnitToInterface(unit, useThisKeyword: useThisKeyword),
     ListUnit() => listUnitToInterface(unit, useThisKeyword: useThisKeyword),
     MapUnit() => mapUnitToInterface(unit, useThisKeyword: useThisKeyword),
   };
