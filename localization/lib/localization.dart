@@ -559,20 +559,22 @@ final LocalizationMessages en = LocalizationMessages(
     "Michael Brown",
     "Emma Davis",
     "William Taylor",
-    "Mr. Nobody"
+    "Mr. Nobody",
+    "123456",
+    "true"
   ]),
   dynamicListOfStrings:
       ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
   dynamicListOfObjects: ContentList([
-    {"id": 123, "name": "Mike", "lastname": "Alfa"},
-    {"id": 456, "name": "John", "lastname": "Pies"}
+    {"id": "123", "name": "Mike", "lastname": "Alfa"},
+    {"id": "456", "name": "John", "lastname": "Pies"}
   ]),
   users: Users(
     cities: UsersCities(
       mainCity: ContentList([
-        {"id": 1, "name": "Mike"},
-        {"id": 2, "name": "Alena"},
-        {"id": 3, "name": "Grace"}
+        {"id": "1", "name": "Mike"},
+        {"id": "2", "name": "Alena"},
+        {"id": "3", "name": "Grace"}
       ]),
     ),
   ),
@@ -582,7 +584,7 @@ final LocalizationMessages en = LocalizationMessages(
       "bcd": "How are you?",
       "cde": "We are here!",
       "def": "Let's go with us!",
-      "efg": {"id": 123, "name": "Mike", "talk": true}
+      "efg": {"id": "123", "name": "Mike", "talk": "true"}
     }),
   ),
   categories:
@@ -653,20 +655,22 @@ final LocalizationMessages ru = LocalizationMessages(
     "Майкл Браун",
     "Эмма Дэвис",
     "Уильям Тейлор",
-    "Mr. Nobody"
+    "Mr. Nobody",
+    "123456",
+    "true"
   ]),
   dynamicListOfStrings:
       ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
   dynamicListOfObjects: ContentList([
-    {"id": 123, "name": "Mike", "lastname": "Alfa"},
-    {"id": 456, "name": "John", "lastname": "Pies"}
+    {"id": "123", "name": "Mike", "lastname": "Alfa"},
+    {"id": "456", "name": "John", "lastname": "Pies"}
   ]),
   users: Users(
     cities: UsersCities(
       mainCity: ContentList([
-        {"id": 1, "name": "Mike"},
-        {"id": 2, "name": "Alena"},
-        {"id": 3, "name": "Grace"}
+        {"id": "1", "name": "Mike"},
+        {"id": "2", "name": "Alena"},
+        {"id": "3", "name": "Grace"}
       ]),
     ),
   ),
@@ -676,7 +680,7 @@ final LocalizationMessages ru = LocalizationMessages(
       "bcd": "How are you?",
       "cde": "We are here!",
       "def": "Let's go with us!",
-      "efg": {"id": 123, "name": "Mike", "talk": true}
+      "efg": {"id": "123", "name": "Mike", "talk": "true"}
     }),
   ),
   categories:
@@ -747,20 +751,22 @@ final LocalizationMessages en_CA = LocalizationMessages(
     "Michael Brown",
     "Emma Davis",
     "William Taylor",
-    "Mr. Nobody"
+    "Mr. Nobody",
+    "123456",
+    "true"
   ]),
   dynamicListOfStrings:
       ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
   dynamicListOfObjects: ContentList([
-    {"id": 123, "name": "Mike", "lastname": "Alfa"},
-    {"id": 456, "name": "John", "lastname": "Pies"}
+    {"id": "123", "name": "Mike", "lastname": "Alfa"},
+    {"id": "456", "name": "John", "lastname": "Pies"}
   ]),
   users: Users(
     cities: UsersCities(
       mainCity: ContentList([
-        {"id": 1, "name": "Mike"},
-        {"id": 2, "name": "Alena"},
-        {"id": 3, "name": "Grace"}
+        {"id": "1", "name": "Mike"},
+        {"id": "2", "name": "Alena"},
+        {"id": "3", "name": "Grace"}
       ]),
     ),
   ),
@@ -770,7 +776,7 @@ final LocalizationMessages en_CA = LocalizationMessages(
       "bcd": "How are you?",
       "cde": "We are here!",
       "def": "Let's go with us!",
-      "efg": {"id": 123, "name": "Mike", "talk": true}
+      "efg": {"id": "123", "name": "Mike", "talk": "true"}
     }),
   ),
   categories:

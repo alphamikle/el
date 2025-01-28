@@ -3,12 +3,14 @@ import 'dart:io';
 
 import 'package:merger/merger.dart';
 import 'package:path/path.dart';
+import 'package:yaml/yaml.dart';
 import 'package:yaml_writer/yaml_writer.dart';
 
 import '../gen/generator_config.dart';
 import '../loader/language_localization.dart';
 import '../locale/localization_unit.dart';
 import '../tools/extensions.dart';
+import '../type/mappers.dart';
 import '../type/types.dart';
 
 // en, ru, zh, etc.
@@ -22,10 +24,8 @@ class LanguagesMerger {
   final GeneratorConfig config;
 
   List<LanguageLocalization> merge(List<LanguageLocalization> languages) {
-    final Map<Language, List<LanguageLocalization>>
-        primaryLocalizationsParticles = {};
-    final Map<Language, List<LanguageLocalization>> alternativeLocalizations =
-        {};
+    final Map<Language, List<LanguageLocalization>> primaryLocalizationsParticles = {};
+    final Map<Language, List<LanguageLocalization>> alternativeLocalizations = {};
 
     for (final LanguageLocalization localization in languages) {
       final Language lang = localization.language;
@@ -46,16 +46,14 @@ class LanguagesMerger {
     final List<LanguageLocalization> response = [];
     final Map<Language, LanguageLocalization> primaryLocalizations = {};
 
-    for (final MapEntry(key: language, value: localizationParticles)
-        in primaryLocalizationsParticles.entries) {
+    for (final MapEntry(key: language, value: localizationParticles) in primaryLocalizationsParticles.entries) {
       if (localizationParticles.isEmpty) {
         continue;
       }
 
       localizationParticles.sort(sizeSorter);
 
-      LanguageLocalization primaryLocalization =
-          localizationParticles.removeAt(0);
+      LanguageLocalization primaryLocalization = localizationParticles.removeAt(0);
 
       for (final LanguageLocalization particle in localizationParticles) {
         primaryLocalization = primaryLocalization.copyWith(
@@ -67,24 +65,19 @@ class LanguagesMerger {
       primaryLocalizations[language] = primaryLocalization;
     }
 
-    for (final MapEntry(key: language, value: countrySpecificLocalizations)
-        in alternativeLocalizations.entries) {
-      final LanguageLocalization? primaryLocalization =
-          primaryLocalizations[language];
+    for (final MapEntry(key: language, value: countrySpecificLocalizations) in alternativeLocalizations.entries) {
+      final LanguageLocalization? primaryLocalization = primaryLocalizations[language];
 
       if (primaryLocalization == null) {
         response.addAll(countrySpecificLocalizations);
       } else {
-        final Map<CountryCode, List<LanguageLocalization>>
-            localizationsByCountryCodes = {};
+        final Map<CountryCode, List<LanguageLocalization>> localizationsByCountryCodes = {};
 
-        for (final LanguageLocalization localization
-            in countrySpecificLocalizations) {
+        for (final LanguageLocalization localization in countrySpecificLocalizations) {
           final String? country = localization.country;
 
           if (country == null) {
-            throw Exception(
-                'Not found country code in the country-specific localization');
+            throw Exception('Not found country code in the country-specific localization');
           }
 
           if (localizationsByCountryCodes.containsKey(country) == false) {
@@ -94,19 +87,16 @@ class LanguagesMerger {
           localizationsByCountryCodes[country]!.add(localization);
         }
 
-        final List<LanguageLocalization> effectiveCountrySpecificLocalizations =
-            [];
+        final List<LanguageLocalization> effectiveCountrySpecificLocalizations = [];
 
-        for (final MapEntry(value: localizationParticles)
-            in localizationsByCountryCodes.entries) {
+        for (final MapEntry(value: localizationParticles) in localizationsByCountryCodes.entries) {
           if (localizationParticles.isEmpty) {
             continue;
           }
 
           localizationParticles.sort(sizeSorter);
 
-          LanguageLocalization primaryLocalization =
-              localizationParticles.removeAt(0);
+          LanguageLocalization primaryLocalization = localizationParticles.removeAt(0);
 
           for (final LanguageLocalization particle in localizationParticles) {
             primaryLocalization = primaryLocalization.copyWith(
@@ -117,12 +107,10 @@ class LanguagesMerger {
           effectiveCountrySpecificLocalizations.add(primaryLocalization);
         }
 
-        for (final LanguageLocalization localization
-            in effectiveCountrySpecificLocalizations) {
+        for (final LanguageLocalization localization in effectiveCountrySpecificLocalizations) {
           response.add(
             localization.copyWith(
-              content:
-                  primaryLocalization.content.mergeWith(localization.content),
+              content: primaryLocalization.content.mergeWith(localization.content),
             ),
           );
         }
@@ -147,8 +135,7 @@ class LanguagesMerger {
 
     for (final LanguageLocalization localization in response) {
       scheme = scheme.copyWith(
-        content:
-            mergeMaps(scheme.content, localization.content, joinStrings: true),
+        content: mergeMaps(scheme.content, localization.content, joinStrings: true),
       );
     }
 
@@ -157,18 +144,14 @@ class LanguagesMerger {
     final String? primaryLocalizationCode = config.primaryLocalization;
 
     if (primaryLocalizationCode != null) {
-      final LanguageLocalization? primaryLocalization =
-          response.firstWhereOrNull(
+      final LanguageLocalization? primaryLocalization = response.firstWhereOrNull(
         (LanguageLocalization it) {
-          return it.name == primaryLocalizationCode ||
-              it.country == primaryLocalizationCode ||
-              it.language == primaryLocalizationCode;
+          return it.name == primaryLocalizationCode || it.country == primaryLocalizationCode || it.language == primaryLocalizationCode;
         },
       );
       if (primaryLocalization == null) {
         // ignore: avoid_print
-        print(
-            'The primary localization was defined as [$primaryLocalizationCode], but no matching localization file was found.');
+        print('The primary localization was defined as [$primaryLocalizationCode], but no matching localization file was found.');
       } else {
         emptyScheme = emptyScheme.copyWith(
           content: emptyScheme.content.mergeWith(primaryLocalization.content),
@@ -195,12 +178,9 @@ class LanguagesMerger {
   }
 }
 
-int sizeSorter(LanguageLocalization a, LanguageLocalization b) =>
-    b.size.compareTo(a.size);
+int sizeSorter(LanguageLocalization a, LanguageLocalization b) => b.size.compareTo(a.size);
 
-void _saveMergedFiles(
-    GeneratorConfig config, List<LanguageLocalization> localizations,
-    {bool saveAsJson = false}) {
+void _saveMergedFiles(GeneratorConfig config, List<LanguageLocalization> localizations, {bool saveAsJson = false}) {
   final String outputPath = join(
     Directory.current.path,
     config.packagePath,
@@ -212,11 +192,8 @@ void _saveMergedFiles(
   Directory(outputPath).createSync(recursive: true);
 
   for (final LanguageLocalization localization in localizations) {
-    final String fileName = '${[
-      localization.language,
-      if (localization.country != null) localization.country
-    ].join('_')}.${saveAsJson ? 'json' : 'yaml'}';
-    final Json clearJson = _clearJson(localization.content);
+    final String fileName = '${[localization.language, if (localization.country != null) localization.country].join('_')}.${saveAsJson ? 'json' : 'yaml'}';
+    final Object clearJson = _clearJson(localization.content);
 
     String contentToSave = '';
 
@@ -232,10 +209,26 @@ void _saveMergedFiles(
   }
 }
 
-Json _clearJson(dynamic json) {
+Object _clearJson(dynamic json) {
   final Json result = {};
 
-  if (json is! DJson) {
+  if (json is YamlMap) {
+    json = yamlMapToJson(json);
+  }
+
+  if (json is YamlList) {
+    json = yamlListToJson(json);
+  }
+
+  if (json is List) {
+    final List<Object> result = [];
+    for (final Object? value in json) {
+      result.add(switch (value) {
+        Map() => value.toJson(),
+        List() => value.toJson(),
+        _ => value.toString(),
+      });
+    }
     return result;
   }
 
@@ -248,6 +241,7 @@ Json _clearJson(dynamic json) {
       UnitType.plural => result[id] = _clearPluralValue(value),
       UnitType.string => result[id] = value,
       UnitType.namespace => result[id] = _clearJson(value),
+      UnitType.multiList => result[id] = _clearJson(value),
       UnitType.unknown => result[id] = value,
     };
   }

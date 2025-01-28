@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../../template/imports_template.dart';
+import '../../tools/extensions.dart';
 import '../../tools/factory_value_generator.dart';
 import '../../tools/multi_entity.dart';
 import '../code_output.dart';
@@ -8,8 +9,7 @@ import '../localization_unit.dart';
 
 CodeOutput listUnitToValue(ListUnit unit) {
   return CodeOutput(
-    classArgumentCode:
-        "${unit.fieldName}: $contentList(${jsonEncode(unit.value)}),",
+    classArgumentCode: "${unit.fieldName}: $contentList(${jsonEncode(unit.value.toJson())}),",
     classBodyCode: '',
     factoryArgumentCode: _factoryCode(unit),
     externalCode: '',

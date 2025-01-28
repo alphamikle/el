@@ -26,6 +26,22 @@ extension ExtendedList<T> on List<T> {
     }
     return result;
   }
+
+  List<Object> toJson() {
+    final List<Object> result = [];
+    for (final T value in this) {
+      if (value == null) {
+        continue;
+      }
+
+      result.add(switch (value) {
+        List() => value.toJson(),
+        Map() => value.toJson(),
+        _ => value.toString(),
+      });
+    }
+    return result;
+  }
 }
 
 extension ExtendedString on String {
@@ -74,11 +90,16 @@ extension ExtendedMap on Map<Object, Object?> {
 extension JsonableMap on DJson {
   Map<String, Object> toJson() {
     final Map<String, Object> result = {};
+
     for (final MapEntry(:key, :value) in entries) {
       if (value == null) {
         continue;
       }
-      result[key.toString()] = value;
+      result[key.toString()] = switch (value) {
+        Map() => value.toJson(),
+        List() => value.toJson(),
+        _ => value.toString(),
+      };
     }
     return result;
   }

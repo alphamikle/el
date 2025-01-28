@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import '../../template/imports_template.dart';
 import '../../tools/arguments_extractor.dart';
+import '../../tools/extensions.dart';
 import '../../tools/factory_value_generator.dart';
 import '../../tools/multi_entity.dart';
 import '../../type/mappers.dart';
@@ -12,8 +13,7 @@ CodeOutput listUnitToInterface(ListUnit unit, {bool useThisKeyword = true}) {
   final bool hasArgs = hasArguments(unit.schemaValue);
 
   if (hasArgs) {
-    throw Exception(
-        'Entity of type ListUnit can not have any arguments in the content');
+    throw Exception('Entity of type ListUnit can not have any arguments in the content');
   }
 
   String parentClassName = unit.parents.map(capitalize).join();
@@ -24,7 +24,7 @@ CodeOutput listUnitToInterface(ListUnit unit, {bool useThisKeyword = true}) {
 
   return CodeOutput(
     classArgumentCode:
-        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $contentList(${jsonEncode(unit.value)})'},",
+        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $contentList(${jsonEncode(unit.value.toJson())})'},",
     factoryArgumentCode: _factoryCode(unit),
     classBodyCode: 'final $contentList ${unit.fieldName};',
     externalCode: '',

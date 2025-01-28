@@ -32,6 +32,8 @@ employees*:
   - Emma Davis
   - William Taylor
   - Mr. Nobody
+  - 123456
+  - true
 
 dynamic_list_of_strings*:
   - John Smith

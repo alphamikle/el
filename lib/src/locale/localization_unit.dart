@@ -1,21 +1,10 @@
+import 'package:yaml/yaml.dart';
+
 import '../tools/names_converter.dart';
 
 typedef StringWithDescriptionValue = ({String value, String description});
-typedef PluralizedValue = ({
-  String? zero,
-  String one,
-  String? two,
-  String? few,
-  String? many,
-  String other,
-  String? description
-});
-typedef GenderValue = ({
-  String? male,
-  String? female,
-  String? other,
-  String? description
-});
+typedef PluralizedValue = ({String? zero, String one, String? two, String? few, String? many, String other, String? description});
+typedef GenderValue = ({String? male, String? female, String? other, String? description});
 typedef NamespacedValue = Map<String, LocalizationUnit>;
 
 enum UnitType {
@@ -23,6 +12,7 @@ enum UnitType {
   gender,
   plural,
   namespace,
+  multiList,
   unknown;
 
   factory UnitType.fromValue(Object? value) {
@@ -33,8 +23,10 @@ enum UnitType {
       String() => UnitType.string,
       {'other': final String _, 'one': final String _} => UnitType.plural,
       {'other': final String _} => UnitType.gender,
+      YamlMap() => UnitType.namespace,
       Map() => UnitType.namespace,
-      List() => UnitType.namespace,
+      YamlList() => UnitType.multiList,
+      List() => UnitType.multiList,
       _ => UnitType.unknown,
     };
   }
