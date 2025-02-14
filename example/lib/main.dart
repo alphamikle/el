@@ -52,8 +52,7 @@ class HomeState extends State<Home> {
   late Locale selectedLocale = Localizations.localeOf(context);
   int booksAmount = 0;
 
-  void syncLocaleWithSystem() =>
-      selectedLocale = Localizations.localeOf(context);
+  void syncLocaleWithSystem() => selectedLocale = Localizations.localeOf(context);
 
   Gender pickGender() => switch (booksAmount % 3) {
         0 => Gender.male,
@@ -121,13 +120,12 @@ class HomeState extends State<Home> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          ...text(
-              DateFormat(el.mainScreen.todayDateFormat).format(DateTime.now())),
+          ...text(el.mainScreen.completelyNewField),
+          ...text(DateFormat(el.mainScreen.todayDateFormat).format(DateTime.now())),
           ...text(el.mainScreen.welcome, md: true),
           ...text(el.author(pickGender(), name: pickName())),
           ...text(el.privacyPolicyUrl),
-          for (final Object? employee in el.employees)
-            ...text(employee.toString()),
+          for (final Object? employee in el.employees) ...text(employee.toString()),
           ...text(
             el.mainScreen.books.amountOfNew(booksAmount),
             style: const TextStyle(
@@ -135,13 +133,10 @@ class HomeState extends State<Home> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          ...text(el.language(
-              language: selectedLocale.languageCode,
-              country: selectedLocale.countryCode ?? '')),
+          ...text(el.language(language: selectedLocale.languageCode, country: selectedLocale.countryCode ?? '')),
           ...text(el.source),
           SegmentedButton<Locale>(
-            segments: List.generate(supportedLocales.length,
-                (int index) => segmentBuilder(context, index)),
+            segments: List.generate(supportedLocales.length, (int index) => segmentBuilder(context, index)),
             selected: {selectedLocale},
             onSelectionChanged: switchLanguage,
             emptySelectionAllowed: true,

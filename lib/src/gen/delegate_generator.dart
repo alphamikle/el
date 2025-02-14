@@ -17,18 +17,37 @@ class DelegateGenerator {
   String generate() {
     final String className = config.localizationsClassName;
     final Set<LocaleInfo> languages = {
-      ...localizations.map((LanguageLocalization localization) => (
-            localization.language.toLowerCase(),
-            localization.country?.toUpperCase()
-          )),
+      ...localizations.map((LanguageLocalization localization) => (localization.language.toLowerCase(), localization.country?.toUpperCase())),
     };
 
     return '''
-final Map<Locale, $className> _languageMap = {
+Map<Locale, $className> get _languageMap => {
   ${localizations.map((LanguageLocalization localization) => '${localization.localeAsString}: ${localization.name},').join('\n')}
 };
 
 final Map<Locale, $className> _providersLanguagesMap = {};
+
+String? get primaryLocaleString => '${config.primaryLocalization}';
+
+String? get primaryLocaleLanguage {
+  final List<String> particles = primaryLocaleString?.split(RegExp('_|-')) ?? [];
+  if (particles.isNotEmpty) {
+    return particles.first;
+  }
+  return null;
+}
+
+String? get primaryLocaleCountry {
+  final List<String> particles = primaryLocaleString?.split(RegExp('_|-')) ?? [];
+  if (particles.length == 2) {
+    return particles.last;
+  }
+  return null;
+}
+
+Locale? get primaryLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!, primaryLocaleCountry);
+
+Locale? get primaryFullLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!);
 
 class EasiestLocalizationDelegate extends LocalizationsDelegate<$className> {
   EasiestLocalizationDelegate({
@@ -84,7 +103,7 @@ class EasiestLocalizationDelegate extends LocalizationsDelegate<$className> {
       }
     }
 
-    localeContent ??= _loadLocalLocale(locale) ?? _languageMap.values.first;
+    localeContent ??= _loadLocalLocale(locale) ?? _languageMap[primaryFullLocale] ?? _languageMap[primaryLocale] ?? _languageMap.values.first;
     return localeContent;
   }
 
@@ -102,7 +121,7 @@ class Messages {
     final List<String> localeParticles = defaultLocaleString == null ? [] : defaultLocaleString.split(RegExp(r'[_-]'));
     final Locale? defaultLocale = localeParticles.isEmpty ? null : Locale(localeParticles.first, localeParticles.length > 1 ? localeParticles[1] : null);
     $className? localeContent = _providersLanguagesMap[defaultLocale];
-    localeContent ??= _languageMap[defaultLocale] ?? _languageMap.values.first;
+    localeContent ??= _languageMap[defaultLocale] ??  _languageMap[primaryFullLocale] ?? _languageMap[primaryLocale] ?? _languageMap.values.first;
     return localeContent;
   }
 }
@@ -122,7 +141,7 @@ $className? _loadLocalLocale(Locale locale) {
 
 $className get el => Messages.el;
 
-final List<LocalizationsDelegate> localizationsDelegates = [
+List<LocalizationsDelegate> get localizationsDelegates => [
   EasiestLocalizationDelegate(),
   ...GlobalMaterialLocalizations.delegates,
 ];
@@ -134,11 +153,8 @@ List<LocalizationsDelegate> localizationsDelegatesWithProviders(List<Localizatio
   ];
 }
 
-// Supported locales: ${languages.map((LocaleInfo it) => [
-              it.$1,
-              if (it.$2 != null) it.$2
-            ].join('_')).join(', ')}
-const List<Locale> supportedLocales = [
+// Supported locales: ${languages.map((LocaleInfo it) => [it.$1, if (it.$2 != null) it.$2].join('_')).join(', ')}
+List<Locale> get supportedLocales => [
   ${languages.map((LocaleInfo it) => "Locale('${it.$1}'${it.$2 == null ? '' : ", '${it.$2}'"}),").join('\n')}
 ];
 

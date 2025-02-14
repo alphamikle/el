@@ -5,6 +5,7 @@ app_title: Library App
 language: "Lang: ${language}"
 
 main_screen:
+  completely_new_field: This is a new field v2
   greetings: Hello, ${username}!
   books:
     add: Add Book
@@ -14,7 +15,7 @@ main_screen:
       other: There are ${howMany} new books available :)
   today_date_format: MM/dd/yyyy
   welcome: |
-    # Welcome to our library!
+    # Welcome to our library! v4
     ---
     ## We are very happy to see you and would like you to enjoy reading our books.
 
