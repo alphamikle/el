@@ -45,9 +45,9 @@ String? get primaryLocaleCountry {
   return null;
 }
 
-Locale? get primaryLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!, primaryLocaleCountry);
+Locale? get primaryLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!);
 
-Locale? get primaryFullLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!);
+Locale? get primaryFullLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!, primaryLocaleCountry);
 
 class EasiestLocalizationDelegate extends LocalizationsDelegate<$className> {
   EasiestLocalizationDelegate({
