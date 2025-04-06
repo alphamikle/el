@@ -45,8 +45,7 @@ enum NamingStrategy {
     };
     final NamingStrategy? strategy = namesMap[value];
     if (strategy == null) {
-      throw Exception(
-          'Not supported Naming Strategy: "$value". Supported values: ${NamingStrategy.values.map((NamingStrategy it) => it.name)}');
+      throw Exception('Not supported Naming Strategy: "$value". Supported values: ${NamingStrategy.values.map((NamingStrategy it) => it.name)}');
     }
     return strategy;
   }
@@ -63,8 +62,7 @@ String _transformer({
   bool capitalizeAll = false,
   bool lowerAll = false,
 }) {
-  final String id =
-      '$input:$joiner:$capitalizeFirst:$allowPrivate:$capitalizeAll:$lowerAll';
+  final String id = '$input:$joiner:$capitalizeFirst:$allowPrivate:$capitalizeAll:$lowerAll';
 
   final String? cachedValue = _cache[id];
 
@@ -104,13 +102,10 @@ String _transformer({
     if (capitalizeFirst) {
       return mapped;
     }
-    return (index == 0 || isPrivate && index == 1)
-        ? mapped.toLowerCase()
-        : mapped;
+    return (index == 0 || isPrivate && index == 1) ? mapped.toLowerCase() : mapped;
   }
 
-  final String result =
-      '${(isPrivate && allowPrivate ? '_' : '')}${words.mapIndexed(wordMapper).join(joiner)}';
+  final String result = '${(isPrivate && allowPrivate ? '_' : '')}${words.mapIndexed(wordMapper).join(joiner)}';
 
   _cache[id] = result;
 
@@ -119,23 +114,17 @@ String _transformer({
 
 String toCamelCase(String input) => _transformer(input: input);
 
-String toPascalCase(String input) =>
-    _transformer(input: input, capitalizeFirst: true);
+String toPascalCase(String input) => _transformer(input: input, capitalizeFirst: true);
 
-String toSnakeCase(String input) =>
-    _transformer(input: input, lowerAll: true, joiner: '_');
+String toSnakeCase(String input) => _transformer(input: input, lowerAll: true, joiner: '_');
 
-String toScreamingSnakeCase(String input) =>
-    _transformer(input: input, capitalizeAll: true, joiner: '_');
+String toScreamingSnakeCase(String input) => _transformer(input: input, capitalizeAll: true, joiner: '_');
 
-String toKebabCase(String input) =>
-    _transformer(input: input, lowerAll: true, joiner: '-');
+String toKebabCase(String input) => _transformer(input: input, lowerAll: true, joiner: '-');
 
-String toTrainCase(String input) =>
-    _transformer(input: input, capitalizeFirst: true, joiner: '-');
+String toTrainCase(String input) => _transformer(input: input, capitalizeFirst: true, joiner: '-');
 
-String toDotCase(String input) =>
-    _transformer(input: input, lowerAll: true, joiner: '.');
+String toDotCase(String input) => _transformer(input: input, lowerAll: true, joiner: '.');
 
 String toSomeCase(String input, NamingStrategy strategy) {
   final String converted = switch (strategy) {
@@ -346,9 +335,7 @@ extension ExtendedConvertableCodeName on String {
   String get asDotCase => toDotCase(this);
 
   String get clear {
-    final String clearString = replaceAll(clearingRegExp, '_')
-        .replaceAll(severalSnakesRegExp, '_')
-        .replaceFirst(privateRegExp, '');
+    final String clearString = replaceAll(clearingRegExp, '_').replaceAll(severalSnakesRegExp, '_').replaceFirst(privateRegExp, '');
 
     if (_isKeyword(clearString)) {
       return '$clearString\$';

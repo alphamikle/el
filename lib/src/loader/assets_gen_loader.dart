@@ -28,8 +28,7 @@ class AssetsGenLoader implements ContentLoader {
 
   YamlMap? get _dependencies => _pubspecContent[kDependencies];
 
-  String? get intlVersion =>
-      _dependencies == null ? null : _dependencies![kIntl];
+  String? get intlVersion => _dependencies == null ? null : _dependencies![kIntl];
 
   String? get dartSdk => _pubspecContent[kEnv][kSdk];
 
@@ -41,10 +40,7 @@ class AssetsGenLoader implements ContentLoader {
 
     for (final String asset in assets) {
       final String dirPath = join(Directory.current.path, asset);
-      final (
-        List<File> matchedFiles,
-        List<LanguageLocalization> localizations
-      ) = _scanDir(Directory(dirPath));
+      final (List<File> matchedFiles, List<LanguageLocalization> localizations) = _scanDir(Directory(dirPath));
       for (int i = 0; i < matchedFiles.length; i++) {
         final File file = matchedFiles[i];
         final LanguageLocalization localization = localizations[i];
@@ -61,8 +57,7 @@ class AssetsGenLoader implements ContentLoader {
 
   (List<File>, List<LanguageLocalization>) _scanDir(Directory directory) {
     final List<LanguageLocalization> localizationFiles = [];
-    final List<File> allFiles =
-        PubspecLoader(config: config).loadSupportedFiles();
+    final List<File> allFiles = PubspecLoader(config: config).loadSupportedFiles();
 
     for (final File file in allFiles) {
       final RegExpMatch? match = config.regExp.firstMatch(file.path);
@@ -80,21 +75,16 @@ class AssetsGenLoader implements ContentLoader {
         try {
           country = match.namedGroup('country');
         } catch (error) {
-          log('Error on getting country from the RegExp(${config.regExp.toString()})'
-              .asRed());
+          log('Error on getting country from the RegExp(${config.regExp.toString()})'.asRed());
         }
 
         final String rawContent = file.readAsStringSync();
         if (rawContent.isEmpty) {
-          logOnce(
-              'File "${file.path}" have no localization content'.asYellow());
+          logOnce('File "${file.path}" have no localization content'.asYellow());
           continue;
         }
         final Json content = yamlMapToJson(loadYaml(rawContent));
-        localizationFiles.add(LanguageLocalization(
-            language: language.toLowerCase(),
-            country: country?.toUpperCase(),
-            content: content));
+        localizationFiles.add(LanguageLocalization(language: language.toLowerCase(), country: country?.toUpperCase(), content: content));
       }
     }
     return (allFiles, localizationFiles);

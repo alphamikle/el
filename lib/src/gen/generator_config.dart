@@ -72,10 +72,7 @@ class GeneratorConfig {
   final bool initPubspec;
 
   /// RegExp for localization files
-  RegExp get regExp =>
-      _regExp ??
-      RegExp(
-          r'(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$');
+  RegExp get regExp => _regExp ?? RegExp(r'(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$');
 
   GeneratorConfig copyWith({
     String? localizationsClassName,
@@ -95,13 +92,11 @@ class GeneratorConfig {
     bool? initPubspec,
   }) {
     return GeneratorConfig(
-      localizationsClassName:
-          localizationsClassName ?? this.localizationsClassName,
+      localizationsClassName: localizationsClassName ?? this.localizationsClassName,
       packageName: packageName ?? this.packageName,
       dartSdk: dartSdk ?? this.dartSdk,
       packageDescription: packageDescription ?? this.packageDescription,
-      easiestLocalizationVersion:
-          easiestLocalizationVersion ?? this.easiestLocalizationVersion,
+      easiestLocalizationVersion: easiestLocalizationVersion ?? this.easiestLocalizationVersion,
       packageVersion: packageVersion ?? this.packageVersion,
       packagePath: packagePath ?? this.packagePath,
       excludedPatterns: excludedPatterns ?? this.excludedPatterns,

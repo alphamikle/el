@@ -9,8 +9,7 @@ import '../tools/debouncer.dart';
 import '../tools/log.dart';
 import 'generator_config.dart';
 
-typedef GeneratorFunction = void Function(
-    GeneratorConfig config, int startedTimestamp);
+typedef GeneratorFunction = void Function(GeneratorConfig config, int startedTimestamp);
 
 class Watcher {
   Watcher({
@@ -25,8 +24,7 @@ class Watcher {
   final Map<String, StreamSubscription<FileSystemEvent>> _subscriptions = {};
 
   void start() {
-    final List<String> assetsPaths =
-        PubspecLoader(config: config).loadAssetsPaths();
+    final List<String> assetsPaths = PubspecLoader(config: config).loadAssetsPaths();
     final String pubspecPath = path.join(path.current, 'pubspec.yaml');
     final File pubspecFile = File(pubspecPath);
 

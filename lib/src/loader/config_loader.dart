@@ -37,16 +37,11 @@ class ConfigLoader {
     final YamlList? excludedPatterns = config[kExcludedPatterns];
 
     return GeneratorConfig(
-      excludedPatterns: excludedPatterns == null
-          ? []
-          : excludedPatterns.map((dynamic it) => it.toString()).toList(),
+      excludedPatterns: excludedPatterns == null ? [] : excludedPatterns.map((dynamic it) => it.toString()).toList(),
       dartSdk: dartSdk,
-      localizationsClassName:
-          config[kClassName] ?? kDefaultLocalizationClassName,
+      localizationsClassName: config[kClassName] ?? kDefaultLocalizationClassName,
       packageDescription: config[kDescription] ?? kDefaultPackageDescription,
-      easiestLocalizationVersion: config[kEasiestLocalization] ??
-          pubspecContent[kDependencies]?[kConfig]?.toString() ??
-          'any',
+      easiestLocalizationVersion: config[kEasiestLocalization] ?? pubspecContent[kDependencies]?[kConfig]?.toString() ?? 'any',
       packageName: config[kPackageName] ?? kDefaultPackageName,
       packagePath: config[kPackagePath] ?? kDefaultPackagePath,
       packageVersion: config[kPackageVersion] ?? kDefaultPackageVersion,
