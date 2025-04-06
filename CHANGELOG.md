@@ -1,5 +1,6 @@
 ## Changelog
 
+- 2.1.1 – More strict rules for determine gender content and more flexible for pluralized values. Explicit function types instead of variables
 - 2.1.0 – Added support of multi-entries and additional CLI-arguments
 - 2.0.1 – Minor code-style changes for better pub.dev rating
 - 2.0.0
