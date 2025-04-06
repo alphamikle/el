@@ -60,11 +60,11 @@ class ContentMap extends Iterable<MapEntry<String, Object?>> {
 class MainScreen {
   const MainScreen({
     required this.completelyNewField,
-    required this.greetings,
+    required String Function({required String username}) greetings,
     required this.books,
     required this.todayDateFormat,
     required this.welcome,
-  });
+  }) : _greetings = greetings;
   factory MainScreen.fromJson(Map<String, dynamic> json) {
     return MainScreen(
       completelyNewField: (json['completely_new_field'] ?? '').toString(),
@@ -79,7 +79,10 @@ class MainScreen {
     );
   }
   final String completelyNewField;
-  final String Function({required String username}) greetings;
+  String greetings({required String username}) =>
+      _greetings(username: username);
+
+  final String Function({required String username}) _greetings;
 
   final MainScreenBooks books;
 
@@ -123,8 +126,8 @@ class MainScreen {
 class MainScreenBooks {
   const MainScreenBooks({
     required this.add,
-    required this.amountOfNew,
-  });
+    required String Function(num howMany, {int? precision}) amountOfNew,
+  }) : _amountOfNew = amountOfNew;
   factory MainScreenBooks.fromJson(Map<String, dynamic> json) {
     return MainScreenBooks(
       add: (json['add'] ?? '').toString(),
@@ -167,7 +170,10 @@ class MainScreenBooks {
   }
   final String add;
 
-  final String Function(num howMany, {int? precision}) amountOfNew;
+  String amountOfNew(num howMany, {int? precision}) =>
+      _amountOfNew(howMany, precision: precision);
+
+  final String Function(num howMany, {int? precision}) _amountOfNew;
 
   Map<String, Object> get _content => {
         r'''add''': add,
@@ -383,9 +389,18 @@ class LocalizationMessages {
   LocalizationMessages({
     required this.source,
     required this.appTitle,
-    required this.language,
+    required String Function(
+            {required String language, required String country})
+        language,
+    required String Function(num howMany, {int? precision}) pluralizedRoot,
+    required String Function(num howMany,
+            {required String kind, int? precision})
+        pluralizedRootWithArguments,
+    required this.genderRoot,
+    required String Function(Gender gender, {required String name})
+        genderRootWithArguments,
     required this.mainScreen,
-    required this.author,
+    required String Function(Gender gender, {required String name}) author,
     required this.privacyPolicyUrl,
     required this.employees,
     required this.dynamicListOfStrings,
@@ -394,7 +409,11 @@ class LocalizationMessages {
     required this.dynamicMapInside,
     required this.categories,
     required this.ourAchievements,
-  });
+  })  : _language = language,
+        _pluralizedRoot = pluralizedRoot,
+        _pluralizedRootWithArguments = pluralizedRootWithArguments,
+        _genderRootWithArguments = genderRootWithArguments,
+        _author = author;
   factory LocalizationMessages.fromJson(Map<String, dynamic> json) {
     return LocalizationMessages(
       source: (json['source'] ?? '').toString(),
@@ -405,6 +424,141 @@ class LocalizationMessages {
               .replaceAll(r'${language}', language)
               .replaceAll(r'${country}', country)
               .replaceAll(_variableRegExp, ''),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        zero: json['pluralized_root']['zero'] == null ||
+                json['pluralized_root']['zero'].toString().trim() == ''
+            ? null
+            : json['pluralized_root']['zero']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString()),
+        one: (json['pluralized_root']['one'] ?? '')
+            .toString()
+            .replaceAll(r'${howMany}', howMany.toString()),
+        two: json['pluralized_root']['two'] == null ||
+                json['pluralized_root']['two'].toString().trim() == ''
+            ? null
+            : json['pluralized_root']['two']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString()),
+        few: json['pluralized_root']['few'] == null ||
+                json['pluralized_root']['few'].toString().trim() == ''
+            ? null
+            : json['pluralized_root']['few']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString()),
+        many: json['pluralized_root']['many'] == null ||
+                json['pluralized_root']['many'].toString().trim() == ''
+            ? null
+            : json['pluralized_root']['many']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString()),
+        other: (json['pluralized_root']['other'] ?? '')
+            .toString()
+            .replaceAll(r'${howMany}', howMany.toString()),
+        precision: precision,
+      ),
+      pluralizedRootWithArguments:
+          (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        zero: json['pluralized_root_with_arguments']['zero'] == null ||
+                json['pluralized_root_with_arguments']['zero']
+                        .toString()
+                        .trim() ==
+                    ''
+            ? null
+            : json['pluralized_root_with_arguments']['zero']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString())
+                .replaceAll(r'${kind}', kind)
+                .replaceAll(_variableRegExp, ''),
+        one: (json['pluralized_root_with_arguments']['one'] ?? '')
+            .toString()
+            .replaceAll(r'${howMany}', howMany.toString())
+            .replaceAll(r'${kind}', kind)
+            .replaceAll(_variableRegExp, ''),
+        two: json['pluralized_root_with_arguments']['two'] == null ||
+                json['pluralized_root_with_arguments']['two']
+                        .toString()
+                        .trim() ==
+                    ''
+            ? null
+            : json['pluralized_root_with_arguments']['two']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString())
+                .replaceAll(r'${kind}', kind)
+                .replaceAll(_variableRegExp, ''),
+        few: json['pluralized_root_with_arguments']['few'] == null ||
+                json['pluralized_root_with_arguments']['few']
+                        .toString()
+                        .trim() ==
+                    ''
+            ? null
+            : json['pluralized_root_with_arguments']['few']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString())
+                .replaceAll(r'${kind}', kind)
+                .replaceAll(_variableRegExp, ''),
+        many: json['pluralized_root_with_arguments']['many'] == null ||
+                json['pluralized_root_with_arguments']['many']
+                        .toString()
+                        .trim() ==
+                    ''
+            ? null
+            : json['pluralized_root_with_arguments']['many']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString())
+                .replaceAll(r'${kind}', kind)
+                .replaceAll(_variableRegExp, ''),
+        other: (json['pluralized_root_with_arguments']['other'] ?? '')
+            .toString()
+            .replaceAll(r'${howMany}', howMany.toString())
+            .replaceAll(r'${kind}', kind)
+            .replaceAll(_variableRegExp, ''),
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: json['gender_root']['female'] == null ||
+                json['gender_root']['female'].toString().trim() == ''
+            ? null
+            : json['gender_root']['female'].toString(),
+        male: json['gender_root']['male'] == null ||
+                json['gender_root']['male'].toString().trim() == ''
+            ? null
+            : json['gender_root']['male'].toString(),
+        other: (json['gender_root']['other'] ?? '').toString(),
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) =>
+          Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: json['gender_root_with_arguments']['female'] == null ||
+                json['gender_root_with_arguments']['female']
+                        .toString()
+                        .trim() ==
+                    ''
+            ? null
+            : json['gender_root_with_arguments']['female']
+                .toString()
+                .replaceAll(r'${name}', name)
+                .replaceAll(_variableRegExp, ''),
+        male: json['gender_root_with_arguments']['male'] == null ||
+                json['gender_root_with_arguments']['male'].toString().trim() ==
+                    ''
+            ? null
+            : json['gender_root_with_arguments']['male']
+                .toString()
+                .replaceAll(r'${name}', name)
+                .replaceAll(_variableRegExp, ''),
+        other: (json['gender_root_with_arguments']['other'] ?? '')
+            .toString()
+            .replaceAll(r'${name}', name)
+            .replaceAll(_variableRegExp, ''),
+      ),
       mainScreen: MainScreen.fromJson(
           (json['main_screen'] as Map).cast<String, dynamic>()),
       author: (Gender gender, {required String name}) => Intl.gender(
@@ -457,12 +611,38 @@ class LocalizationMessages {
   }
   final String source;
   final String appTitle;
+  String language({required String language, required String country}) =>
+      _language(language: language, country: country);
+
   final String Function({required String language, required String country})
-      language;
+      _language;
+
+  String pluralizedRoot(num howMany, {int? precision}) =>
+      _pluralizedRoot(howMany, precision: precision);
+
+  final String Function(num howMany, {int? precision}) _pluralizedRoot;
+
+  String pluralizedRootWithArguments(num howMany,
+          {required String kind, int? precision}) =>
+      _pluralizedRootWithArguments(howMany, kind: kind, precision: precision);
+
+  final String Function(num howMany, {required String kind, int? precision})
+      _pluralizedRootWithArguments;
+
+  final String Function(Gender gender) genderRoot;
+
+  String genderRootWithArguments(Gender gender, {required String name}) =>
+      _genderRootWithArguments(gender, name: name);
+
+  final String Function(Gender gender, {required String name})
+      _genderRootWithArguments;
 
   final MainScreen mainScreen;
 
-  final String Function(Gender gender, {required String name}) author;
+  String author(Gender gender, {required String name}) =>
+      _author(gender, name: name);
+
+  final String Function(Gender gender, {required String name}) _author;
 
   final String privacyPolicyUrl;
   final ContentList employees;
@@ -479,6 +659,10 @@ class LocalizationMessages {
         r'''source''': source,
         r'''app_title''': appTitle,
         r'''language''': language,
+        r'''pluralized_root''': pluralizedRoot,
+        r'''pluralized_root_with_arguments''': pluralizedRootWithArguments,
+        r'''gender_root''': genderRoot,
+        r'''gender_root_with_arguments''': genderRootWithArguments,
         r'''main_screen''': mainScreen,
         r'''author''': author,
         r'''privacy_policy_url''': privacyPolicyUrl,
@@ -527,6 +711,36 @@ LocalizationMessages get en => LocalizationMessages(
       appTitle: 'Library App',
       language: ({required String language, required String country}) =>
           '''Lang: ${language}''',
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '''${howMany} tree''',
+        other: '''${howMany} trees''',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments:
+          (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '''${howMany} ${kind} of animal''',
+        other: '''${howMany} ${kind} of animals''',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: 'Female!',
+        male: 'Male!',
+        other: 'Other!',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) =>
+          Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: '''${name} is female!''',
+        male: '''${name} is male!''',
+        other: '''${name} is other gender!''',
+      ),
       mainScreen: MainScreen(
         completelyNewField: 'This is a new field v2',
         greetings: ({required String username}) => '''Hello, ${username}!''',
@@ -624,6 +838,36 @@ LocalizationMessages get ru => LocalizationMessages(
       appTitle: 'Библиотека',
       language: ({required String language, required String country}) =>
           '''Язык: ${language}''',
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '''${howMany} tree''',
+        other: '''${howMany} trees''',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments:
+          (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '''${howMany} ${kind} of animal''',
+        other: '''${howMany} ${kind} of animals''',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: 'Female!',
+        male: 'Male!',
+        other: 'Other!',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) =>
+          Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: '''${name} is female!''',
+        male: '''${name} is male!''',
+        other: '''${name} is other gender!''',
+      ),
       mainScreen: MainScreen(
         completelyNewField: 'This is a new field v2',
         greetings: ({required String username}) => '''Привет, ${username}!''',
@@ -721,6 +965,36 @@ LocalizationMessages get en_CA => LocalizationMessages(
       appTitle: 'Library App',
       language: ({required String language, required String country}) =>
           '''Lang: ${language}; Country: ${country}''',
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '''${howMany} tree''',
+        other: '''${howMany} trees''',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments:
+          (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '''${howMany} ${kind} of animal''',
+        other: '''${howMany} ${kind} of animals''',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: 'Female!',
+        male: 'Male!',
+        other: 'Other!',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) =>
+          Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: '''${name} is female!''',
+        male: '''${name} is male!''',
+        other: '''${name} is other gender!''',
+      ),
       mainScreen: MainScreen(
         completelyNewField: 'This is a new field v2',
         greetings: ({required String username}) => '''Hello, ${username}!''',
@@ -841,12 +1115,12 @@ String? get primaryLocaleCountry {
   return null;
 }
 
-Locale? get primaryLocale => primaryLocaleLanguage == null
+Locale? get primaryLocale =>
+    primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!);
+
+Locale? get primaryFullLocale => primaryLocaleLanguage == null
     ? null
     : Locale(primaryLocaleLanguage!, primaryLocaleCountry);
-
-Locale? get primaryFullLocale =>
-    primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!);
 
 class EasiestLocalizationDelegate
     extends LocalizationsDelegate<LocalizationMessages> {

@@ -95,11 +95,33 @@ LocalizationUnit _toUnit({
         ),
         parents: parents ?? [],
       ),
-    {'other': final String $other} => GenderUnit(
+    {'many': final String $many, 'one': final String $one} => PluralizedUnit(
         fieldKey: key,
         value: (
-          male: effectiveValue.get('male'),
-          female: effectiveValue.get('female'),
+          zero: effectiveValue.get('zero'),
+          one: $one,
+          two: effectiveValue.get('two'),
+          few: effectiveValue.get('few'),
+          many: $many,
+          other: effectiveValue.get('other') ?? $many,
+          description: effectiveValue.get('desc')
+        ),
+        schemaValue: (
+          zero: effectiveScheme.get('zero'),
+          one: effectiveScheme.get('one'),
+          two: effectiveScheme.get('two'),
+          few: effectiveScheme.get('few'),
+          many: effectiveScheme.get('many'),
+          other: effectiveScheme.get('other'),
+          description: effectiveScheme.get('desc')
+        ),
+        parents: parents ?? [],
+      ),
+    {'other': final String $other, 'male': final String $male, 'female': final String $female} => GenderUnit(
+        fieldKey: key,
+        value: (
+          male: $male,
+          female: $female,
           other: $other,
           description: effectiveValue.get('desc'),
         ),

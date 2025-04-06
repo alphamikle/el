@@ -4,6 +4,24 @@ app_title: Library App
 
 language: "Lang: ${language}"
 
+pluralized_root:
+  one: ${howMany} tree
+  other: ${howMany} trees
+
+pluralized_root_with_arguments:
+  one: ${howMany} ${kind} of animal
+  other: ${howMany} ${kind} of animals
+
+gender_root:
+  male: Male!
+  female: Female!
+  other: Other!
+
+gender_root_with_arguments:
+  male: ${name} is male!
+  female: ${name} is female!
+  other: ${name} is other gender!
+
 main_screen:
   completely_new_field: This is a new field v2
   greetings: Hello, ${username}!
