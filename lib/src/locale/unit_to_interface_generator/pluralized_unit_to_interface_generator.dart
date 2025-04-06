@@ -7,14 +7,12 @@ import '../localization_unit.dart';
 
 const Set<String> _reservedArguments = {'howMany', 'precision'};
 
-CodeOutput pluralizedUnitToInterface(PluralizedUnit unit,
-    {bool useThisKeyword = true}) {
-  final Set<String> arguments =
-      extractArguments(pluralizedValueToString(unit.schemaValue))
-          .where(
-            (String arg) => _reservedArguments.contains(arg) == false,
-          )
-          .toSet();
+CodeOutput pluralizedUnitToInterface(PluralizedUnit unit, {bool useThisKeyword = true}) {
+  final Set<String> arguments = extractArguments(pluralizedValueToString(unit.schemaValue))
+      .where(
+        (String arg) => _reservedArguments.contains(arg) == false,
+      )
+      .toSet();
 
   String parentClassName = unit.parents.map(capitalize).join();
   if (parentClassName.isNotEmpty) {
@@ -28,17 +26,21 @@ CodeOutput pluralizedUnitToInterface(PluralizedUnit unit,
       useThisKeyword: useThisKeyword,
     );
   }
-  String functionArguments =
-      arguments.map((String arg) => 'required String $arg').join(', ');
-  functionArguments = '(num howMany, {$functionArguments, int? precision})';
+
+  final String functionArguments = '(num howMany, {${arguments.map((String arg) => 'required String $arg').join(', ')}, int? precision})';
+  final String functionArgumentsCall = '(howMany, ${arguments.map((String arg) => '$arg: $arg').join(', ')}, precision: precision)';
+  final String functionInterface = 'String Function$functionArguments';
 
   return CodeOutput(
     classArgumentCode:
-        '${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
+        '${useThisKeyword ? 'required $functionInterface ' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
+    initializerList: '_${unit.fieldName} = ${unit.fieldName}',
     factoryArgumentCode: _factoryCode(unit, arguments),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function$functionArguments ${unit.fieldName};
+String ${unit.fieldName}$functionArguments => _${unit.fieldName}$functionArgumentsCall;
+
+final $functionInterface _${unit.fieldName};
 ''',
     externalCode: '',
   );
@@ -49,13 +51,20 @@ CodeOutput _empty({
   required String parentClassName,
   required bool useThisKeyword,
 }) {
+  final String functionArguments = '(num howMany, {int? precision})';
+  final String functionArgumentsCall = '(howMany, precision: precision)';
+  final String functionInterface = 'String Function$functionArguments';
+
   return CodeOutput(
     classArgumentCode:
-        '${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
+        '${useThisKeyword ? 'required $functionInterface' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
+    initializerList: '_${unit.fieldName} = ${unit.fieldName}',
     factoryArgumentCode: _factoryCode(unit, {}),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function(num howMany, {int? precision}) ${unit.fieldName};
+String ${unit.fieldName}$functionArguments => _${unit.fieldName}$functionArgumentsCall;
+
+final $functionInterface _${unit.fieldName};
 ''',
     externalCode: '',
   );

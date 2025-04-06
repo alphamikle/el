@@ -82,6 +82,7 @@ class MainScreen {
 
   final String todayDateFormat;
   final String welcome;
+
   Map<String, Object> get _content => {
         r'''completely_new_field''': completelyNewField,
         r'''greetings''': greetings,
@@ -89,6 +90,7 @@ class MainScreen {
         r'''today_date_format''': todayDateFormat,
         r'''welcome''': welcome,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -120,8 +122,9 @@ class MainScreen {
 class MainScreenBooks {
   const MainScreenBooks({
     required this.add,
-    required this.amountOfNew,
-  });
+    required String Function(num howMany, {int? precision}) amountOfNew,
+  }) : _amountOfNew = amountOfNew;
+
   factory MainScreenBooks.fromJson(Map<String, dynamic> json) {
     return MainScreenBooks(
       add: (json['add'] ?? '').toString(),
@@ -146,14 +149,18 @@ class MainScreenBooks {
       ),
     );
   }
+
   final String add;
 
-  final String Function(num howMany, {int? precision}) amountOfNew;
+  String amountOfNew(num howMany, {int? precision}) => _amountOfNew(howMany, precision: precision);
+
+  final String Function(num howMany, {int? precision}) _amountOfNew;
 
   Map<String, Object> get _content => {
         r'''add''': add,
         r'''amount_of_new''': amountOfNew,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -186,16 +193,19 @@ class Users {
   const Users({
     required this.cities,
   });
+
   factory Users.fromJson(Map<String, dynamic> json) {
     return Users(
       cities: UsersCities.fromJson((json['cities'] as Map).cast<String, dynamic>()),
     );
   }
+
   final UsersCities cities;
 
   Map<String, Object> get _content => {
         r'''cities''': cities,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -228,16 +238,20 @@ class UsersCities {
   const UsersCities({
     required this.mainCity,
   });
+
   factory UsersCities.fromJson(Map<String, dynamic> json) {
     return UsersCities(
       mainCity: ContentList((json['main_city*'] ?? json['main_city']) is List<Object?> ? (json['main_city*'] ?? json['main_city']) : <Object?>[]),
     );
   }
+
   final ContentList mainCity;
+
   Map<String, Object> get _content => {
         r'''main_city*''': mainCity,
         r'''main_city''': mainCity,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -270,17 +284,21 @@ class DynamicMapInside {
   const DynamicMapInside({
     required this.categories,
   });
+
   factory DynamicMapInside.fromJson(Map<String, dynamic> json) {
     return DynamicMapInside(
       categories:
           ContentMap((json['categories*'] ?? json['categories']) is Map<String, Object?> ? (json['categories*'] ?? json['categories']) : <String, Object?>{}),
     );
   }
+
   final ContentMap categories;
+
   Map<String, Object> get _content => {
         r'''categories*''': categories,
         r'''categories''': categories,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -313,17 +331,21 @@ class OurAchievements {
   const OurAchievements({
     required this.bulletPoints,
   });
+
   factory OurAchievements.fromJson(Map<String, dynamic> json) {
     return OurAchievements(
       bulletPoints:
           ContentList((json['bullet_points*'] ?? json['bullet_points']) is List<Object?> ? (json['bullet_points*'] ?? json['bullet_points']) : <Object?>[]),
     );
   }
+
   final ContentList bulletPoints;
+
   Map<String, Object> get _content => {
         r'''bullet_points*''': bulletPoints,
         r'''bullet_points''': bulletPoints,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -356,9 +378,9 @@ class LocalizationMessages {
   LocalizationMessages({
     required this.source,
     required this.appTitle,
-    required this.language,
+    required String Function({required String language, required String country}) language,
     required this.mainScreen,
-    required this.author,
+    required String Function(Gender gender, {required String name}) author,
     required this.privacyPolicyUrl,
     required this.employees,
     required this.dynamicListOfStrings,
@@ -367,7 +389,9 @@ class LocalizationMessages {
     required this.dynamicMapInside,
     required this.categories,
     required this.ourAchievements,
-  });
+  })  : _language = language,
+        _author = author;
+
   factory LocalizationMessages.fromJson(Map<String, dynamic> json) {
     return LocalizationMessages(
       source: (json['source'] ?? '').toString(),
@@ -401,13 +425,19 @@ class LocalizationMessages {
       ourAchievements: OurAchievements.fromJson((json['our_achievements'] as Map).cast<String, dynamic>()),
     );
   }
+
   final String source;
   final String appTitle;
-  final String Function({required String language, required String country}) language;
+
+  String language({required String language, required String country}) => _language(language: language, country: country);
+
+  final String Function({required String language, required String country}) _language;
 
   final MainScreen mainScreen;
 
-  final String Function(Gender gender, {required String name}) author;
+  String author(Gender gender, {required String name}) => _author(gender, name: name);
+
+  final String Function(Gender gender, {required String name}) _author;
 
   final String privacyPolicyUrl;
   final ContentList employees;
@@ -439,6 +469,7 @@ class LocalizationMessages {
         r'''categories''': categories,
         r'''our_achievements''': ourAchievements,
       };
+
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -537,12 +568,13 @@ LocalizationMessages get en => LocalizationMessages(
         ]),
       ),
     );
+
 LocalizationMessages get ru => LocalizationMessages(
-      source: 'Easiest Localization',
+      source: '',
       appTitle: 'Библиотека',
       language: ({required String language, required String country}) => '''Язык: ${language}''',
       mainScreen: MainScreen(
-        completelyNewField: 'This is a new field v2',
+        completelyNewField: '',
         greetings: ({required String username}) => '''Привет, ${username}!''',
         books: MainScreenBooks(
           add: 'Добавить книгу',
@@ -572,41 +604,87 @@ LocalizationMessages get ru => LocalizationMessages(
         other: '''${name} - автор этой книги!''',
       ),
       privacyPolicyUrl: 'https://library.app/privacy_ru.pdf',
-      employees: ContentList(["Джон Смит", "Алиса Джонсон", "Майкл Браун", "Эмма Дэвис", "Уильям Тейлор", "Mr. Nobody", "123456", "true"]),
-      dynamicListOfStrings: ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
-      dynamicListOfObjects: ContentList([
-        {"id": "123", "name": "Mike", "lastname": "Alfa"},
-        {"id": "456", "name": "John", "lastname": "Pies"}
-      ]),
+      employees: ContentList(["Джон Смит", "Алиса Джонсон", "Майкл Браун", "Эмма Дэвис", "Уильям Тейлор"]),
+      dynamicListOfStrings: ContentList([]),
+      dynamicListOfObjects: ContentList([]),
       users: Users(
         cities: UsersCities(
-          mainCity: ContentList([
-            {"id": "1", "name": "Mike"},
-            {"id": "2", "name": "Alena"},
-            {"id": "3", "name": "Grace"}
-          ]),
+          mainCity: ContentList([]),
         ),
       ),
       dynamicMapInside: DynamicMapInside(
         categories: ContentMap({
-          "abc": "Hello",
-          "bcd": "How are you?",
-          "cde": "We are here!",
-          "def": "Let's go with us!",
-          "efg": {"id": "123", "name": "Mike", "talk": "true"}
+          "abc": "",
+          "bcd": "",
+          "cde": "",
+          "def": "",
+          "efg": {"id": "", "name": "", "talk": ""}
         }),
       ),
-      categories: ContentMap({"1": "Sport", "2": "Fun", "3": "Cinema", "4": "Guns"}),
+      categories: ContentMap({"1": "", "2": "", "3": "", "4": ""}),
       ourAchievements: OurAchievements(
-        bulletPoints: ContentList([
-          {"title": "Best UI/UX Design", "subtitle": "Awarded by Design Critics International 2022"},
-          {"title": "1M+ Downloads", "subtitle": "Achieved within the first month of release"},
-          {"title": "Rising Star Startup", "subtitle": "Recognized by Global Tech Summit 2023"},
-          {"title": "99% Crash-Free Rate", "subtitle": "Verified by App Health Monitor"},
-          {"title": "Multi-Platform Support", "subtitle": "Fully functional on iOS, Android, and the Web"}
-        ]),
+        bulletPoints: ContentList([]),
       ),
     );
+
+LocalizationMessages get es => LocalizationMessages(
+      source: '',
+      appTitle: 'Aplicación de Biblioteca',
+      language: ({required String language, required String country}) => '''Idioma: ${language}''',
+      mainScreen: MainScreen(
+        completelyNewField: '',
+        greetings: ({required String username}) => '''¡Hola, ${username}!''',
+        books: MainScreenBooks(
+          add: 'Añadir libro',
+          amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+            howMany,
+            name: 'amount_of_new',
+            zero: 'No hay libros nuevos disponibles en este momento :(',
+            one: '''Hay ${howMany} libro nuevo disponible :)''',
+            two: null,
+            few: null,
+            many: null,
+            other: '''Hay ${howMany} libros nuevos disponibles :)''',
+            precision: precision,
+          ),
+        ),
+        todayDateFormat: 'dd/MM/yyyy',
+        welcome: '''# ¡Bienvenido a nuestra biblioteca!
+---
+## Estamos muy contentos de verte y nos gustaría que disfrutes leyendo nuestros libros.
+''',
+      ),
+      author: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'author',
+        female: '''¡${name} es la autora de ese libro!''',
+        male: '''¡${name} es el autor de ese libro!''',
+        other: '''¡${name} es el autor de ese libro!''',
+      ),
+      privacyPolicyUrl: 'https://library.app/privacy_mx.pdf',
+      employees: ContentList(["Juan Smith", "Alicia Johnson", "Miguel Brown", "Emma Davis", "Guillermo Taylor"]),
+      dynamicListOfStrings: ContentList([]),
+      dynamicListOfObjects: ContentList([]),
+      users: Users(
+        cities: UsersCities(
+          mainCity: ContentList([]),
+        ),
+      ),
+      dynamicMapInside: DynamicMapInside(
+        categories: ContentMap({
+          "abc": "",
+          "bcd": "",
+          "cde": "",
+          "def": "",
+          "efg": {"id": "", "name": "", "talk": ""}
+        }),
+      ),
+      categories: ContentMap({"1": "", "2": "", "3": "", "4": ""}),
+      ourAchievements: OurAchievements(
+        bulletPoints: ContentList([]),
+      ),
+    );
+
 LocalizationMessages get en_CA => LocalizationMessages(
       source: 'Easiest Localization',
       appTitle: 'Library App',
@@ -677,15 +755,17 @@ LocalizationMessages get en_CA => LocalizationMessages(
         ]),
       ),
     );
+
 Map<Locale, LocalizationMessages> get _languageMap => {
       Locale('en'): en,
       Locale('ru'): ru,
+      Locale('es'): es,
       Locale('en', 'CA'): en_CA,
     };
 
 final Map<Locale, LocalizationMessages> _providersLanguagesMap = {};
 
-String? get primaryLocaleString => 'en';
+String? get primaryLocaleString => 'null';
 
 String? get primaryLocaleLanguage {
   final List<String> particles = primaryLocaleString?.split(RegExp('_|-')) ?? [];
@@ -703,9 +783,9 @@ String? get primaryLocaleCountry {
   return null;
 }
 
-Locale? get primaryLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!, primaryLocaleCountry);
+Locale? get primaryLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!);
 
-Locale? get primaryFullLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!);
+Locale? get primaryFullLocale => primaryLocaleLanguage == null ? null : Locale(primaryLocaleLanguage!, primaryLocaleCountry);
 
 class EasiestLocalizationDelegate extends LocalizationsDelegate<LocalizationMessages> {
   EasiestLocalizationDelegate({
@@ -811,10 +891,11 @@ List<LocalizationsDelegate> localizationsDelegatesWithProviders(List<Localizatio
   ];
 }
 
-// Supported locales: en, ru, en_CA
+// Supported locales: en, ru, es, en_CA
 List<Locale> get supportedLocales => [
       Locale('en'),
       Locale('ru'),
+      Locale('es'),
       Locale('en', 'CA'),
     ];
 

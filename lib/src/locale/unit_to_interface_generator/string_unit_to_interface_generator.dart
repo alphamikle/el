@@ -5,10 +5,11 @@ import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
 
-CodeOutput stringUnitToInterface(StringUnit unit,
-    {bool useThisKeyword = true}) {
+CodeOutput stringUnitToInterface(StringUnit unit, {bool useThisKeyword = true}) {
   final Set<String> arguments = extractArguments(unit.schemaValue);
+
   String parentClassName = unit.parents.map(capitalize).join();
+
   if (parentClassName.isNotEmpty) {
     parentClassName = '$parentClassName.';
   }
@@ -21,15 +22,19 @@ CodeOutput stringUnitToInterface(StringUnit unit,
     );
   }
 
-  final String functionArguments =
-      '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
+  final String functionArguments = '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
+  final String functionArgumentsCall = '(${arguments.map((String arg) => '$arg: $arg').join(', ')})';
+  final String functionInterface = 'String Function$functionArguments';
 
   return CodeOutput(
     classArgumentCode:
-        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},",
+        "${useThisKeyword ? 'required $functionInterface ' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},",
+    initializerList: '_${unit.fieldName} = ${unit.fieldName}',
     factoryArgumentCode: _factoryCode(unit, arguments),
     classBodyCode: '''
-final String Function$functionArguments ${unit.fieldName};
+String ${unit.fieldName}$functionArguments => _${unit.fieldName}$functionArgumentsCall;
+
+final $functionInterface _${unit.fieldName};
 ''',
     externalCode: '',
   );
@@ -43,6 +48,7 @@ CodeOutput _empty({
   return CodeOutput(
     classArgumentCode:
         "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' ${prettyValue(unit.value)}'},",
+    initializerList: null,
     factoryArgumentCode: _factoryCode(unit, {}),
     classBodyCode: 'final String ${unit.fieldName};',
     externalCode: '',

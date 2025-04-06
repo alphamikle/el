@@ -5,10 +5,8 @@ import '../../type/mappers.dart';
 import '../code_output.dart';
 import '../localization_unit.dart';
 
-CodeOutput genderUnitToInterface(GenderUnit unit,
-    {bool useThisKeyword = true}) {
-  final Set<String> arguments =
-      extractArguments(genderValueToString(unit.schemaValue)).toSet();
+CodeOutput genderUnitToInterface(GenderUnit unit, {bool useThisKeyword = true}) {
+  final Set<String> arguments = extractArguments(genderValueToString(unit.schemaValue)).toSet();
   String parentClassName = unit.parents.map(capitalize).join();
 
   if (parentClassName.isNotEmpty) {
@@ -23,17 +21,20 @@ CodeOutput genderUnitToInterface(GenderUnit unit,
     );
   }
 
-  String functionArguments =
-      arguments.map((String arg) => 'required String $arg').join(', ');
-  functionArguments = '(Gender gender, {$functionArguments})';
+  final String functionArguments = '(Gender gender, {${arguments.map((String arg) => 'required String $arg').join(', ')}})';
+  final String functionArgumentsCall = '(gender, ${arguments.map((String arg) => '$arg: $arg').join(', ')})';
+  final String functionInterface = 'String Function$functionArguments';
 
   return CodeOutput(
     classArgumentCode:
-        '${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
+        '${useThisKeyword ? 'required $functionInterface ' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $parentClassName\$${unit.fieldName}'},',
+    initializerList: '_${unit.fieldName} = ${unit.fieldName}',
     factoryArgumentCode: _factoryCode(unit, arguments),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}
-final String Function$functionArguments ${unit.fieldName};
+String ${unit.fieldName}$functionArguments => _${unit.fieldName}$functionArgumentsCall;
+
+final $functionInterface _${unit.fieldName};
 ''',
     externalCode: '',
   );
@@ -51,6 +52,7 @@ CodeOutput _empty({
       if (useThisKeyword == false) ': $parentClassName\$${unit.fieldName}',
       ',',
     ].join(),
+    initializerList: null,
     factoryArgumentCode: _factoryCode(unit, {}),
     classBodyCode: '''
 ${unit.value.description != null ? '/// ${unit.value.description}' : ''}

@@ -12,8 +12,7 @@ CodeOutput mapUnitToInterface(MapUnit unit, {bool useThisKeyword = true}) {
   final bool hasArgs = hasArguments(unit.schemaValue);
 
   if (hasArgs) {
-    throw Exception(
-        'Entity of type MapUnit can not have any arguments in the content');
+    throw Exception('Entity of type MapUnit can not have any arguments in the content');
   }
 
   String parentClassName = unit.parents.map(capitalize).join();
@@ -25,6 +24,7 @@ CodeOutput mapUnitToInterface(MapUnit unit, {bool useThisKeyword = true}) {
   return CodeOutput(
     classArgumentCode:
         "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $contentMap(${jsonEncode(unit.value)})'},",
+    initializerList: null,
     factoryArgumentCode: _factoryCode(unit),
     classBodyCode: 'final $contentMap ${unit.fieldName};',
     externalCode: '',

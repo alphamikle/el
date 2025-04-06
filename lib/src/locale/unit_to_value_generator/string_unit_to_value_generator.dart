@@ -10,17 +10,17 @@ CodeOutput stringUnitToValue(StringUnit unit) {
   if (arguments.isEmpty) {
     return CodeOutput(
       classArgumentCode: "${unit.fieldName}: ${prettyValue(unit.value)},",
+      initializerList: null,
       classBodyCode: '',
       factoryArgumentCode: _factoryCode(unit, {}),
       externalCode: '',
     );
   }
-  final String functionArguments =
-      '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
+  final String functionArguments = '({${arguments.map((String arg) => 'required String $arg').join(', ')}})';
 
   return CodeOutput(
-    classArgumentCode:
-        "${unit.fieldName}: $functionArguments => ${prettyValue(unit.value)},",
+    classArgumentCode: "${unit.fieldName}: $functionArguments => ${prettyValue(unit.value)},",
+    initializerList: null,
     classBodyCode: '',
     factoryArgumentCode: _factoryCode(unit, arguments),
     externalCode: '',

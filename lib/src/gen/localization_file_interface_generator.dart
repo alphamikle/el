@@ -29,6 +29,8 @@ class LocalizationFileInterfaceGenerator {
 
   final List<String> constructorArgumentsCode = [];
 
+  final List<String> constructorInitializerCode = [];
+
   final List<String> factoryArgumentsCode = [];
 
   final List<String> classBodyCode = [];
@@ -40,8 +42,7 @@ class LocalizationFileInterfaceGenerator {
   String generate() {
     final List<LocalizationUnit> units = [];
     if (localizations.isEmpty) {
-      throw ArgumentError(
-          'localizations argument should not be empty. It seems - you have no any localization files');
+      throw ArgumentError('localizations argument should not be empty. It seems - you have no any localization files');
     }
     final Json content = scheme.content;
     for (final MapEntry(:String key, :Object? value) in content.entries) {
@@ -49,8 +50,7 @@ class LocalizationFileInterfaceGenerator {
         nullValueException(key: key);
       }
 
-      final LocalizationUnit localizationUnit =
-          localizeValue(key, value, value);
+      final LocalizationUnit localizationUnit = localizeValue(key, value, value);
       units.add(localizationUnit);
     }
     _proceedUnits(units);
@@ -85,13 +85,21 @@ Object? operator [](Object? key) {
 }
 ''',
     ]);
+
+    final bool noConstructorInitializerArguments = constructorInitializerCode.every((String arg) => arg.trim().isEmpty);
+    final bool hasConstructorInitializerArguments = noConstructorInitializerArguments == false;
+
     final String code = [
       importsTemplate(config),
       ...externalCode,
       classBeginningTemplate(className: config.localizationsClassName),
       ...constructorArgumentsCode,
       if (constructorArgumentsCode.isEmpty) 'String? stub,',
-      '});',
+      if (noConstructorInitializerArguments) '});' else '}): ',
+      if (hasConstructorInitializerArguments) ...[
+        constructorInitializerCode.join(', '),
+        ';',
+      ],
       classFactoryBeginningTemplate(className: config.localizationsClassName),
       ...factoryArgumentsCode,
       classFactoryEndTemplate(),
@@ -107,14 +115,16 @@ Object? operator [](Object? key) {
     for (final LocalizationUnit unit in units) {
       final CodeOutput code = localizationUnitToInterface(unit);
       constructorArgumentsCode.add(code.classArgumentCode);
+      if (code.initializerList != null) {
+        constructorInitializerCode.add(code.initializerList!);
+      }
       factoryArgumentsCode.add(code.factoryArgumentCode ?? '');
       externalCode.add(code.externalCode);
       classBodyCode.add(code.classBodyCode);
       dynamicContent.add("r'''${unit.rawName}''': ${unit.fieldName},");
 
       final String asteriskClearName = unit.rawName.clearMultiKey();
-      if (unit.rawName != asteriskClearName &&
-          (unit is ListUnit || unit is MapUnit)) {
+      if (unit.rawName != asteriskClearName && (unit is ListUnit || unit is MapUnit)) {
         dynamicContent.add("r'''$asteriskClearName''': ${unit.fieldName},");
       }
     }

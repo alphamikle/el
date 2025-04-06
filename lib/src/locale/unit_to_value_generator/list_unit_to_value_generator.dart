@@ -10,6 +10,7 @@ import '../localization_unit.dart';
 CodeOutput listUnitToValue(ListUnit unit) {
   return CodeOutput(
     classArgumentCode: "${unit.fieldName}: $contentList(${jsonEncode(unit.value.toJson())}),",
+    initializerList: null,
     classBodyCode: '',
     factoryArgumentCode: _factoryCode(unit),
     externalCode: '',

@@ -11,8 +11,7 @@ CodeOutput namespacedUnitToValue(NamespacedUnit unit) {
   }
 
   final String variableName = unit.fieldName;
-  final String constructorName =
-      [...constructorParents, capitalize(unit.fieldName)].join();
+  final String constructorName = [...constructorParents, capitalize(unit.fieldName)].join();
 
   final List<CodeOutput> childrenCode = [];
 
@@ -28,6 +27,7 @@ CodeOutput namespacedUnitToValue(NamespacedUnit unit) {
 
   return CodeOutput(
     classArgumentCode: classArgumentCode.join('\n'),
+    initializerList: null,
     classBodyCode: '',
     externalCode: '',
   );
