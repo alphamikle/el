@@ -23,7 +23,7 @@ CodeOutput mapUnitToInterface(MapUnit unit, {bool useThisKeyword = true}) {
 
   return CodeOutput(
     classArgumentCode:
-        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $contentMap(${jsonEncode(unit.value)})'},",
+        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $contentMap(${clearDollars(jsonEncode(unit.value))})'},",
     initializerList: null,
     factoryArgumentCode: _factoryCode(unit),
     classBodyCode: 'final $contentMap ${unit.fieldName};',

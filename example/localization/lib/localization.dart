@@ -53,6 +53,83 @@ class ContentMap extends Iterable<MapEntry<String, Object?>> {
   Iterator<MapEntry<String, Object?>> get iterator => _contentMap.entries.iterator;
 }
 
+class Dollars {
+  const Dollars({
+    required String Function({required String argument}) argument,
+    required this.money,
+    required this.escaped,
+    required String Function({required String argument, required String secondArgument}) combined,
+    required this.dynamicObject,
+    required this.dynamicList,
+  })  : _argument = argument,
+        _combined = combined;
+  factory Dollars.fromJson(Map<String, dynamic> json) {
+    return Dollars(
+      argument: ({required String argument}) => (json['argument'] ?? '').toString().replaceAll(r'${argument}', argument).replaceAll(_variableRegExp, ''),
+      money: (json['money'] ?? '').toString(),
+      escaped: (json['escaped'] ?? '').toString(),
+      combined: ({required String argument, required String secondArgument}) => (json['combined'] ?? '')
+          .toString()
+          .replaceAll(r'${argument}', argument)
+          .replaceAll(r'${secondArgument}', secondArgument)
+          .replaceAll(_variableRegExp, ''),
+      dynamicObject: ContentMap((json['dynamic_object*'] ?? json['dynamic_object']) is Map<String, Object?>
+          ? (json['dynamic_object*'] ?? json['dynamic_object'])
+          : <String, Object?>{}),
+      dynamicList:
+          ContentList((json['dynamic_list*'] ?? json['dynamic_list']) is List<Object?> ? (json['dynamic_list*'] ?? json['dynamic_list']) : <Object?>[]),
+    );
+  }
+  String argument({required String argument}) => _argument(argument: argument);
+
+  final String Function({required String argument}) _argument;
+
+  final String money;
+  final String escaped;
+  String combined({required String argument, required String secondArgument}) => _combined(argument: argument, secondArgument: secondArgument);
+
+  final String Function({required String argument, required String secondArgument}) _combined;
+
+  final ContentMap dynamicObject;
+  final ContentList dynamicList;
+  Map<String, Object> get _content => {
+        r'''argument''': argument,
+        r'''money''': money,
+        r'''escaped''': escaped,
+        r'''combined''': combined,
+        r'''dynamic_object*''': dynamicObject,
+        r'''dynamic_object''': dynamicObject,
+        r'''dynamic_list*''': dynamicList,
+        r'''dynamic_list''': dynamicList,
+      };
+  T getContent<T>(String key) {
+    final Object? value = _content[key];
+    if (value is T) {
+      return value;
+    }
+    throw ArgumentError('Not found content for the key $key with type $T');
+  }
+
+  Map<String, Object> get content => _content;
+
+  List<Object> get contentList => _content.values.toList();
+
+  int get length => _content.length;
+
+  Object? operator [](Object? key) {
+    final Object? value = _content[key];
+    if (value == null && key is String) {
+      final int? index = int.tryParse(key);
+      if (index == null || index >= contentList.length || index < 0) {
+        return null;
+      }
+
+      return contentList[index];
+    }
+    return value;
+  }
+}
+
 class MainScreen {
   const MainScreen({
     required this.completelyNewField,
@@ -61,7 +138,6 @@ class MainScreen {
     required this.todayDateFormat,
     required this.welcome,
   }) : _greetings = greetings;
-
   factory MainScreen.fromJson(Map<String, dynamic> json) {
     return MainScreen(
       completelyNewField: (json['completely_new_field'] ?? '').toString(),
@@ -71,9 +147,7 @@ class MainScreen {
       welcome: (json['welcome'] ?? '').toString(),
     );
   }
-
   final String completelyNewField;
-
   String greetings({required String username}) => _greetings(username: username);
 
   final String Function({required String username}) _greetings;
@@ -82,7 +156,6 @@ class MainScreen {
 
   final String todayDateFormat;
   final String welcome;
-
   Map<String, Object> get _content => {
         r'''completely_new_field''': completelyNewField,
         r'''greetings''': greetings,
@@ -90,7 +163,6 @@ class MainScreen {
         r'''today_date_format''': todayDateFormat,
         r'''welcome''': welcome,
       };
-
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -124,7 +196,6 @@ class MainScreenBooks {
     required this.add,
     required String Function(num howMany, {int? precision}) amountOfNew,
   }) : _amountOfNew = amountOfNew;
-
   factory MainScreenBooks.fromJson(Map<String, dynamic> json) {
     return MainScreenBooks(
       add: (json['add'] ?? '').toString(),
@@ -149,7 +220,6 @@ class MainScreenBooks {
       ),
     );
   }
-
   final String add;
 
   String amountOfNew(num howMany, {int? precision}) => _amountOfNew(howMany, precision: precision);
@@ -160,7 +230,6 @@ class MainScreenBooks {
         r'''add''': add,
         r'''amount_of_new''': amountOfNew,
       };
-
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -193,19 +262,16 @@ class Users {
   const Users({
     required this.cities,
   });
-
   factory Users.fromJson(Map<String, dynamic> json) {
     return Users(
       cities: UsersCities.fromJson((json['cities'] as Map).cast<String, dynamic>()),
     );
   }
-
   final UsersCities cities;
 
   Map<String, Object> get _content => {
         r'''cities''': cities,
       };
-
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -238,20 +304,16 @@ class UsersCities {
   const UsersCities({
     required this.mainCity,
   });
-
   factory UsersCities.fromJson(Map<String, dynamic> json) {
     return UsersCities(
       mainCity: ContentList((json['main_city*'] ?? json['main_city']) is List<Object?> ? (json['main_city*'] ?? json['main_city']) : <Object?>[]),
     );
   }
-
   final ContentList mainCity;
-
   Map<String, Object> get _content => {
         r'''main_city*''': mainCity,
         r'''main_city''': mainCity,
       };
-
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -284,21 +346,17 @@ class DynamicMapInside {
   const DynamicMapInside({
     required this.categories,
   });
-
   factory DynamicMapInside.fromJson(Map<String, dynamic> json) {
     return DynamicMapInside(
       categories:
           ContentMap((json['categories*'] ?? json['categories']) is Map<String, Object?> ? (json['categories*'] ?? json['categories']) : <String, Object?>{}),
     );
   }
-
   final ContentMap categories;
-
   Map<String, Object> get _content => {
         r'''categories*''': categories,
         r'''categories''': categories,
       };
-
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -331,21 +389,17 @@ class OurAchievements {
   const OurAchievements({
     required this.bulletPoints,
   });
-
   factory OurAchievements.fromJson(Map<String, dynamic> json) {
     return OurAchievements(
       bulletPoints:
           ContentList((json['bullet_points*'] ?? json['bullet_points']) is List<Object?> ? (json['bullet_points*'] ?? json['bullet_points']) : <Object?>[]),
     );
   }
-
   final ContentList bulletPoints;
-
   Map<String, Object> get _content => {
         r'''bullet_points*''': bulletPoints,
         r'''bullet_points''': bulletPoints,
       };
-
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -379,6 +433,11 @@ class LocalizationMessages {
     required this.source,
     required this.appTitle,
     required String Function({required String language, required String country}) language,
+    required this.dollars,
+    required String Function(num howMany, {int? precision}) pluralizedRoot,
+    required String Function(num howMany, {required String kind, int? precision}) pluralizedRootWithArguments,
+    required this.genderRoot,
+    required String Function(Gender gender, {required String name}) genderRootWithArguments,
     required this.mainScreen,
     required String Function(Gender gender, {required String name}) author,
     required this.privacyPolicyUrl,
@@ -390,14 +449,98 @@ class LocalizationMessages {
     required this.categories,
     required this.ourAchievements,
   })  : _language = language,
+        _pluralizedRoot = pluralizedRoot,
+        _pluralizedRootWithArguments = pluralizedRootWithArguments,
+        _genderRootWithArguments = genderRootWithArguments,
         _author = author;
-
   factory LocalizationMessages.fromJson(Map<String, dynamic> json) {
     return LocalizationMessages(
       source: (json['source'] ?? '').toString(),
       appTitle: (json['app_title'] ?? '').toString(),
       language: ({required String language, required String country}) =>
           (json['language'] ?? '').toString().replaceAll(r'${language}', language).replaceAll(r'${country}', country).replaceAll(_variableRegExp, ''),
+      dollars: Dollars.fromJson((json['dollars'] as Map).cast<String, dynamic>()),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        zero: json['pluralized_root']['zero'] == null || json['pluralized_root']['zero'].toString().trim() == ''
+            ? null
+            : json['pluralized_root']['zero'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        one: (json['pluralized_root']['one'] ?? '').toString().replaceAll(r'${howMany}', howMany.toString()),
+        two: json['pluralized_root']['two'] == null || json['pluralized_root']['two'].toString().trim() == ''
+            ? null
+            : json['pluralized_root']['two'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        few: json['pluralized_root']['few'] == null || json['pluralized_root']['few'].toString().trim() == ''
+            ? null
+            : json['pluralized_root']['few'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        many: json['pluralized_root']['many'] == null || json['pluralized_root']['many'].toString().trim() == ''
+            ? null
+            : json['pluralized_root']['many'].toString().replaceAll(r'${howMany}', howMany.toString()),
+        other: (json['pluralized_root']['other'] ?? '').toString().replaceAll(r'${howMany}', howMany.toString()),
+        precision: precision,
+      ),
+      pluralizedRootWithArguments: (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        zero: json['pluralized_root_with_arguments']['zero'] == null || json['pluralized_root_with_arguments']['zero'].toString().trim() == ''
+            ? null
+            : json['pluralized_root_with_arguments']['zero']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString())
+                .replaceAll(r'${kind}', kind)
+                .replaceAll(_variableRegExp, ''),
+        one: (json['pluralized_root_with_arguments']['one'] ?? '')
+            .toString()
+            .replaceAll(r'${howMany}', howMany.toString())
+            .replaceAll(r'${kind}', kind)
+            .replaceAll(_variableRegExp, ''),
+        two: json['pluralized_root_with_arguments']['two'] == null || json['pluralized_root_with_arguments']['two'].toString().trim() == ''
+            ? null
+            : json['pluralized_root_with_arguments']['two']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString())
+                .replaceAll(r'${kind}', kind)
+                .replaceAll(_variableRegExp, ''),
+        few: json['pluralized_root_with_arguments']['few'] == null || json['pluralized_root_with_arguments']['few'].toString().trim() == ''
+            ? null
+            : json['pluralized_root_with_arguments']['few']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString())
+                .replaceAll(r'${kind}', kind)
+                .replaceAll(_variableRegExp, ''),
+        many: json['pluralized_root_with_arguments']['many'] == null || json['pluralized_root_with_arguments']['many'].toString().trim() == ''
+            ? null
+            : json['pluralized_root_with_arguments']['many']
+                .toString()
+                .replaceAll(r'${howMany}', howMany.toString())
+                .replaceAll(r'${kind}', kind)
+                .replaceAll(_variableRegExp, ''),
+        other: (json['pluralized_root_with_arguments']['other'] ?? '')
+            .toString()
+            .replaceAll(r'${howMany}', howMany.toString())
+            .replaceAll(r'${kind}', kind)
+            .replaceAll(_variableRegExp, ''),
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female:
+            json['gender_root']['female'] == null || json['gender_root']['female'].toString().trim() == '' ? null : json['gender_root']['female'].toString(),
+        male: json['gender_root']['male'] == null || json['gender_root']['male'].toString().trim() == '' ? null : json['gender_root']['male'].toString(),
+        other: (json['gender_root']['other'] ?? '').toString(),
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: json['gender_root_with_arguments']['female'] == null || json['gender_root_with_arguments']['female'].toString().trim() == ''
+            ? null
+            : json['gender_root_with_arguments']['female'].toString().replaceAll(r'${name}', name).replaceAll(_variableRegExp, ''),
+        male: json['gender_root_with_arguments']['male'] == null || json['gender_root_with_arguments']['male'].toString().trim() == ''
+            ? null
+            : json['gender_root_with_arguments']['male'].toString().replaceAll(r'${name}', name).replaceAll(_variableRegExp, ''),
+        other: (json['gender_root_with_arguments']['other'] ?? '').toString().replaceAll(r'${name}', name).replaceAll(_variableRegExp, ''),
+      ),
       mainScreen: MainScreen.fromJson((json['main_screen'] as Map).cast<String, dynamic>()),
       author: (Gender gender, {required String name}) => Intl.gender(
         gender.name,
@@ -425,13 +568,28 @@ class LocalizationMessages {
       ourAchievements: OurAchievements.fromJson((json['our_achievements'] as Map).cast<String, dynamic>()),
     );
   }
-
   final String source;
   final String appTitle;
-
   String language({required String language, required String country}) => _language(language: language, country: country);
 
   final String Function({required String language, required String country}) _language;
+
+  final Dollars dollars;
+
+  String pluralizedRoot(num howMany, {int? precision}) => _pluralizedRoot(howMany, precision: precision);
+
+  final String Function(num howMany, {int? precision}) _pluralizedRoot;
+
+  String pluralizedRootWithArguments(num howMany, {required String kind, int? precision}) =>
+      _pluralizedRootWithArguments(howMany, kind: kind, precision: precision);
+
+  final String Function(num howMany, {required String kind, int? precision}) _pluralizedRootWithArguments;
+
+  final String Function(Gender gender) genderRoot;
+
+  String genderRootWithArguments(Gender gender, {required String name}) => _genderRootWithArguments(gender, name: name);
+
+  final String Function(Gender gender, {required String name}) _genderRootWithArguments;
 
   final MainScreen mainScreen;
 
@@ -454,6 +612,11 @@ class LocalizationMessages {
         r'''source''': source,
         r'''app_title''': appTitle,
         r'''language''': language,
+        r'''dollars''': dollars,
+        r'''pluralized_root''': pluralizedRoot,
+        r'''pluralized_root_with_arguments''': pluralizedRootWithArguments,
+        r'''gender_root''': genderRoot,
+        r'''gender_root_with_arguments''': genderRootWithArguments,
         r'''main_screen''': mainScreen,
         r'''author''': author,
         r'''privacy_policy_url''': privacyPolicyUrl,
@@ -469,7 +632,6 @@ class LocalizationMessages {
         r'''categories''': categories,
         r'''our_achievements''': ourAchievements,
       };
-
   T getContent<T>(String key) {
     final Object? value = _content[key];
     if (value is T) {
@@ -502,6 +664,42 @@ LocalizationMessages get en => LocalizationMessages(
       source: 'Easiest Localization',
       appTitle: 'Library App',
       language: ({required String language, required String country}) => '''Lang: ${language}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '''${argument}''',
+        money: '''Total is \$100.00''',
+        escaped: '''Total is \$100.00''',
+        combined: ({required String argument, required String secondArgument}) => '''Total is ${argument} \$100.00 and another ${secondArgument} \$100.00''',
+        dynamicObject: ContentMap({"CODE_1": "\$100", "CODE_2": "\$200"}),
+        dynamicList: ContentList(["\$100", "\$200"]),
+      ),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '''${howMany} tree''',
+        other: '''${howMany} trees''',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments: (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '''${howMany} ${kind} of animal''',
+        other: '''${howMany} ${kind} of animals''',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: 'Female!',
+        male: 'Male!',
+        other: 'Other!',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: '''${name} is female!''',
+        male: '''${name} is male!''',
+        other: '''${name} is other gender!''',
+      ),
       mainScreen: MainScreen(
         completelyNewField: 'This is a new field v2',
         greetings: ({required String username}) => '''Hello, ${username}!''',
@@ -568,11 +766,46 @@ LocalizationMessages get en => LocalizationMessages(
         ]),
       ),
     );
-
 LocalizationMessages get ru => LocalizationMessages(
       source: '',
       appTitle: 'Библиотека',
       language: ({required String language, required String country}) => '''Язык: ${language}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '',
+        money: '',
+        escaped: '',
+        combined: ({required String argument, required String secondArgument}) => '',
+        dynamicObject: ContentMap({"CODE_1": "", "CODE_2": ""}),
+        dynamicList: ContentList([]),
+      ),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '',
+        other: '',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments: (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '',
+        other: '',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: null,
+        male: null,
+        other: '',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: null,
+        male: null,
+        other: '',
+      ),
       mainScreen: MainScreen(
         completelyNewField: '',
         greetings: ({required String username}) => '''Привет, ${username}!''',
@@ -626,11 +859,46 @@ LocalizationMessages get ru => LocalizationMessages(
         bulletPoints: ContentList([]),
       ),
     );
-
 LocalizationMessages get es => LocalizationMessages(
       source: '',
       appTitle: 'Aplicación de Biblioteca',
       language: ({required String language, required String country}) => '''Idioma: ${language}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '',
+        money: '',
+        escaped: '',
+        combined: ({required String argument, required String secondArgument}) => '',
+        dynamicObject: ContentMap({"CODE_1": "", "CODE_2": ""}),
+        dynamicList: ContentList([]),
+      ),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '',
+        other: '',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments: (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '',
+        other: '',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: null,
+        male: null,
+        other: '',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: null,
+        male: null,
+        other: '',
+      ),
       mainScreen: MainScreen(
         completelyNewField: '',
         greetings: ({required String username}) => '''¡Hola, ${username}!''',
@@ -684,11 +952,46 @@ LocalizationMessages get es => LocalizationMessages(
         bulletPoints: ContentList([]),
       ),
     );
-
 LocalizationMessages get en_CA => LocalizationMessages(
       source: 'Easiest Localization',
       appTitle: 'Library App',
       language: ({required String language, required String country}) => '''Lang: ${language}; Country: ${country}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '''${argument}''',
+        money: '''Total is \$100.00''',
+        escaped: '''Total is \$100.00''',
+        combined: ({required String argument, required String secondArgument}) => '''Total is ${argument} \$100.00 and another ${secondArgument} \$100.00''',
+        dynamicObject: ContentMap({"CODE_1": "\$100", "CODE_2": "\$200"}),
+        dynamicList: ContentList(["\$100", "\$200"]),
+      ),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '''${howMany} tree''',
+        other: '''${howMany} trees''',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments: (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '''${howMany} ${kind} of animal''',
+        other: '''${howMany} ${kind} of animals''',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: 'Female!',
+        male: 'Male!',
+        other: 'Other!',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: '''${name} is female!''',
+        male: '''${name} is male!''',
+        other: '''${name} is other gender!''',
+      ),
       mainScreen: MainScreen(
         completelyNewField: 'This is a new field v2',
         greetings: ({required String username}) => '''Hello, ${username}!''',
@@ -755,7 +1058,6 @@ LocalizationMessages get en_CA => LocalizationMessages(
         ]),
       ),
     );
-
 Map<Locale, LocalizationMessages> get _languageMap => {
       Locale('en'): en,
       Locale('ru'): ru,

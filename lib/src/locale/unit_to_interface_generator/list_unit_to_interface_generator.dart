@@ -24,7 +24,7 @@ CodeOutput listUnitToInterface(ListUnit unit, {bool useThisKeyword = true}) {
 
   return CodeOutput(
     classArgumentCode:
-        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $contentList(${jsonEncode(unit.value.toJson())})'},",
+        "${useThisKeyword ? 'required this.' : ''}${unit.fieldName}${useThisKeyword ? '' : ':'}${useThisKeyword ? '' : ' $contentList(${clearDollars(jsonEncode(unit.value.toJson()))})'},",
     initializerList: null,
     factoryArgumentCode: _factoryCode(unit),
     classBodyCode: 'final $contentList ${unit.fieldName};',

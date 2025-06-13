@@ -57,6 +57,94 @@ class ContentMap extends Iterable<MapEntry<String, Object?>> {
       _contentMap.entries.iterator;
 }
 
+class Dollars {
+  const Dollars({
+    required String Function({required String argument}) argument,
+    required this.money,
+    required this.escaped,
+    required String Function(
+            {required String argument, required String secondArgument})
+        combined,
+    required this.dynamicObject,
+    required this.dynamicList,
+  })  : _argument = argument,
+        _combined = combined;
+  factory Dollars.fromJson(Map<String, dynamic> json) {
+    return Dollars(
+      argument: ({required String argument}) => (json['argument'] ?? '')
+          .toString()
+          .replaceAll(r'${argument}', argument)
+          .replaceAll(_variableRegExp, ''),
+      money: (json['money'] ?? '').toString(),
+      escaped: (json['escaped'] ?? '').toString(),
+      combined: ({required String argument, required String secondArgument}) =>
+          (json['combined'] ?? '')
+              .toString()
+              .replaceAll(r'${argument}', argument)
+              .replaceAll(r'${secondArgument}', secondArgument)
+              .replaceAll(_variableRegExp, ''),
+      dynamicObject: ContentMap((json['dynamic_object*'] ??
+              json['dynamic_object']) is Map<String, Object?>
+          ? (json['dynamic_object*'] ?? json['dynamic_object'])
+          : <String, Object?>{}),
+      dynamicList: ContentList(
+          (json['dynamic_list*'] ?? json['dynamic_list']) is List<Object?>
+              ? (json['dynamic_list*'] ?? json['dynamic_list'])
+              : <Object?>[]),
+    );
+  }
+  String argument({required String argument}) => _argument(argument: argument);
+
+  final String Function({required String argument}) _argument;
+
+  final String money;
+  final String escaped;
+  String combined({required String argument, required String secondArgument}) =>
+      _combined(argument: argument, secondArgument: secondArgument);
+
+  final String Function(
+      {required String argument, required String secondArgument}) _combined;
+
+  final ContentMap dynamicObject;
+  final ContentList dynamicList;
+  Map<String, Object> get _content => {
+        r'''argument''': argument,
+        r'''money''': money,
+        r'''escaped''': escaped,
+        r'''combined''': combined,
+        r'''dynamic_object*''': dynamicObject,
+        r'''dynamic_object''': dynamicObject,
+        r'''dynamic_list*''': dynamicList,
+        r'''dynamic_list''': dynamicList,
+      };
+  T getContent<T>(String key) {
+    final Object? value = _content[key];
+    if (value is T) {
+      return value;
+    }
+    throw ArgumentError('Not found content for the key $key with type $T');
+  }
+
+  Map<String, Object> get content => _content;
+
+  List<Object> get contentList => _content.values.toList();
+
+  int get length => _content.length;
+
+  Object? operator [](Object? key) {
+    final Object? value = _content[key];
+    if (value == null && key is String) {
+      final int? index = int.tryParse(key);
+      if (index == null || index >= contentList.length || index < 0) {
+        return null;
+      }
+
+      return contentList[index];
+    }
+    return value;
+  }
+}
+
 class MainScreen {
   const MainScreen({
     required this.completelyNewField,
@@ -392,6 +480,7 @@ class LocalizationMessages {
     required String Function(
             {required String language, required String country})
         language,
+    required this.dollars,
     required String Function(num howMany, {int? precision}) pluralizedRoot,
     required String Function(num howMany,
             {required String kind, int? precision})
@@ -424,6 +513,8 @@ class LocalizationMessages {
               .replaceAll(r'${language}', language)
               .replaceAll(r'${country}', country)
               .replaceAll(_variableRegExp, ''),
+      dollars:
+          Dollars.fromJson((json['dollars'] as Map).cast<String, dynamic>()),
       pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
         howMany,
         name: 'pluralized_root',
@@ -617,6 +708,8 @@ class LocalizationMessages {
   final String Function({required String language, required String country})
       _language;
 
+  final Dollars dollars;
+
   String pluralizedRoot(num howMany, {int? precision}) =>
       _pluralizedRoot(howMany, precision: precision);
 
@@ -659,6 +752,7 @@ class LocalizationMessages {
         r'''source''': source,
         r'''app_title''': appTitle,
         r'''language''': language,
+        r'''dollars''': dollars,
         r'''pluralized_root''': pluralizedRoot,
         r'''pluralized_root_with_arguments''': pluralizedRootWithArguments,
         r'''gender_root''': genderRoot,
@@ -711,6 +805,16 @@ LocalizationMessages get en => LocalizationMessages(
       appTitle: 'Library App',
       language: ({required String language, required String country}) =>
           '''Lang: ${language}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '''${argument}''',
+        money: '''Total is \$100.00''',
+        escaped: '''Total is \$100.00''',
+        combined: (
+                {required String argument, required String secondArgument}) =>
+            '''Total is ${argument} \$100.00 and another ${secondArgument} \$100.00''',
+        dynamicObject: ContentMap({"CODE_1": "\$100", "CODE_2": "\$200"}),
+        dynamicList: ContentList(["\$100", "\$200"]),
+      ),
       pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
         howMany,
         name: 'pluralized_root',
@@ -838,6 +942,16 @@ LocalizationMessages get ru => LocalizationMessages(
       appTitle: 'Библиотека',
       language: ({required String language, required String country}) =>
           '''Язык: ${language}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '''${argument}''',
+        money: '''Total is \$100.00''',
+        escaped: '''Total is \$100.00''',
+        combined: (
+                {required String argument, required String secondArgument}) =>
+            '''Total is ${argument} \$100.00 and another ${secondArgument} \$100.00''',
+        dynamicObject: ContentMap({"CODE_1": "\$100", "CODE_2": "\$200"}),
+        dynamicList: ContentList(["\$100", "\$200"]),
+      ),
       pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
         howMany,
         name: 'pluralized_root',
@@ -965,6 +1079,16 @@ LocalizationMessages get en_CA => LocalizationMessages(
       appTitle: 'Library App',
       language: ({required String language, required String country}) =>
           '''Lang: ${language}; Country: ${country}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '''${argument}''',
+        money: '''Total is \$100.00''',
+        escaped: '''Total is \$100.00''',
+        combined: (
+                {required String argument, required String secondArgument}) =>
+            '''Total is ${argument} \$100.00 and another ${secondArgument} \$100.00''',
+        dynamicObject: ContentMap({"CODE_1": "\$100", "CODE_2": "\$200"}),
+        dynamicList: ContentList(["\$100", "\$200"]),
+      ),
       pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
         howMany,
         name: 'pluralized_root',

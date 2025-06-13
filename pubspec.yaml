@@ -15,16 +15,16 @@ dependencies:
   yaml_writer: ^2.1.0
 
   # Version, supported by stable Flutter 3.29.2
-  intl: ^0.19.0
-  dart_style: ^3.0.1
+  intl: ^0.20.2
+  dart_style: ^3.1.0
   path: ^1.9.1
   merger: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
-  analyzer: ^7.3.0
+  flutter_lints: ^6.0.0
+  analyzer: ^7.4.5
 
 flutter:
   assets:
@@ -36,8 +36,9 @@ easiest_localization:
   init_pubspec: false
   primary_localization: en
   excluded:
-    - es.yaml
-#    - en_CA
-#    - es.yaml
-#    - ru.yaml
 #    - en.yaml
+#    - en_CA.yaml
+#    - ru.yaml
+    - es.yaml
+    - en_CA.json
+    - fr_CA.json

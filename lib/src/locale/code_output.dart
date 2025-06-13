@@ -1,4 +1,5 @@
 const String qt = "'''";
+final RegExp openDollarRegExp = RegExp(r'(?<esc>\\+)?(?<dollar>\$(?<something>.)?)', multiLine: true);
 
 class CodeOutput {
   const CodeOutput({
@@ -16,7 +17,7 @@ class CodeOutput {
   final String? factoryArgumentCode;
 }
 
-String qu(String key, {bool raw = true}) {
+String qu(String value, {bool raw = true}) {
   const Set<String> nowAllowedSymbols = {
     r'$',
     "'",
@@ -28,10 +29,26 @@ String qu(String key, {bool raw = true}) {
     '\r\n',
   };
 
+  value = clearDollars(value);
+
   for (final String symbol in nowAllowedSymbols) {
-    if (key.contains(symbol)) {
-      return '${raw ? 'r' : ''}$qt$key$qt';
+    if (value.contains(symbol)) {
+      return '${raw ? 'r' : ''}$qt$value$qt';
     }
   }
-  return "'$key'";
+
+  return "'$value'";
+}
+
+String clearDollars(String value) {
+  return value = value.replaceAllMapped(openDollarRegExp, (Match match) {
+    if (match is RegExpMatch) {
+      final String something = match.namedGroup('something') ?? '';
+      if (something == '{') {
+        return r'${';
+      }
+      return '\\\$$something';
+    }
+    return '';
+  });
 }

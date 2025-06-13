@@ -12,7 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # Version, supported by stable Flutter 3.29.2
-  intl: ^0.19.0
+  intl: ^0.20.2
   easiest_localization:
     path: ../
   localization:
@@ -21,7 +21,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true

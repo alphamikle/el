@@ -8,7 +8,7 @@ import '../localization_unit.dart';
 
 CodeOutput mapUnitToValue(MapUnit unit) {
   return CodeOutput(
-    classArgumentCode: "${unit.fieldName}: $contentMap(${jsonEncode(unit.value)}),",
+    classArgumentCode: "${unit.fieldName}: $contentMap(${clearDollars(jsonEncode(unit.value))}),",
     initializerList: null,
     classBodyCode: '',
     factoryArgumentCode: _factoryCode(unit),

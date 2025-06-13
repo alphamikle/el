@@ -4,6 +4,18 @@ app_title: Library App
 
 language: "Lang: ${language}"
 
+dollars:
+  argument: "${argument}"
+  money: Total is $100.00
+  escaped: Total is \$100.00
+  combined: Total is ${argument} $100.00 and another ${secondArgument} \$100.00
+  dynamic_object*:
+    CODE_1: $100
+    CODE_2: $200
+  dynamic_list*:
+    - $100
+    - $200
+
 pluralized_root:
   one: ${howMany} tree
   other: ${howMany} trees
