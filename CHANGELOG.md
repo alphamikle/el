@@ -1,5 +1,6 @@
 ## Changelog
 
+- 2.1.3 – Minor fixes, related to dollar sign at the end of the string and code-generation
 - 2.1.2 – Downgraded intl version to support stable Flutter version
 - 2.1.1 – More strict rules for determine gender content and more flexible for pluralized values. Explicit function types instead of variables
 - 2.1.0 – Added support of multi-entries and additional CLI-arguments
