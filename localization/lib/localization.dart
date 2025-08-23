@@ -800,6 +800,144 @@ class LocalizationMessages {
   }
 }
 
+LocalizationMessages get $tr => LocalizationMessages(
+      source: 'En Kolay Yerelleştirme',
+      appTitle: 'Kütüphane Uygulaması',
+      language: ({required String language, required String country}) =>
+          '''Dil: ${language}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '''${argument}''',
+        money: '''Toplam \$100.00''',
+        escaped: '''Toplam \$100.00''',
+        combined: (
+                {required String argument, required String secondArgument}) =>
+            '''Toplam ${argument} \$100.00 ve başka ${secondArgument} \$100.00''',
+        dynamicObject: ContentMap({"CODE_1": "\$100", "CODE_2": "\$200"}),
+        dynamicList: ContentList(["\$100", "\$200"]),
+      ),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '''${howMany} ağaç''',
+        other: '''${howMany} ağaç''',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments:
+          (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '''${howMany} ${kind} hayvan''',
+        other: '''${howMany} ${kind} hayvan''',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: 'Kadın!',
+        male: 'Erkek!',
+        other: 'Diğer!',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) =>
+          Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: '''${name} kadın!''',
+        male: '''${name} erkek!''',
+        other: '''${name} diğer cinsiyet!''',
+      ),
+      mainScreen: MainScreen(
+        completelyNewField: 'Bu yeni bir alan v2',
+        greetings: ({required String username}) => '''Merhaba, ${username}!''',
+        books: MainScreenBooks(
+          add: 'Kitap Ekle',
+          amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+            howMany,
+            name: 'amount_of_new',
+            zero: 'Şu anda mevcut yeni kitap yok :(',
+            one: '''${howMany} yeni kitap mevcut :)''',
+            two: null,
+            few: null,
+            many: null,
+            other: '''${howMany} yeni kitap mevcut :)''',
+            precision: precision,
+          ),
+        ),
+        todayDateFormat: 'dd/MM/yyyy',
+        welcome: '''# Kütüphanemize hoş geldiniz! v4
+---
+## Sizi gördüğümüz için çok mutluyuz ve kitaplarımızı okumaktan keyif almanızı istiyoruz.
+''',
+      ),
+      author: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'author',
+        female: '''${name} - o bu kitabın yazarı!''',
+        male: '''${name} - o bu kitabın yazarı!''',
+        other: '''${name} - onlar bu kitabın yazarı!''',
+      ),
+      privacyPolicyUrl: 'https://library.app/privacy_tr.pdf',
+      employees: ContentList([
+        "Ahmet Yılmaz",
+        "Ayşe Demir",
+        "Mehmet Kaya",
+        "Fatma Özkan",
+        "Mustafa Çelik",
+        "Bay Hiçkimse",
+        "123456",
+        "true"
+      ]),
+      dynamicListOfStrings: ContentList(
+          ["Ahmet Yılmaz", "Ali Siyah", "Mehmet Fart", "Pick Chart"]),
+      dynamicListOfObjects: ContentList([
+        {"id": "123", "name": "Mehmet", "lastname": "Alfa"},
+        {"id": "456", "name": "Ahmet", "lastname": "Pies"}
+      ]),
+      users: Users(
+        cities: UsersCities(
+          mainCity: ContentList([
+            {"id": "1", "name": "Mehmet"},
+            {"id": "2", "name": "Alena"},
+            {"id": "3", "name": "Grace"}
+          ]),
+        ),
+      ),
+      dynamicMapInside: DynamicMapInside(
+        categories: ContentMap({
+          "abc": "Merhaba",
+          "bcd": "Nasılsınız?",
+          "cde": "Buradayız!",
+          "def": "Bizimle gelin!",
+          "efg": {"id": "123", "name": "Mehmet", "talk": "true"}
+        }),
+      ),
+      categories: ContentMap(
+          {"1": "Spor", "2": "Eğlence", "3": "Sinema", "4": "Silahlar"}),
+      ourAchievements: OurAchievements(
+        bulletPoints: ContentList([
+          {
+            "title": "En İyi UI/UX Tasarım",
+            "subtitle":
+                "Design Critics International 2022 tarafından ödüllendirildi"
+          },
+          {
+            "title": "1M+ İndirme",
+            "subtitle": "Yayınlandıktan sonraki ilk ay içinde ulaşıldı"
+          },
+          {
+            "title": "Yükselen Yıldız Startup",
+            "subtitle": "Global Tech Summit 2023 tarafından tanındı"
+          },
+          {
+            "title": "%99 Çökme-Serbest Oranı",
+            "subtitle": "App Health Monitor tarafından doğrulandı"
+          },
+          {
+            "title": "Çoklu Platform Desteği",
+            "subtitle": "iOS, Android ve Web'de tam işlevsel"
+          }
+        ]),
+      ),
+    );
 LocalizationMessages get en => LocalizationMessages(
       source: 'Easiest Localization',
       appTitle: 'Library App',
@@ -1074,6 +1212,296 @@ LocalizationMessages get ru => LocalizationMessages(
         ]),
       ),
     );
+LocalizationMessages get $el => LocalizationMessages(
+      source: 'Ευκολότερη Τοπικοποίηση',
+      appTitle: 'Εφαρμογή Βιβλιοθήκης',
+      language: ({required String language, required String country}) =>
+          '''Γλώσσα: ${language}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '''${argument}''',
+        money: '''Το σύνολο είναι \$100.00''',
+        escaped: '''Το σύνολο είναι \$100.00''',
+        combined: (
+                {required String argument, required String secondArgument}) =>
+            '''Το σύνολο είναι ${argument} \$100.00 και άλλο ${secondArgument} \$100.00''',
+        dynamicObject: ContentMap({"CODE_1": "\$100", "CODE_2": "\$200"}),
+        dynamicList: ContentList(["\$100", "\$200"]),
+      ),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '''${howMany} δέντρο''',
+        other: '''${howMany} δέντρα''',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments:
+          (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '''${howMany} ${kind} ζώου''',
+        other: '''${howMany} ${kind} ζώων''',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: 'Γυναίκα!',
+        male: 'Άνδρας!',
+        other: 'Άλλο!',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) =>
+          Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: '''Η ${name} είναι γυναίκα!''',
+        male: '''Ο ${name} είναι άνδρας!''',
+        other: '''Ο/Η ${name} είναι άλλου φύλου!''',
+      ),
+      mainScreen: MainScreen(
+        completelyNewField: 'Αυτό είναι ένα νέο πεδίο v2',
+        greetings: ({required String username}) => '''Γεια σου, ${username}!''',
+        books: MainScreenBooks(
+          add: 'Προσθήκη Βιβλίου',
+          amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+            howMany,
+            name: 'amount_of_new',
+            zero: 'Δεν υπάρχουν νέα βιβλία διαθέσιμα αυτή τη στιγμή :(',
+            one: '''Υπάρχει ${howMany} νέο βιβλίο διαθέσιμο :)''',
+            two: null,
+            few: null,
+            many: null,
+            other: '''Υπάρχουν ${howMany} νέα βιβλία διαθέσιμα :)''',
+            precision: precision,
+          ),
+        ),
+        todayDateFormat: 'dd/MM/yyyy',
+        welcome: '''# Καλώς ήρθατε στη βιβλιοθήκη μας! v4
+---
+## Είμαστε πολύ χαρούμενοι που σας βλέπουμε και θα θέλαμε να απολαύσετε την ανάγνωση των βιβλίων μας.
+''',
+      ),
+      author: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'author',
+        female: '''${name} - αυτή είναι η συγγραφέας αυτού του βιβλίου!''',
+        male: '''${name} - αυτός είναι ο συγγραφέας αυτού του βιβλίου!''',
+        other: '''${name} - αυτοί είναι ο συγγραφέας αυτού του βιβλίου!''',
+      ),
+      privacyPolicyUrl: 'https://library.app/privacy_gr.pdf',
+      employees: ContentList([
+        "Γιάννης Παπαδόπουλος",
+        "Μαρία Γεωργίου",
+        "Μιχάλης Καραμανλής",
+        "Ελένη Δημητρίου",
+        "Βασίλης Αντωνίου",
+        "Κ. Κανένας",
+        "123456",
+        "true"
+      ]),
+      dynamicListOfStrings: ContentList([
+        "Γιάννης Παπαδόπουλος",
+        "Αλέξανδρος Μαύρος",
+        "Μιχάλης Φάρτ",
+        "Πικ Τσαρτ"
+      ]),
+      dynamicListOfObjects: ContentList([
+        {"id": "123", "name": "Μιχάλης", "lastname": "Άλφα"},
+        {"id": "456", "name": "Γιάννης", "lastname": "Πάις"}
+      ]),
+      users: Users(
+        cities: UsersCities(
+          mainCity: ContentList([
+            {"id": "1", "name": "Μιχάλης"},
+            {"id": "2", "name": "Αλένα"},
+            {"id": "3", "name": "Χάρις"}
+          ]),
+        ),
+      ),
+      dynamicMapInside: DynamicMapInside(
+        categories: ContentMap({
+          "abc": "Γεια σας",
+          "bcd": "Πώς είστε;",
+          "cde": "Είμαστε εδώ!",
+          "def": "Ελάτε μαζί μας!",
+          "efg": {"id": "123", "name": "Μιχάλης", "talk": "true"}
+        }),
+      ),
+      categories: ContentMap({
+        "1": "Αθλητισμός",
+        "2": "Διασκέδαση",
+        "3": "Κινηματογράφος",
+        "4": "Όπλα"
+      }),
+      ourAchievements: OurAchievements(
+        bulletPoints: ContentList([
+          {
+            "title": "Καλύτερος Σχεδιασμός UI/UX",
+            "subtitle": "Βραβεύτηκε από το Design Critics International 2022"
+          },
+          {
+            "title": "1M+ Λήψεις",
+            "subtitle": "Επιτεύχθηκε μέσα στον πρώτο μήνα κυκλοφορίας"
+          },
+          {
+            "title": "Ανερχόμενη Startup",
+            "subtitle": "Αναγνωρίστηκε από το Global Tech Summit 2023"
+          },
+          {
+            "title": "99% Ποσοστό Χωρίς Κρασαρίσματα",
+            "subtitle": "Επαληθεύτηκε από το App Health Monitor"
+          },
+          {
+            "title": "Υποστήριξη Πολλαπλών Πλατφορμών",
+            "subtitle": "Πλήρως λειτουργική σε iOS, Android και Web"
+          }
+        ]),
+      ),
+    );
+LocalizationMessages get el_GR => LocalizationMessages(
+      source: 'Ευκολότερη Τοπικοποίηση',
+      appTitle: 'Εφαρμογή Βιβλιοθήκης',
+      language: ({required String language, required String country}) =>
+          '''Γλώσσα: ${language}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '''${argument}''',
+        money: '''Το σύνολο είναι \$100.00''',
+        escaped: '''Το σύνολο είναι \$100.00''',
+        combined: (
+                {required String argument, required String secondArgument}) =>
+            '''Το σύνολο είναι ${argument} \$100.00 και άλλο ${secondArgument} \$100.00''',
+        dynamicObject: ContentMap({"CODE_1": "\$100", "CODE_2": "\$200"}),
+        dynamicList: ContentList(["\$100", "\$200"]),
+      ),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '''${howMany} δέντρο''',
+        other: '''${howMany} δέντρα''',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments:
+          (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '''${howMany} ${kind} ζώου''',
+        other: '''${howMany} ${kind} ζώων''',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: 'Γυναίκα!',
+        male: 'Άνδρας!',
+        other: 'Άλλο!',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) =>
+          Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: '''Η ${name} είναι γυναίκα!''',
+        male: '''Ο ${name} είναι άνδρας!''',
+        other: '''Ο/Η ${name} είναι άλλου φύλου!''',
+      ),
+      mainScreen: MainScreen(
+        completelyNewField: 'Αυτό είναι ένα νέο πεδίο v2',
+        greetings: ({required String username}) => '''Γεια σας, ${username}!''',
+        books: MainScreenBooks(
+          add: 'Προσθήκη Βιβλίου',
+          amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+            howMany,
+            name: 'amount_of_new',
+            zero: 'Δεν υπάρχουν νέα βιβλία διαθέσιμα αυτή τη στιγμή :(',
+            one: '''Υπάρχει ${howMany} νέο βιβλίο διαθέσιμο :)''',
+            two: null,
+            few: null,
+            many: null,
+            other: '''Υπάρχουν ${howMany} νέα βιβλία διαθέσιμα :)''',
+            precision: precision,
+          ),
+        ),
+        todayDateFormat: 'dd/MM/yyyy',
+        welcome: '''# Καλώς ήρθατε στη βιβλιοθήκη μας! v4
+---
+## Είμαστε πολύ χαρούμενοι που σας βλέπουμε και θα θέλαμε να απολαύσετε την ανάγνωση των βιβλίων μας.
+''',
+      ),
+      author: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'author',
+        female: '''${name} - αυτή είναι η συγγραφέας αυτού του βιβλίου!''',
+        male: '''${name} - αυτός είναι ο συγγραφέας αυτού του βιβλίου!''',
+        other: '''${name} - αυτοί είναι ο συγγραφέας αυτού του βιβλίου!''',
+      ),
+      privacyPolicyUrl: 'https://library.app/privacy_gr.pdf',
+      employees: ContentList([
+        "Γιάννης Παπαδόπουλος",
+        "Μαρία Γεωργίου",
+        "Μιχάλης Καραμανλής",
+        "Ελένη Δημητρίου",
+        "Βασίλης Αντωνίου",
+        "Κ. Κανένας",
+        "123456",
+        "true"
+      ]),
+      dynamicListOfStrings: ContentList([
+        "Γιάννης Παπαδόπουλος",
+        "Αλέξανδρος Μαύρος",
+        "Μιχάλης Φάρτ",
+        "Πικ Τσαρτ"
+      ]),
+      dynamicListOfObjects: ContentList([
+        {"id": "123", "name": "Μιχάλης", "lastname": "Άλφα"},
+        {"id": "456", "name": "Γιάννης", "lastname": "Πάις"}
+      ]),
+      users: Users(
+        cities: UsersCities(
+          mainCity: ContentList([
+            {"id": "1", "name": "Μιχάλης"},
+            {"id": "2", "name": "Αλένα"},
+            {"id": "3", "name": "Χάρις"}
+          ]),
+        ),
+      ),
+      dynamicMapInside: DynamicMapInside(
+        categories: ContentMap({
+          "abc": "Γεια σας",
+          "bcd": "Πώς είστε;",
+          "cde": "Είμαστε εδώ!",
+          "def": "Ελάτε μαζί μας!",
+          "efg": {"id": "123", "name": "Μιχάλης", "talk": "true"}
+        }),
+      ),
+      categories: ContentMap({
+        "1": "Αθλητισμός",
+        "2": "Διασκέδαση",
+        "3": "Κινηματογράφος",
+        "4": "Όπλα"
+      }),
+      ourAchievements: OurAchievements(
+        bulletPoints: ContentList([
+          {
+            "title": "Καλύτερος Σχεδιασμός UI/UX",
+            "subtitle": "Βραβεύτηκε από το Design Critics International 2022"
+          },
+          {
+            "title": "1M+ Λήψεις",
+            "subtitle": "Επιτεύχθηκε μέσα στον πρώτο μήνα κυκλοφορίας"
+          },
+          {
+            "title": "Ανερχόμενη Startup",
+            "subtitle": "Αναγνωρίστηκε από το Global Tech Summit 2023"
+          },
+          {
+            "title": "99% Ποσοστό Χωρίς Κρασαρίσματα",
+            "subtitle": "Επαληθεύτηκε από το App Health Monitor"
+          },
+          {
+            "title": "Υποστήριξη Πολλαπλών Πλατφορμών",
+            "subtitle": "Πλήρως λειτουργική σε iOS, Android και Web"
+          }
+        ]),
+      ),
+    );
 LocalizationMessages get en_CA => LocalizationMessages(
       source: 'Easiest Localization',
       appTitle: 'Library App',
@@ -1211,10 +1639,151 @@ LocalizationMessages get en_CA => LocalizationMessages(
         ]),
       ),
     );
+LocalizationMessages get es_US => LocalizationMessages(
+      source: 'Easiest Localization',
+      appTitle: 'Aplicación de Biblioteca',
+      language: ({required String language, required String country}) =>
+          '''Idioma: ${language}''',
+      dollars: Dollars(
+        argument: ({required String argument}) => '''${argument}''',
+        money: '''Total is \$100.00''',
+        escaped: '''Total is \$100.00''',
+        combined: (
+                {required String argument, required String secondArgument}) =>
+            '''Total is ${argument} \$100.00 and another ${secondArgument} \$100.00''',
+        dynamicObject: ContentMap({"CODE_1": "\$100", "CODE_2": "\$200"}),
+        dynamicList: ContentList(["\$100", "\$200"]),
+      ),
+      pluralizedRoot: (num howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root',
+        one: '''${howMany} tree''',
+        other: '''${howMany} trees''',
+        precision: precision,
+      ),
+      pluralizedRootWithArguments:
+          (num howMany, {required String kind, int? precision}) => Intl.plural(
+        howMany,
+        name: 'pluralized_root_with_arguments',
+        one: '''${howMany} ${kind} of animal''',
+        other: '''${howMany} ${kind} of animals''',
+        precision: precision,
+      ),
+      genderRoot: (Gender gender) => Intl.gender(
+        gender.name,
+        name: 'gender_root',
+        female: 'Female!',
+        male: 'Male!',
+        other: 'Other!',
+      ),
+      genderRootWithArguments: (Gender gender, {required String name}) =>
+          Intl.gender(
+        gender.name,
+        name: 'gender_root_with_arguments',
+        female: '''${name} is female!''',
+        male: '''${name} is male!''',
+        other: '''${name} is other gender!''',
+      ),
+      mainScreen: MainScreen(
+        completelyNewField: 'This is a new field v2',
+        greetings: ({required String username}) => '''¡Hola, ${username}!''',
+        books: MainScreenBooks(
+          add: 'Añadir libro',
+          amountOfNew: (num howMany, {int? precision}) => Intl.plural(
+            howMany,
+            name: 'amount_of_new',
+            zero: 'No hay libros nuevos disponibles en este momento :(',
+            one: '''Hay ${howMany} libro nuevo disponible :)''',
+            two: null,
+            few: null,
+            many: null,
+            other: '''Hay ${howMany} libros nuevos disponibles :)''',
+            precision: precision,
+          ),
+        ),
+        todayDateFormat: 'dd/MM/yyyy',
+        welcome: '''# ¡Bienvenido a nuestra biblioteca!
+---
+## Estamos muy contentos de verte y nos gustaría que disfrutes leyendo nuestros libros.
+''',
+      ),
+      author: (Gender gender, {required String name}) => Intl.gender(
+        gender.name,
+        name: 'author',
+        female: '''¡${name} es la autora de ese libro!''',
+        male: '''¡${name} es el autor de ese libro!''',
+        other: '''¡${name} es el autor de ese libro!''',
+      ),
+      privacyPolicyUrl: 'https://library.app/privacy_mx.pdf',
+      employees: ContentList([
+        "Juan Smith",
+        "Alicia Johnson",
+        "Miguel Brown",
+        "Emma Davis",
+        "Guillermo Taylor",
+        "Mr. Nobody",
+        "123456",
+        "true"
+      ]),
+      dynamicListOfStrings:
+          ContentList(["John Smith", "Alex Black", "Mike Fart", "Pick Chart"]),
+      dynamicListOfObjects: ContentList([
+        {"id": "123", "name": "Mike", "lastname": "Alfa"},
+        {"id": "456", "name": "John", "lastname": "Pies"}
+      ]),
+      users: Users(
+        cities: UsersCities(
+          mainCity: ContentList([
+            {"id": "1", "name": "Mike"},
+            {"id": "2", "name": "Alena"},
+            {"id": "3", "name": "Grace"}
+          ]),
+        ),
+      ),
+      dynamicMapInside: DynamicMapInside(
+        categories: ContentMap({
+          "abc": "Hello",
+          "bcd": "How are you?",
+          "cde": "We are here!",
+          "def": "Let's go with us!",
+          "efg": {"id": "123", "name": "Mike", "talk": "true"}
+        }),
+      ),
+      categories:
+          ContentMap({"1": "Sport", "2": "Fun", "3": "Cinema", "4": "Guns"}),
+      ourAchievements: OurAchievements(
+        bulletPoints: ContentList([
+          {
+            "title": "Best UI/UX Design",
+            "subtitle": "Awarded by Design Critics International 2022"
+          },
+          {
+            "title": "1M+ Downloads",
+            "subtitle": "Achieved within the first month of release"
+          },
+          {
+            "title": "Rising Star Startup",
+            "subtitle": "Recognized by Global Tech Summit 2023"
+          },
+          {
+            "title": "99% Crash-Free Rate",
+            "subtitle": "Verified by App Health Monitor"
+          },
+          {
+            "title": "Multi-Platform Support",
+            "subtitle": "Fully functional on iOS, Android, and the Web"
+          }
+        ]),
+      ),
+    );
 Map<Locale, LocalizationMessages> get _languageMap => {
+      Locale('tr'): $tr,
       Locale('en'): en,
       Locale('ru'): ru,
+      Locale('el'): $el,
+      Locale('el', 'GR'): el_GR,
       Locale('en', 'CA'): en_CA,
+      Locale('es', 'US'): es_US,
     };
 
 final Map<Locale, LocalizationMessages> _providersLanguagesMap = {};
@@ -1369,11 +1938,15 @@ List<LocalizationsDelegate> localizationsDelegatesWithProviders(
   ];
 }
 
-// Supported locales: en, ru, en_CA
+// Supported locales: tr, en, ru, el, el_GR, en_CA, es_US
 List<Locale> get supportedLocales => [
+      Locale('tr'),
       Locale('en'),
       Locale('ru'),
+      Locale('el'),
+      Locale('el', 'GR'),
       Locale('en', 'CA'),
+      Locale('es', 'US'),
     ];
 
 List<Locale> supportedLocalesWithProviders(

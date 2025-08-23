@@ -1,0 +1,125 @@
+source: Ευκολότερη Τοπικοποίηση
+
+app_title: Εφαρμογή Βιβλιοθήκης
+
+language: "Γλώσσα: ${language}"
+
+dollars:
+  argument: "${argument}"
+  money: Το σύνολο είναι $100.00
+  escaped: Το σύνολο είναι \$100.00
+  combined: Το σύνολο είναι ${argument} $100.00 και άλλο ${secondArgument} \$100.00
+  dynamic_object*:
+    CODE_1: $100
+    CODE_2: $200
+  dynamic_list*:
+    - $100
+    - $200
+
+pluralized_root:
+  one: ${howMany} δέντρο
+  other: ${howMany} δέντρα
+
+pluralized_root_with_arguments:
+  one: ${howMany} ${kind} ζώου
+  other: ${howMany} ${kind} ζώων
+
+gender_root:
+  male: Άνδρας!
+  female: Γυναίκα!
+  other: Άλλο!
+
+gender_root_with_arguments:
+  male: Ο ${name} είναι άνδρας!
+  female: Η ${name} είναι γυναίκα!
+  other: Ο/Η ${name} είναι άλλου φύλου!
+
+main_screen:
+  completely_new_field: Αυτό είναι ένα νέο πεδίο v2
+  greetings: Γεια σου, ${username}!
+  books:
+    add: Προσθήκη Βιβλίου
+    amount_of_new:
+      zero: Δεν υπάρχουν νέα βιβλία διαθέσιμα αυτή τη στιγμή :(
+      one: Υπάρχει ${howMany} νέο βιβλίο διαθέσιμο :)
+      other: Υπάρχουν ${howMany} νέα βιβλία διαθέσιμα :)
+  today_date_format: dd/MM/yyyy
+  welcome: |
+    # Καλώς ήρθατε στη βιβλιοθήκη μας! v4
+    ---
+    ## Είμαστε πολύ χαρούμενοι που σας βλέπουμε και θα θέλαμε να απολαύσετε την ανάγνωση των βιβλίων μας.
+
+author:
+  male: ${name} - αυτός είναι ο συγγραφέας αυτού του βιβλίου!
+  female: ${name} - αυτή είναι η συγγραφέας αυτού του βιβλίου!
+  other: ${name} - αυτοί είναι ο συγγραφέας αυτού του βιβλίου!
+
+privacy_policy_url: https://library.app/privacy_gr.pdf
+
+employees*:
+  - Γιάννης Παπαδόπουλος
+  - Μαρία Γεωργίου
+  - Μιχάλης Καραμανλής
+  - Ελένη Δημητρίου
+  - Βασίλης Αντωνίου
+  - Κ. Κανένας
+  - 123456
+  - true
+
+dynamic_list_of_strings*:
+  - Γιάννης Παπαδόπουλος
+  - Αλέξανδρος Μαύρος
+  - Μιχάλης Φάρτ
+  - Πικ Τσαρτ
+
+dynamic_list_of_objects*:
+  - id: 123
+    name: Μιχάλης
+    lastname: Άλφα
+  - id: 456
+    name: Γιάννης
+    lastname: Πάις
+
+users:
+  cities:
+    main_city*:
+      - id: 1
+        name: Μιχάλης
+      - id: 2
+        name: Αλένα
+      - id: 3
+        name: Χάρις
+
+dynamic_map_inside:
+  categories*:
+    abc: Γεια σας
+    bcd: Πώς είστε;
+    cde: Είμαστε εδώ!
+    def: Ελάτε μαζί μας!
+    efg:
+      id: 123
+      name: Μιχάλης
+      talk: true
+
+categories*:
+  1: Αθλητισμός
+  2: Διασκέδαση
+  3: Κινηματογράφος
+  4: Όπλα
+
+our_achievements:
+  bullet_points*:
+    - title: Καλύτερος Σχεδιασμός UI/UX
+      subtitle: Βραβεύτηκε από το Design Critics International 2022
+
+    - title: 1M+ Λήψεις
+      subtitle: Επιτεύχθηκε μέσα στον πρώτο μήνα κυκλοφορίας
+
+    - title: Ανερχόμενη Startup
+      subtitle: Αναγνωρίστηκε από το Global Tech Summit 2023
+
+    - title: 99% Ποσοστό Χωρίς Κρασαρίσματα
+      subtitle: Επαληθεύτηκε από το App Health Monitor
+
+    - title: Υποστήριξη Πολλαπλών Πλατφορμών
+      subtitle: Πλήρως λειτουργική σε iOS, Android και Web

@@ -1,0 +1,125 @@
+source: En Kolay Yerelleştirme
+
+app_title: Kütüphane Uygulaması
+
+language: "Dil: ${language}"
+
+dollars:
+  argument: "${argument}"
+  money: Toplam $100.00
+  escaped: Toplam \$100.00
+  combined: Toplam ${argument} $100.00 ve başka ${secondArgument} \$100.00
+  dynamic_object*:
+    CODE_1: $100
+    CODE_2: $200
+  dynamic_list*:
+    - $100
+    - $200
+
+pluralized_root:
+  one: ${howMany} ağaç
+  other: ${howMany} ağaç
+
+pluralized_root_with_arguments:
+  one: ${howMany} ${kind} hayvan
+  other: ${howMany} ${kind} hayvan
+
+gender_root:
+  male: Erkek!
+  female: Kadın!
+  other: Diğer!
+
+gender_root_with_arguments:
+  male: ${name} erkek!
+  female: ${name} kadın!
+  other: ${name} diğer cinsiyet!
+
+main_screen:
+  completely_new_field: Bu yeni bir alan v2
+  greetings: Merhaba, ${username}!
+  books:
+    add: Kitap Ekle
+    amount_of_new:
+      zero: Şu anda mevcut yeni kitap yok :(
+      one: ${howMany} yeni kitap mevcut :)
+      other: ${howMany} yeni kitap mevcut :)
+  today_date_format: dd/MM/yyyy
+  welcome: |
+    # Kütüphanemize hoş geldiniz! v4
+    ---
+    ## Sizi gördüğümüz için çok mutluyuz ve kitaplarımızı okumaktan keyif almanızı istiyoruz.
+
+author:
+  male: ${name} - o bu kitabın yazarı!
+  female: ${name} - o bu kitabın yazarı!
+  other: ${name} - onlar bu kitabın yazarı!
+
+privacy_policy_url: https://library.app/privacy_tr.pdf
+
+employees*:
+  - Ahmet Yılmaz
+  - Ayşe Demir
+  - Mehmet Kaya
+  - Fatma Özkan
+  - Mustafa Çelik
+  - Bay Hiçkimse
+  - 123456
+  - true
+
+dynamic_list_of_strings*:
+  - Ahmet Yılmaz
+  - Ali Siyah
+  - Mehmet Fart
+  - Pick Chart
+
+dynamic_list_of_objects*:
+  - id: 123
+    name: Mehmet
+    lastname: Alfa
+  - id: 456
+    name: Ahmet
+    lastname: Pies
+
+users:
+  cities:
+    main_city*:
+      - id: 1
+        name: Mehmet
+      - id: 2
+        name: Alena
+      - id: 3
+        name: Grace
+
+dynamic_map_inside:
+  categories*:
+    abc: Merhaba
+    bcd: Nasılsınız?
+    cde: Buradayız!
+    def: Bizimle gelin!
+    efg:
+      id: 123
+      name: Mehmet
+      talk: true
+
+categories*:
+  1: Spor
+  2: Eğlence
+  3: Sinema
+  4: Silahlar
+
+our_achievements:
+  bullet_points*:
+    - title: En İyi UI/UX Tasarım
+      subtitle: Design Critics International 2022 tarafından ödüllendirildi
+
+    - title: 1M+ İndirme
+      subtitle: Yayınlandıktan sonraki ilk ay içinde ulaşıldı
+
+    - title: Yükselen Yıldız Startup
+      subtitle: Global Tech Summit 2023 tarafından tanındı
+
+    - title: "%99 Çökme-Serbest Oranı"
+      subtitle: App Health Monitor tarafından doğrulandı
+
+    - title: Çoklu Platform Desteği
+      subtitle: iOS, Android ve Web'de tam işlevsel

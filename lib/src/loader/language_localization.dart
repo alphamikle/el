@@ -31,7 +31,7 @@ class LanguageLocalization {
   bool get isPrimary => country == null;
 
   String get name => [
-        language,
+        if (country == null) _normalizeLanguage(language) else language,
         if (country != null) '_',
         if (country != null) country,
       ].join();
@@ -62,4 +62,22 @@ class LanguageLocalization {
   String toString() {
     return 'LanguageLocalization{name: $name, size: $size, content: $content}';
   }
+}
+
+String _normalizeLanguage(String language) {
+  final Set<String> languagesWithKeywords = {
+    'el',
+    'tr',
+    'as',
+    'is',
+    'id',
+    'it',
+    'to',
+  };
+
+  if (languagesWithKeywords.contains(language)) {
+    return '\$$language';
+  }
+
+  return language;
 }
