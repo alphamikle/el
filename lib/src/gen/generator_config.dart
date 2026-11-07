@@ -14,6 +14,7 @@ class GeneratorConfig {
     this.easiestLocalizationVersion = 'any',
     this.packageVersion = kDefaultPackageVersion,
     this.packagePath = kDefaultPackagePath,
+    this.outputFile,
     this.excludedPatterns = const [],
     this.formatOutput = false,
     this.primaryLocalization,
@@ -45,6 +46,10 @@ class GeneratorConfig {
   /// Path to generated package (excluding package name)
   /// Example: path = "./" and name = "i18n" will place package folder at "your_app_path/i18n"
   final String packagePath;
+
+  /// Path to a single generated Dart file inside your own package, instead of a separate generated package
+  /// Example: "lib/generated/localization.gen.dart". When set, [packagePath] and [packageName] are not used for the code
+  final String? outputFile;
 
   /// A list of patterns whose presence in the path or name of localization files will cause them to be excluded
   final List<String> excludedPatterns;
@@ -82,6 +87,7 @@ class GeneratorConfig {
     String? easiestLocalizationVersion,
     String? packageVersion,
     String? packagePath,
+    String? outputFile,
     List<String>? excludedPatterns,
     bool? formatOutput,
     String? primaryLocalization,
@@ -99,6 +105,7 @@ class GeneratorConfig {
       easiestLocalizationVersion: easiestLocalizationVersion ?? this.easiestLocalizationVersion,
       packageVersion: packageVersion ?? this.packageVersion,
       packagePath: packagePath ?? this.packagePath,
+      outputFile: outputFile ?? this.outputFile,
       excludedPatterns: excludedPatterns ?? this.excludedPatterns,
       formatOutput: formatOutput ?? this.formatOutput,
       primaryLocalization: primaryLocalization ?? this.primaryLocalization,

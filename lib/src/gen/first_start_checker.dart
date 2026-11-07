@@ -15,6 +15,9 @@ class FirstStartChecker {
   final GeneratorConfig config;
 
   void updatePubSpec() {
+    if (config.outputFile != null) {
+      return;
+    }
     final String packageName = config.packageName;
     final String packagePath = path.join(config.packagePath, packageName);
     String entrypointReplacement = 'sdk: flutter';

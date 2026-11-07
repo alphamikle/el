@@ -14,6 +14,11 @@ class PackageSaver {
   final GeneratorConfig config;
 
   String save(String code) {
+    final String? outputFile = config.outputFile;
+    if (outputFile != null) {
+      return _write(File(outputFile), code);
+    }
+
     final String absolutePackagePath = path.join(config.packagePath, config.packageName);
 
     final Directory dir = Directory(absolutePackagePath);
@@ -25,7 +30,14 @@ class PackageSaver {
     if (!libDir.existsSync()) {
       libDir.createSync(recursive: true);
     }
-    final File libFile = File(path.join(libPath, 'localization.dart'));
+    final String result = _write(File(path.join(libPath, 'localization.dart')), code);
+    final File pubspecFile = File(path.join(absolutePackagePath, 'pubspec.yaml'));
+    pubspecFile.writeAsStringSync(assetsPubspecTemplate(config));
+    return result;
+  }
+
+  String _write(File libFile, String code) {
+    libFile.parent.createSync(recursive: true);
     final DartFormatter formatter = DartFormatter(pageWidth: 160, languageVersion: DartFormatter.latestShortStyleLanguageVersion);
     String formattedCode = code;
 
@@ -36,8 +48,6 @@ class PackageSaver {
     }
 
     libFile.writeAsStringSync(formattedCode);
-    final File pubspecFile = File(path.join(absolutePackagePath, 'pubspec.yaml'));
-    pubspecFile.writeAsStringSync(assetsPubspecTemplate(config));
     if (config.formatOutput) {
       fixPackage(libFile.path);
     }
