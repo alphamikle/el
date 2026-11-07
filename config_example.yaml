@@ -30,8 +30,8 @@ easiest_localization:
 
   # An example of supported file names with a default RegExp: https://regex101.com/r/CALDhV/3
   #
-  # !!! A mandatory requirement for RegExp: it must have named parameter (?<lang>[a-z]{2}) !!!
-  reg_exp: "(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$"
+  # !!! A mandatory requirement for RegExp: it must have named parameter (?<lang>[a-z]{2,3}) !!!
+  reg_exp: "(\W)(el_)?(?<lang>[a-z]{2,3})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$"
 
   # The language code or full localization to be used as the content source,
   # defaulting to other languages if no fields are described

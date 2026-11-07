@@ -1,5 +1,6 @@
 ## Changelog
 
+- 2.1.5 – Added support of three-letter language codes (ISO 639-2/3), like `ckb`, `fil` or `haw`
 - 2.1.4 – Added support of languages, which codes are reserved keywords
 - 2.1.3 – Minor fixes, related to dollar sign at the end of the string and code-generation
 - 2.1.2 – Downgraded intl version to support stable Flutter version

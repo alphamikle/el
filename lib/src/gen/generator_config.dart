@@ -72,7 +72,7 @@ class GeneratorConfig {
   final bool initPubspec;
 
   /// RegExp for localization files
-  RegExp get regExp => _regExp ?? RegExp(r'(\W)(el_)?(?<lang>[a-z]{2})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$');
+  RegExp get regExp => _regExp ?? RegExp(r'(\W)(el_)?(?<lang>[a-z]{2,3})[_-]?(?<country>[a-zA-Z]{2})?.(ya?ml|json)$');
 
   GeneratorConfig copyWith({
     String? localizationsClassName,
