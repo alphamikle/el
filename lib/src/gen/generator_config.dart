@@ -8,6 +8,7 @@ const String kDefaultPackagePath = './';
 class GeneratorConfig {
   const GeneratorConfig({
     this.dartSdk = '',
+    this.resolution,
     this.localizationsClassName = kDefaultLocalizationClassName,
     this.packageName = kDefaultPackageName,
     this.packageDescription = kDefaultPackageDescription,
@@ -32,6 +33,10 @@ class GeneratorConfig {
 
   /// You can specify special version of the sdk, or will be taken your pubspec.yaml version
   final String dartSdk;
+
+  /// Pub resolution mode of the generated package, taken from your pubspec.yaml
+  /// Example: "workspace" - generated package will be a member of the pub workspace
+  final String? resolution;
 
   /// Description of generated package
   final String packageDescription;
@@ -78,6 +83,7 @@ class GeneratorConfig {
     String? localizationsClassName,
     String? packageName,
     String? dartSdk,
+    String? resolution,
     String? packageDescription,
     String? easiestLocalizationVersion,
     String? packageVersion,
@@ -95,6 +101,7 @@ class GeneratorConfig {
       localizationsClassName: localizationsClassName ?? this.localizationsClassName,
       packageName: packageName ?? this.packageName,
       dartSdk: dartSdk ?? this.dartSdk,
+      resolution: resolution ?? this.resolution,
       packageDescription: packageDescription ?? this.packageDescription,
       easiestLocalizationVersion: easiestLocalizationVersion ?? this.easiestLocalizationVersion,
       packageVersion: packageVersion ?? this.packageVersion,

@@ -6,6 +6,7 @@ import 'pubspec_loader.dart';
 
 const String kEnv = 'environment';
 const String kSdk = 'sdk';
+const String kResolution = 'resolution';
 const String kConfig = 'easiest_localization';
 const String kExcludedPatterns = 'excluded';
 const String kClassName = 'class_name';
@@ -27,9 +28,10 @@ class ConfigLoader {
     final YamlMap pubspecContent = PubspecLoader(config: null).load();
     final YamlMap? config = pubspecContent[kConfig];
     final String dartSdk = (pubspecContent[kEnv] as YamlMap)[kSdk] as String;
+    final String? resolution = pubspecContent[kResolution]?.toString();
 
     if (config == null) {
-      return GeneratorConfig(dartSdk: dartSdk);
+      return GeneratorConfig(dartSdk: dartSdk, resolution: resolution);
     }
 
     final String? pattern = config[kRegExp];
@@ -39,6 +41,7 @@ class ConfigLoader {
     return GeneratorConfig(
       excludedPatterns: excludedPatterns == null ? [] : excludedPatterns.map((dynamic it) => it.toString()).toList(),
       dartSdk: dartSdk,
+      resolution: resolution,
       localizationsClassName: config[kClassName] ?? kDefaultLocalizationClassName,
       packageDescription: config[kDescription] ?? kDefaultPackageDescription,
       easiestLocalizationVersion: config[kEasiestLocalization] ?? pubspecContent[kDependencies]?[kConfig]?.toString() ?? 'any',

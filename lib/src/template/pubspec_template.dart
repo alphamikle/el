@@ -12,7 +12,7 @@ version: ${config.packageVersion}${config.version == null ? '' : '+${config.vers
 
 environment:
   sdk: "${config.dartSdk}"
-
+${config.resolution == null ? '' : 'resolution: ${config.resolution}\n'}
 dependencies:
   flutter:
     sdk: flutter
