@@ -113,7 +113,7 @@ flutter:
     if (match != null) {
       final String? language = match.namedGroup('lang');
 
-      if (language == null || language.length != 2) {
+      if (language == null || language.length < 2 || language.length > 3) {
         log('Language code "$language" is not valid'.asRed());
         return false;
       }
