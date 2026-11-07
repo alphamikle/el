@@ -108,6 +108,13 @@ easiest_localization:
   # Relative path to the generated localization package
   package_path: './'
 
+  # Path to a single generated Dart file inside your own package, instead of a separate generated package
+  # When set, no package and no pubspec.yaml are generated - import the file from your package directly
+  # Your package needs easiest_localization, intl and flutter_localizations in its dependencies
+  #
+  # Examples: "lib/generated/localization.gen.dart", null
+  output_file: null
+
   # Version of the generated localization package
   package_version: 1.0.0
 

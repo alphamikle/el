@@ -13,6 +13,7 @@ const String kDescription = 'description';
 const String kEasiestLocalization = 'easiest_localization_version';
 const String kPackageName = 'package_name';
 const String kPackagePath = 'package_path';
+const String kOutputFile = 'output_file';
 const String kPackageVersion = 'package_version';
 const String kFormatOutput = 'format_output';
 const String kRemoteVersion = 'remote_version';
@@ -44,6 +45,7 @@ class ConfigLoader {
       easiestLocalizationVersion: config[kEasiestLocalization] ?? pubspecContent[kDependencies]?[kConfig]?.toString() ?? 'any',
       packageName: config[kPackageName] ?? kDefaultPackageName,
       packagePath: config[kPackagePath] ?? kDefaultPackagePath,
+      outputFile: config[kOutputFile]?.toString(),
       packageVersion: config[kPackageVersion] ?? kDefaultPackageVersion,
       regExp: regExp,
       primaryLocalization: config[kPrimaryLocalization],
